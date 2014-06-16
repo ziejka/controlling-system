@@ -8,7 +8,9 @@
                  [com.taoensso/timbre "3.2.1"]
                  [com.taoensso/tower "2.0.2"]
                  [markdown-clj "0.9.44"]
-                 [environ "0.5.0"]]
+                 [environ "0.5.0"]
+                 [org.clojure/java.jdbc "0.3.0-alpha5"]
+                 [mysql/mysql-connector-java "5.1.25"]]
 
   :repl-options {:init-ns myapp.repl}
   :plugins [[lein-ring "0.8.10"]
