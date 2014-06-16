@@ -1,0 +1,43 @@
+{% extends "templates/base.html" %}
+{% block content %}
+<table class="table table-striped">
+    <tr>
+        <th>nr kosztu</th>
+        <th>nazwa kosztu</th>
+        <th>rok</th>
+        <th>miesiąc</th>
+        <th>wartość</th>
+    </tr>
+    <tr>
+        <td>4001005</td>
+        <td>Pozostałe koszty operacyjne</td>
+        <td>
+            <select>
+                <option>2001</option>
+                <option>2002</option>
+                <option>2003</option>
+                <option>2004</option>
+                <option>2005</option>
+            </select>
+        </td>
+        <td><input type="text" placeholder="0"></td>
+        <td><input type="text" placeholder="0"></td>
+    </tr>
+    <tr>
+        <td>4012556</td>
+        <td>Koszty obsługi</td>
+        <td>
+        <select>
+                <option>2001</option>
+                <option>2002</option>
+                <option>2003</option>
+                <option>2004</option>
+                <option>2005</option>
+            </select>
+        </td>
+        <td><input type="text" placeholder="0"></td>
+        <td><input type="text" placeholder="0"></td>
+    </tr>
+</table>
+<button type="submit" class="btn">Submit</button>
+{% endblock %}
