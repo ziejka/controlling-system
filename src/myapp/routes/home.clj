@@ -2,21 +2,8 @@
   (:use compojure.core)
   (:require [myapp.layout :as layout]
             [myapp.util :as util]
-            [myapp.posts :as posts]
-            ;[noir.core :only [defpage]]
-            [hiccup.element :only [link-to]]))
+            [myapp.posts :as posts]))
 
-(defn- list-brands []
-  [:table
-    [:thead
-      [:tr
-        [:th "ID"]
-        [:th "Name"]]]
-  (into [:tbody]
-    for [all (posts/all)]
-      [:tr
-        [:td (:id_brands all)]
-        [:td (:brand_name all)]])])
 
 (defn home-page []
   (layout/render
@@ -24,7 +11,7 @@
 
 (defn about-page []
   (layout/render "about.html"
-    {:content (list-brands)}))
+    {:content (list (posts/all))}))
 
 (defn contact-page []
   (layout/render "contact.html"))
