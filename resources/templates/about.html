@@ -1,16 +1,21 @@
 {% extends "templates/base.html" %}
 {% block content %}
-  <p>this is the story of myapp... work in progress</p>
-   <div>
-    {{content|safe}}
-	</div>
-
-	
-		<table class="table table-striped">
+ 		<table class="table table-striped">
+ 			<tr>
+ 				<th>Marka</th>
+ 				<th>ID</th>
+ 				<th>Rok</th>
+ 			</tr>
 			{% for item in items %}
 			<tr> 
 				<td> {{item.brand_name}} </th>
 				<td> {{item.id_brands}} </td>
+
+				<td><select> 
+					{% for year in years %}
+					<option> {{year}} </option>
+					{% endfor %}
+				</select></td>
 			</tr>
 			{% endfor %}
 		</table>

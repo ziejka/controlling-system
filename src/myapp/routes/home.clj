@@ -12,7 +12,8 @@
 (defn about-page []
   (layout/render "about.html"
     {:content (list (posts/all))
-     :items (posts/all)}))
+     :items (posts/all)
+     :years (range 2013 2021)}))
 
 (defn contact-page []
   (layout/render "contact.html" {:items (range 10)}))
