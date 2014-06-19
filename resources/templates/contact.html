@@ -40,4 +40,9 @@
     </tr>
 </table>
 <button type="submit" class="btn">Submit</button>
+<ul>
+{% for item in items %}
+<li> {{item}} </li>
+{% endfor %}
+</ul>
 {% endblock %}

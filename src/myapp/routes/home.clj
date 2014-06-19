@@ -11,10 +11,11 @@
 
 (defn about-page []
   (layout/render "about.html"
-    {:content (list (posts/all))}))
+    {:content (list (posts/all))
+     :items (posts/all)}))
 
 (defn contact-page []
-  (layout/render "contact.html"))
+  (layout/render "contact.html" {:items (range 10)}))
 
 (defroutes home-routes
   (GET "/" [] (home-page))
