@@ -13,7 +13,8 @@
   (layout/render "about.html"
     {:content (list (posts/all))
      :items (posts/all)
-     :years (range 2013 2021)}))
+     :years (range 2013 2021)
+     :forms util/loggin}))
 
 (defn contact-page []
   (layout/render "contact.html" {:items (range 10)}))

@@ -1,6 +1,5 @@
 (ns myapp.posts
-  (:refer-clojure :exclude [get])
-  (:require [clojure.java.jdbc :as j]
+   (:require [clojure.java.jdbc :as j]
             [clojure.java.jdbc.sql :as s]))
 
 (def mysql-db {:subprotocol "mysql"

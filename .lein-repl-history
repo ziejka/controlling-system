@@ -1,0 +1,97 @@
+(lein)
+(require 'hiccup.core)
+(form-to [:post "/login"]
+  (text-field {:placeholder "screen name"} "id")
+  (password-field {:placeholder "password"} "pass")
+  (submit-button "login"))
+(image {:align "left"} "foo.png")
+(html [:script])
+(use 'hiccup.core)
+(html [:script])
+(form-to [:post "/login"]
+  (text-field {:placeholder "screen name"} "id")
+  (password-field {:placeholder "password"} "pass")
+  (submit-button "login"))
+(image {:align "left"} "foo.png")
+[:div {:id "hello", :class "content"} [:p "Hello world!"]]
+(html [:div#foo.bar.baz "bang"])
+(html (form-to [:post "/login"]
+  (text-field {:placeholder "screen name"} "id")
+  (password-field {:placeholder "password"} "pass")
+  (submit-button "login")))
+(html (image {:align "left"} "foo.png"))
+(html [:ul
+               (for [x (range 1 4)]
+                 [:li x])])
+(use 'hiccup.util)
+(submit-button attr-map? text)
+(html (submit-button attr-map? text))
+(text-field attr-map? name)
+(use 'hiccup.form)
+(text-field attr-map? name)
+](use hiccup.form)
+(use 'hiccup.fomr)
+(use 'hiccupe.form)
+(use 'hiccup.form)
+(form-to [:post "/login"]
+  (text-field {:placeholder "screen name"} "id")
+  (password-field {:placeholder "password"} "pass")
+  (submit-button "login"))
+(html (form-to [:post "/login"]
+  (text-field {:placeholder "screen name"} "id")
+  (password-field {:placeholder "password"} "pass")
+  (submit-button "login")))
+(def loggin
+  (hc/html (hf/form-to [:post "/login"]
+    (hf/text-field {:placeholder "screen name"} "id")
+    (hf/password-field {:placeholder "password"} "pass")
+    (hf/submit-button "login"))))
+(def loggin
+  (html (hf/form-to [:post "/login"]
+    (text-field {:placeholder "screen name"} "id")
+    (password-field {:placeholder "password"} "pass")
+    (submit-button "login"))))
+(def loggin
+  (html (form-to [:post "/login"]
+    (text-field {:placeholder "screen name"} "id")
+    (password-field {:placeholder "password"} "pass")
+    (submit-button "login"))))
+loggin
+(require '[hiccup.form :as hf])
+(require '[hiccu[.core :as hc])
+(require ' [hiccup.core :as hc])
+(def loggin
+  (hc/html (hf/form-to [:post "/login"]
+    (hf/text-field {:placeholder "screen name"} "id")
+    (hf/password-field {:placeholder "password"} "pass")
+    (hf/submit-button "login"))))
+(loggin)
+'(loggin)
+loggin
+(str loggin)
+(defn loggin []
+  (hc/html (hf/form-to [:post "/login"]
+    (hf/text-field {:placeholder "screen name"} "id")
+    (hf/password-field {:placeholder "password"} "pass")
+    (hf/submit-button "login"))))
+(loggin)
+(map loggin)
+(list loggin)
+(loggin)
+loggin
+(loggin)
+dwa
+2
+"w"
+loggin
+(def loggin
+  (hc/html (hf/form-to [:post "/login"]
+    (hf/text-field {:placeholder "screen name"} "id")
+    (hf/password-field {:placeholder "password"} "pass")
+    (hf/submit-button "login"))))
+loggin
+'(loggin)
+'loggin
+(val loggin)
+(str loggin)
+(println loggin)
