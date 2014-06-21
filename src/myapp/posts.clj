@@ -10,3 +10,6 @@
 (defn all []
   (j/query mysql-db
     (s/select * :brands)))
+
+(defn add-value [params]
+	(j/insert! mysql-db :planned_costs params))
