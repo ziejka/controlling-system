@@ -1,9 +1,9 @@
 (ns myapp.routes.home
   (:use compojure.core)
   (:require [myapp.layout :as layout]
-            [myapp.util :as util]
-            [myapp.posts :as posts]
-            [ring.util.response :as resp]))
+    [myapp.util :as util]
+    [myapp.posts :as posts]
+    [ring.util.response :as resp]))
 
 
 (defn home-page []
@@ -26,7 +26,7 @@
   (GET "/contact" [] (contact-page))
   (POST "/create" [& params]
     (do (posts/add-value params)
-        (resp/redirect "/"))))
+      (resp/redirect "/"))))
 
 
 
