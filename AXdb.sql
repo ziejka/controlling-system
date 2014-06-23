@@ -10,13 +10,13 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
--- Zrzut struktury bazy danych AXdb
-DROP DATABASE IF EXISTS `AXdb`;
+-- Zrzut struktury bazy danych axdb
+DROP DATABASE IF EXISTS `axdb`;
 CREATE DATABASE IF NOT EXISTS `axdb` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `AXdb`;
+USE `axdb`;
 
 
--- Zrzut struktury tabela AXdb.brands
+-- Zrzut struktury tabela axdb.brands
 DROP TABLE IF EXISTS `brands`;
 CREATE TABLE IF NOT EXISTS `brands` (
   `id_brands` int(10) unsigned NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `brands` (
   PRIMARY KEY (`id_brands`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Zrzucanie danych dla tabeli AXdb.brands: ~17 rows (około)
+-- Zrzucanie danych dla tabeli axdb.brands: ~17 rows (około)
 DELETE FROM `brands`;
 /*!40000 ALTER TABLE `brands` DISABLE KEYS */;
 INSERT INTO `brands` (`id_brands`, `brand_name`) VALUES
@@ -48,7 +48,7 @@ INSERT INTO `brands` (`id_brands`, `brand_name`) VALUES
 /*!40000 ALTER TABLE `brands` ENABLE KEYS */;
 
 
--- Zrzut struktury tabela AXdb.cost_center
+-- Zrzut struktury tabela axdb.cost_center
 DROP TABLE IF EXISTS `cost_center`;
 CREATE TABLE IF NOT EXISTS `cost_center` (
   `id_center` int(10) unsigned NOT NULL,
@@ -57,32 +57,32 @@ CREATE TABLE IF NOT EXISTS `cost_center` (
   PRIMARY KEY (`id_center`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Zrzucanie danych dla tabeli AXdb.cost_center: ~18 rows (około)
+-- Zrzucanie danych dla tabeli axdb.cost_center: ~18 rows (około)
 DELETE FROM `cost_center`;
 /*!40000 ALTER TABLE `cost_center` DISABLE KEYS */;
 INSERT INTO `cost_center` (`id_center`, `center_name`, `head_name`) VALUES
-	(50211, 'Rynek Tradycyjny', NULL),
-	(50212, 'Rynek Nowoczesny', NULL),
-	(50213, 'Sprzedaż zagraniczna', NULL),
-	(50214, 'Ogólne', NULL),
-	(50331, 'Marketing', NULL),
-	(50332, 'Zakupy i logistyka wejścia', NULL),
-	(50333, 'Konfekcjonowanie', NULL),
-	(50334, 'Magazyn', NULL),
-	(50335, 'Transport obcy', NULL),
-	(50336, 'Transport własny', NULL),
-	(55051, 'Zarząd', NULL),
-	(55052, 'Finanse', NULL),
-	(55053, 'Informatyka', NULL),
-	(55054, 'Administracja', NULL),
-	(55055, 'Księgowość', NULL),
-	(55056, 'Kadry i Płace', NULL),
+	(50211, 'Rynek Tradycyjny', 'Przetaczek'),
+	(50212, 'Rynek Nowoczesny', 'Piotrowski'),
+	(50213, 'Sprzedaż zagraniczna', 'Wolańska'),
+	(50214, 'Ogólne', 'Wojnar'),
+	(50331, 'Marketing', 'Bogacz'),
+	(50332, 'Zakupy i logistyka wejścia', 'Biernat'),
+	(50333, 'Konfekcjonowanie', 'Biernat'),
+	(50334, 'Magazyn', 'Biernat'),
+	(50335, 'Transport obcy', 'Heliasz'),
+	(50336, 'Transport własny', 'Prezes'),
+	(55051, 'Zarząd', 'Młynarczyk-Misiuda'),
+	(55052, 'Finanse', 'Rajczyk'),
+	(55053, 'Informatyka', 'Rajczyk'),
+	(55054, 'Administracja', 'Rajczyk'),
+	(55055, 'Księgowość', 'Młynarczyk-Misiuda'),
+	(55056, 'Kadry i Płace', 'Rajczyk'),
 	(55057, 'Pełnomocnicy i doradcy', NULL),
 	(55060, 'Grupa AMEX', NULL);
 /*!40000 ALTER TABLE `cost_center` ENABLE KEYS */;
 
 
--- Zrzut struktury tabela AXdb.cost_on_center
+-- Zrzut struktury tabela axdb.cost_on_center
 DROP TABLE IF EXISTS `cost_on_center`;
 CREATE TABLE IF NOT EXISTS `cost_on_center` (
   `id_coc` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `cost_on_center` (
   CONSTRAINT `Which_Center` FOREIGN KEY (`plannedOnCenter`) REFERENCES `cost_center` (`id_center`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1828 DEFAULT CHARSET=latin1;
 
--- Zrzucanie danych dla tabeli AXdb.cost_on_center: ~1 021 rows (około)
+-- Zrzucanie danych dla tabeli axdb.cost_on_center: ~992 rows (około)
 DELETE FROM `cost_on_center`;
 /*!40000 ALTER TABLE `cost_on_center` DISABLE KEYS */;
 INSERT INTO `cost_on_center` (`id_coc`, `plannedOnCenter`, `planned_by`, `id_cost`) VALUES
@@ -803,7 +803,7 @@ INSERT INTO `cost_on_center` (`id_coc`, `plannedOnCenter`, `planned_by`, `id_cos
 /*!40000 ALTER TABLE `cost_on_center` ENABLE KEYS */;
 
 
--- Zrzut struktury tabela AXdb.cost_type
+-- Zrzut struktury tabela axdb.cost_type
 DROP TABLE IF EXISTS `cost_type`;
 CREATE TABLE IF NOT EXISTS `cost_type` (
   `id_cost` int(10) unsigned NOT NULL,
@@ -811,7 +811,7 @@ CREATE TABLE IF NOT EXISTS `cost_type` (
   PRIMARY KEY (`id_cost`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Zrzucanie danych dla tabeli AXdb.cost_type: ~82 rows (około)
+-- Zrzucanie danych dla tabeli axdb.cost_type: ~82 rows (około)
 DELETE FROM `cost_type`;
 /*!40000 ALTER TABLE `cost_type` DISABLE KEYS */;
 INSERT INTO `cost_type` (`id_cost`, `cost_name`) VALUES
@@ -900,7 +900,7 @@ INSERT INTO `cost_type` (`id_cost`, `cost_name`) VALUES
 /*!40000 ALTER TABLE `cost_type` ENABLE KEYS */;
 
 
--- Zrzut struktury tabela AXdb.market_type
+-- Zrzut struktury tabela axdb.market_type
 DROP TABLE IF EXISTS `market_type`;
 CREATE TABLE IF NOT EXISTS `market_type` (
   `id_type` int(10) unsigned NOT NULL,
@@ -908,7 +908,7 @@ CREATE TABLE IF NOT EXISTS `market_type` (
   PRIMARY KEY (`id_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Zrzucanie danych dla tabeli AXdb.market_type: ~7 rows (około)
+-- Zrzucanie danych dla tabeli axdb.market_type: ~7 rows (około)
 DELETE FROM `market_type`;
 /*!40000 ALTER TABLE `market_type` DISABLE KEYS */;
 INSERT INTO `market_type` (`id_type`, `type_name`) VALUES
@@ -922,7 +922,7 @@ INSERT INTO `market_type` (`id_type`, `type_name`) VALUES
 /*!40000 ALTER TABLE `market_type` ENABLE KEYS */;
 
 
--- Zrzut struktury tabela AXdb.planned_costs
+-- Zrzut struktury tabela axdb.planned_costs
 DROP TABLE IF EXISTS `planned_costs`;
 CREATE TABLE IF NOT EXISTS `planned_costs` (
   `idCosts` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -939,13 +939,13 @@ CREATE TABLE IF NOT EXISTS `planned_costs` (
   CONSTRAINT `cost_planned` FOREIGN KEY (`cost_type_id_cost`) REFERENCES `cost_type` (`id_cost`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Zrzucanie danych dla tabeli AXdb.planned_costs: ~0 rows (około)
+-- Zrzucanie danych dla tabeli axdb.planned_costs: ~0 rows (około)
 DELETE FROM `planned_costs`;
 /*!40000 ALTER TABLE `planned_costs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `planned_costs` ENABLE KEYS */;
 
 
--- Zrzut struktury tabela AXdb.realized_costs
+-- Zrzut struktury tabela axdb.realized_costs
 DROP TABLE IF EXISTS `realized_costs`;
 CREATE TABLE IF NOT EXISTS `realized_costs` (
   `idCosts` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -961,13 +961,13 @@ CREATE TABLE IF NOT EXISTS `realized_costs` (
   CONSTRAINT `cost_realized` FOREIGN KEY (`cost_type_id_cost`) REFERENCES `cost_type` (`id_cost`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Zrzucanie danych dla tabeli AXdb.realized_costs: ~0 rows (około)
+-- Zrzucanie danych dla tabeli axdb.realized_costs: ~0 rows (około)
 DELETE FROM `realized_costs`;
 /*!40000 ALTER TABLE `realized_costs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `realized_costs` ENABLE KEYS */;
 
 
--- Zrzut struktury tabela AXdb.revenues
+-- Zrzut struktury tabela axdb.revenues
 DROP TABLE IF EXISTS `revenues`;
 CREATE TABLE IF NOT EXISTS `revenues` (
   `id_revenues` int(10) unsigned NOT NULL,
@@ -979,7 +979,7 @@ CREATE TABLE IF NOT EXISTS `revenues` (
   PRIMARY KEY (`id_revenues`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Zrzucanie danych dla tabeli AXdb.revenues: ~0 rows (około)
+-- Zrzucanie danych dla tabeli axdb.revenues: ~0 rows (około)
 DELETE FROM `revenues`;
 /*!40000 ALTER TABLE `revenues` DISABLE KEYS */;
 /*!40000 ALTER TABLE `revenues` ENABLE KEYS */;
