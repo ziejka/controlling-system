@@ -1,6 +1,7 @@
 (ns myapp.routes.home
   (:use compojure.core)
-  (:require [myapp.layout :as layout]
+  (:require 
+    [myapp.layout :as layout]
     [myapp.util :as util]
     [myapp.posts :as posts]
     [ring.util.response :as resp]))
@@ -27,6 +28,3 @@
   (POST "/create" [& params]
     (do (posts/add-value params)
       (resp/redirect "/"))))
-
-
-

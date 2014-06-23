@@ -99,3 +99,4 @@ loggin
 (merge params {:asd 2 :dsad 33))
 (merge {:asd 2 :asd 32)
 (merge {:po 2 :df 445} {:ds 2 :t 5})
+(quit)
