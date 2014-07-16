@@ -100,3 +100,74 @@ loggin
 (merge {:asd 2 :asd 32)
 (merge {:po 2 :df 445} {:ds 2 :t 5})
 (quit)
+(hf/text-field)
+(use  [hiccup.form :as hf])
+(use ' [hiccup.form :as hf])
+(hf/text-field)
+(use '[hiccup.core :as hc])
+(hc/table)
+(table0
+(table)
+(hc/html table)
+(defn books []
+  [{:author "Fogus M., Houser C."
+    :title "The Joy Of Clojure"
+    :year "2011"
+    :format "pdf"
+    :id 1}
+   {:author "Fogus M., Houser C."
+    :title "The Joy Of Clojure"
+    :year "2011"
+    :format "epub"
+    :id 2}])
+(defn- list-books []
+  [:table
+   [:thead
+    [:tr
+     [:th "Author"]
+     [:th "Title"]
+     [:th "Published"]
+     [:th "Format"]]]
+   (into [:tbody]
+         (for [book (books)]
+           [:tr
+            [:td (:author book)]
+            [:td (:title book)]
+            [:td (:year book)]
+            [:td (link-to (clojure.string/join "/" ["/books" (:id book) (:format book)])
+                          (:format book))]]))])
+(defn- list-books []
+  [:table
+   [:thead
+    [:tr
+     [:th "Author"]
+     [:th "Title"]
+     [:th "Published"]
+     [:th "Format"]]]
+   (into [:tbody]
+         (for [book (books)]
+           [:tr
+            [:td (:author book)]
+            [:td (:title book)]
+            [:td (:year book)]]))
+)
+(defn- list-books []
+  [:table
+   [:thead
+    [:tr
+     [:th "Author"]
+     [:th "Title"]
+     [:th "Published"]
+     [:th "Format"]]]
+   (into [:tbody]
+         (for [book (books)]
+           [:tr
+            [:td (:author book)]
+            [:td (:title book)]
+            [:td (:year book)]]))])
+list-books
+(list-books)
+(common
+)
+(email-field attr-map? name)
+(quit)

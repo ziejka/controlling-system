@@ -11,19 +11,19 @@
   (layout/render
     "home.html" {:content (util/md->html "/md/docs.md")}))
 
-(defn about-page []
-  (layout/render "about.html"
+(defn grid-page []
+  (layout/render "grid.html"
     {:content (list (posts/all))
      :items (posts/all)
      :years (range 2013 2021)
-     :forms util/loggin}))
+     :forms util/sendForm}))
 
 (defn contact-page []
   (layout/render "contact.html" {:items (range 10)}))
 
 (defroutes home-routes
   (GET "/" [] (home-page))
-  (GET "/about" [] (about-page))
+  (GET "/grid" [] (grid-page))
   (GET "/contact" [] (contact-page))
   (POST "/create" [& params]
     (do (posts/add-value params)
