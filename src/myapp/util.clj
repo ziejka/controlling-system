@@ -42,18 +42,21 @@
 (def sendForm
   (hc/html 
     (hf/form-to [:post "/create"]
-    [:table
+    [:table {:class "table table-striped"}
     [:thead
       [:tr
         [:th "a"]
         [:th "a"]
         [:th "a"]
         [:th "a"]]]
-    (hf/text-field {:placeholder "cost_type_id_cost"} "cost_type_id_cost")
-    (hf/text-field {:placeholder "cost_center_id_center"} "cost_center_id_center")
-    (hf/text-field {:placeholder "onYear"} "onYear")
-    (hf/text-field {:placeholder "onMonth"} "onMonth")
-    (hf/text-field {:placeholder "value"} "value")
+    [:tbody
+      [:tr
+        [:td (hf/text-field {:placeholder "cost_type_id_cost"} "cost_type_id_cost")]
+        [:td (hf/text-field {:placeholder "cost_type_id_cost"} "cost_type_id_cost")]
+        [:td (hf/text-field {:placeholder "cost_center_id_center"} "cost_center_id_center")]
+        [:td (hf/text-field {:placeholder "onYear"} "onYear")]
+        [:td (hf/text-field {:placeholder "onMonth"} "onMonth")]
+        [:td (hf/text-field {:placeholder "value"} "value")]]]]
 
-    (hf/submit-button "send")])))
+    (hf/submit-button "send"))))
 
