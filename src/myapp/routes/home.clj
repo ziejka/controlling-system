@@ -3,7 +3,7 @@
   (:require 
     [myapp.layout :as layout]
     [myapp.util :as util]
-    [myapp.posts :as posts]
+    [myapp.dbquery :as dbquery]
     [ring.util.response :as resp]))
 
 
@@ -13,8 +13,8 @@
 
 (defn grid-page []
   (layout/render "grid.html"
-    {:content (list (posts/all))
-     :items (posts/all)
+    {:content (list (dbquery/all))
+     :items (dbquery/all)
      :years (range 2013 2021)
      :forms util/sendForm}))
 
@@ -26,5 +26,5 @@
   (GET "/grid" [] (grid-page))
   (GET "/contact" [] (contact-page))
   (POST "/create" [& params]
-    (do (posts/add-value params)
+    (do (dbquery/add-value params)
       (resp/redirect "/"))))
