@@ -55,7 +55,7 @@
         [:th "a"]
         [:th "a"]]]
      (into [:tbody]
-      (for [center (dbquery/cost-on-center)]
+      (for [center (for [center (dbquery/cost-on-center)] (vals center))]
         [:tr
           [:td center]
           [:td (hf/text-field {:placeholder "value"} "value")]]))

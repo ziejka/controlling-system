@@ -19,4 +19,5 @@
 
 (defn cost-on-center []
 	(j/query mysql-db
-		(s/select :plannedOnCenter :cost_on_center)))
+		["select distinct plannedOnCenter from cost_on_center"]
+		#_(s/select  :plannedOnCenter :cost_on_center)))

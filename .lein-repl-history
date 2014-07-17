@@ -282,3 +282,18 @@ dbquery/cost-on-center
 (vals (first (dbquery/cost-on-center)))
 (for [center (dbquery/cost-on-center) (vals center))
 (for [center (dbquery/cost-on-center)] (vals center))
+(ns myapp.dbquery
+(:require 
+[clojure.java.jdbc :as j]
+[clojure.java.jdbc.sql :as s]))
+(doc s/select)
+(doc select
+)
+mysql-db
+(doc query)
+(doc j/query)
+(defn cost-on-center []
+(j/query mysql-db
+["select distinct plannedOnCenter from cost_on_center"]
+#_(s/select  :plannedOnCenter :cost_on_center)))
+(cost-on-center)
