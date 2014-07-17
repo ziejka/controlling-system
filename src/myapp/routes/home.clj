@@ -16,7 +16,8 @@
     {:content (list (dbquery/all))
      :items (dbquery/all)
      :years (range 2013 2021)
-     :forms util/sendForm}))
+     :forms util/sendForm
+     :select util/center-selection}))
 
 (defn contact-page []
   (layout/render "contact.html" {:items (range 10)}))

@@ -41,6 +41,11 @@
                               [:td (:title book)]
                               [:td (:year book)]]))])
 
+
+(def center-selection
+  (hc/html
+    (hf/drop-down "drop" (for [center (dbquery/cost-on-center)] (vals center)))))
+
 (def sendForm
   (hc/html 
     (hf/form-to [:post "/create"]
@@ -52,8 +57,8 @@
      (into [:tbody]
       (for [center (dbquery/cost-on-center)]
         [:tr
-          [:td (:planned_by center)]
-          [:td (hf/text-field {:placeholder "cost_center_id_center"} "cost_center_id_center")]]))
+          [:td center]
+          [:td (hf/text-field {:placeholder "value"} "value")]]))
           
 
     (hf/submit-button {:class "btn"} "send")])))

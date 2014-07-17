@@ -171,3 +171,114 @@ list-books
 )
 (email-field attr-map? name)
 (quit)
+(ns myapp.util
+  (:require [noir.io :as io]
+            [markdown.core :as md]
+            [hiccup.form :as hf]
+            [hiccup.core :as hc]
+            [myapp.dbquery :as dbquery]))
+(ns myapp.util
+  (:require [noir.io :as io]
+            [markdown.core :as md]
+            [hiccup.form :as hf]
+            [hiccup.core :as hc]
+            [myapp.dbquery :as dbquery]))
+(def center-selection
+  (hc/html
+    (hf/drop-down [center (dbquery/cost-on-center)] )))
+(def center-selection
+  (hc/html
+    (hf/drop-down [dbquery/cost-on-center] )))
+(doc drop-down)
+(doc hf/drop-down)
+(def center-selection
+  (hc/html
+    (hf/drop-down "drop" [dbquery/cost-on-center])))
+center-selection
+(def center-selection
+  (hc/html
+    (hf/drop-down "drop" [(dbquery/cost-on-center)])))
+(center-selection)
+center-selection
+(dbquery/cost-on-center)
+(def center-selection
+  (hc/html
+    (hf/drop-down "drop" [(dbquery/cost-on-center.plannedOnCenter)])))
+(def center-selection
+  (hc/html
+    (hf/drop-down "drop" [(dbquery/cost-on-center)])))
+center-selection
+(defn cost-on-center []
+(j/query mysql-db
+(s/select :plannedOnCenter :cost_on_center)))
+(ns myapp.dbquery
+(:require 
+[clojure.java.jdbc :as j]
+[clojure.java.jdbc.sql :as s]))
+(defn cost-on-center []
+(j/query mysql-db
+(s/select :plannedOnCenter :cost_on_center)))
+cost-on-center
+(cost-on-center)
+‡O(ns myapp.util
+  (:require [noir.io :as io]
+            [markdown.core :as md]
+            [hiccup.form :as hf]
+            [hiccup.core :as hc]
+            [myapp.dbquery :as dbquery]))
+(ns myapp.util
+  (:require [noir.io :as io]
+            [markdown.core :as md]
+            [hiccup.form :as hf]
+            [hiccup.core :as hc]
+            [myapp.dbquery :as dbquery]))
+(def center-selection
+  (hc/html
+    (hf/drop-down "drop" [map(dbquery/cost-on-center)])))
+center-selection
+(def center-selection
+  (hc/html
+    (hf/drop-down "drop" [(map (dbquery/cost-on-center))])))
+dbquery/cost-on-center
+(dbquery/cost-on-center)
+(vals dbquery/cost-on-center)
+(keys dbquery/cost-on-center)
+(:plannedoncenter dbquery/cost-on-center)
+(keys (dbquery/cost-on-center))
+((dbquery/cost-on-center :plannedoncenter))
+(dbquery/cost-on-center :plannedoncenter)
+(vals '(dbquery/cost-on-center))
+(doc dbquery/cost-on-center)
+(info dbquery/cost-on-center)
+dbquery/cost-on-centerdbquery/cost-on-center
+dbquery/cost-on-center
+(doc (dbquery/cost-on-center))
+'(dbquery/cost-on-center)
+(first dbquery/cost-on-center)
+(first (dbquery/cost-on-center))
+(count (dbquery/cost-on-center))
+(list? (dbquery/cost-on-center))
+(map? (dbquery/cost-on-center))
+(set? (dbquery/cost-on-center))
+(vector? (dbquery/cost-on-center))
+(map? (dbquery/cost-on-center))
+#(dbquery/cost-on-center)
+(seq? (dbquery/cost-on-center))
+(1 dbquery/cost-on-center)
+(dbquery/cost-on-center 1)
+(dbquery/all)
+(map (dbquery/cost-on-center))
+(fn (dbquery/cost-on-center) [key val])
+(:keys dbquery/cost-on-center)
+(:keys (dbquery/cost-on-center))
+(first dbquery/cost-on-center)
+(first (dbquery/cost-on-center))
+(vals (first (dbquery/cost-on-center)))
+(vals (rest (dbquery/cost-on-center)
+))
+(vals (rest (dbquery/cost-on-center)))
+(rest (dbquery/cost-on-center))
+(vals (rest (dbquery/cost-on-center)))
+(vals (first (dbquery/cost-on-center)))
+(for [center (dbquery/cost-on-center) (vals center))
+(for [center (dbquery/cost-on-center)] (vals center))

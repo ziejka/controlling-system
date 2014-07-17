@@ -19,4 +19,4 @@
 
 (defn cost-on-center []
 	(j/query mysql-db
-		(s/select * :cost_on_center)))
+		(s/select :plannedOnCenter :cost_on_center)))
