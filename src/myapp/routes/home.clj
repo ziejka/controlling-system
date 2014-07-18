@@ -8,6 +8,7 @@
 
 
 (defn home-page []
+                        ;Tu wstaw if ! ! ! 
   (layout/render
     "home.html" {:content (util/md->html "/md/docs.md")}))
 
