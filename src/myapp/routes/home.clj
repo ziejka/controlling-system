@@ -22,10 +22,16 @@
 (defn contact-page []
   (layout/render "contact.html" {:items (range 10)}))
 
+(defn login-page []
+  (layout/render "login.html"
+    {:forms util/login-form} ))
+
 (defroutes home-routes
+ ; (context "/user/:user-id" [user-id]
+  (GET "/login" [] (login-page))
   (GET "/" [] (home-page))
   (GET "/grid" [] (grid-page))
   (GET "/contact" [] (contact-page))
   (POST "/create" [& params]
     (do (dbquery/add-value params)
-      (resp/redirect "/"))))
+      (resp/redirect "/grid"))));)

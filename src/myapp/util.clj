@@ -42,6 +42,15 @@
                               [:td (:year book)]]))])
 
 
+(def login-form
+  (hc/html
+    (hf/form-to [:post "/login"]
+               (hf/label "login" "Login: ")
+               (hf/text-field "Username")[:br]
+               (hf/label "pass" "Password: ")
+               (hf/password-field "Password")
+               (hf/submit-button "Login")))) 
+
 (def center-selection
   (hc/html
     (hf/drop-down "drop" (for [center (dbquery/cost-on-center)] (vals center)))))
