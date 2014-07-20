@@ -7,11 +7,37 @@
             [taoensso.timbre :as timbre]
             [taoensso.timbre.appenders.rotor :as rotor]
             [selmer.parser :as parser]
-            [environ.core :refer [env]]))
+            [environ.core :refer [env]]
+            [ring.util.response :as resp]
+            [noir.session :as session]))
+
+; SESSION
+
+(defn set-user [id]
+  (session/put! :user id)
+  (session/get :user))
+
+(defn remove-user []
+  (session/remove! :user)
+  (session/get :user))
+
+(defn set-user-if-nil [id]
+  (session/get :user id))
+
+
+(defn clear-session []
+  (session/clear!))
+
+;END sesion!
+
 
 (defroutes app-routes
+  ;(GET "/login:id" [id] (set-user id))
+  ;(GET "/remove" [] (remove-user))
+  ;(GET "/set-if-nil/:id" [id] (set-user-if-nil id))
+  ;(GET "/logout" [] (clear-session))
   (route/resources "/")
-  (route/not-found "Not Found"))
+  (route/not-found "Not Found"))2
 
 (defn init
   "init will be called once when
@@ -42,15 +68,18 @@
 
 
 
-(def app (app-handler
+(def app (session/wrap-noir-session (app-handler
            ;; add your application routes here
            [home-routes app-routes]
+           :session-options {:timeout (* 1 60)
+                      :timeout-response (resp/redirect "/")}
            ;; add custom middleware here
-           :middleware [middleware/template-error-page
+           :middleware [middleware/wrap-request-logging
+                        middleware/template-error-page
                         middleware/log-request]
            ;; add access rules here
            :access-rules []
            ;; serialize/deserialize the following data formats
            ;; available formats:
            ;; :json :json-kw :yaml :yaml-kw :edn :yaml-in-html
-           :formats [:json-kw :edn]))
+           :formats [:json-kw :edn])))

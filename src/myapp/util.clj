@@ -46,14 +46,14 @@
   (hc/html
     (hf/form-to [:post "/login"]
                (hf/label "login" "Login: ")
-               (hf/text-field "Username")[:br]
-               (hf/label "pass" "Password: ")
+               (hf/text-field "username")[:br]
+               (hf/label "pass" "uassword: ")
                (hf/password-field "Password")
                (hf/submit-button "Login")))) 
 
 (def center-selection
   (hc/html
-    (hf/drop-down "drop" (for [center (dbquery/cost-on-center)] (vals center)))))
+    (hf/drop-down "dropdwon-list" (for [center (dbquery/cost-on-center)] (vals center)))))
 
 (def sendForm
   (hc/html 

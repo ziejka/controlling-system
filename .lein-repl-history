@@ -297,3 +297,195 @@ mysql-db
 ["select distinct plannedOnCenter from cost_on_center"]
 #_(s/select  :plannedOnCenter :cost_on_center)))
 (cost-on-center)
+(ns myapp.dbquery
+(:require 
+[clojure.java.jdbc :as j]
+[clojure.java.jdbc.sql :as s]))
+(defn get-user [id]
+(j/query mysql-db
+  (first (s/select :users
+                 (where {:id id})
+                 (limit 1)))))
+(def mysql-db {
+:subprotocol "mysql"
+:subname "//localhost:3306/AXdb"
+:user "root"
+:password ""
+:zeroDateTimeBehavior "convertToNull"})
+(defn get-user [id]
+(j/query mysql-db
+  (first (s/select :users
+                 (where {:id id})
+                 (limit 1)))))
+(defn get-user [id]
+(j/query mysql-db
+  (first ([select * from usesr where id = UserID ]))))
+(defn get-user [id]
+(j/query mysql-db
+  [select * from usesr where id = UserID]))
+(defn get-user [id]
+(j/query mysql-db
+  ["select * from usesr where id = UserID"]))
+                 
+(get user 12)
+(get-user 123)
+(defn get-user [id]
+(j/query mysql-db
+  ["select * from users where id = UserID"]))
+(get-user 12)
+(defn get-user [id]
+(j/query mysql-db
+  (s/select * :users :where id = UserID)))
+(defn get-user [id]
+(j/query mysql-db
+  (s/select * :users :where id := :UserID)))
+(get-user 12)
+(defn get-user [id]
+(j/query mysql-db
+  (s/select * :users :where id = :UserID)))
+                 
+(get-user 12)
+(get-user 50211)
+(defn get-user [id]
+(j/query mysql-db
+["select * from users where ? = UserID"]))
+(get-user 12)
+(get-user 50211)
+(defn get-user [id]
+(first (j/query mysql-db
+(s/select * :users (s/where {:UserId id})))))
+(get-user 55060)
+(get-user asd)
+(get-user "asd")
+(get-user "2=2")
+(get-user "asd or 2 = 2")
+(ns myapp.routes.home
+  (:use compojure.core)
+  (:require 
+    [myapp.layout :as layout]
+    [myapp.util :as util]
+    [myapp.dbquery :as dbquery]
+    [ring.util.response :as resp]
+    [hiccup.core :as hc]
+    [noir.session :as session]))
+(ns myapp.routes.home
+  (:use compojure.core)
+  (:require 
+    [myapp.layout :as layout]
+    [myapp.util :as util]
+    [myapp.dbquery :as dbquery]
+    [ring.util.response :as resp]
+    [hiccup.core :as hc]
+    [noir.session :as session]))
+(quit)
+(ns myapp.routes.home
+  (:use compojure.core)
+  (:require 
+    [myapp.layout :as layout]
+    [myapp.util :as util]
+    [myapp.dbquery :as dbquery]
+    [ring.util.response :as resp]
+    [hiccup.core :as hc]
+    [noir.session :as session]))
+(defn handle-login [id pass]
+  (let [user (dbquery/get-user id)]
+    (if (and user (= pass (:password user)))
+      (session/put! :user-id id))
+    (resp/redirect "/")))
+(hendle-login [(defn handle-login [id pass]
+  (let [user (dbquery/get-user id)]
+    (if (and user (= pass (:password user)))
+      (session/put! :user-id id))
+(hendle-login 50211 "asd")
+(handle-login 50211 "asd")
+(hendle-login [50211 "asd"])
+(handle-login [50211 "asd"])
+(handle-login "50211" "asd")
+(session/get)
+(session-get :user-id)
+(session/get :user-id)
+(empty? " ")
+(empty? [])
+(doc session/get)
+(empty? (session/get :user-id)
+)
+(session/put! :user-id 12)
+(ns myapp.routes.home
+  (:use compojure.core)
+  (:require 
+    [myapp.layout :as layout]
+    [myapp.util :as util]
+    [myapp.dbquery :as dbquery]
+    [ring.util.response :as resp]
+    [hiccup.core :as hc]
+    [noir.session :as session]))
+(ns myapp.routes.home
+  (:use compojure.core)
+  (:require 
+    [myapp.layout :as layout]
+    [myapp.util :as util]
+    [myapp.dbquery :as dbquery]
+    [ring.util.response :as resp]
+    [hiccup.core :as hc]
+(session/put! :user-id 12)
+(session/put! :user-id "asd")
+(session/put! :user id)
+(session/put! :user 12)
+session/key
+(session/key)
+(quit)
+(ns myapp.routes.auth
+  (:use compojure.core)
+  (:require [myapp.layout :as layout]
+            [noir.session :as session]
+            [noir.response :as resp]
+            [noir.validation :as vali]
+            [noir.util.crypt :as crypt]
+            [myapp.db.core :as db]))
+(ns myapp.routes.auth
+  (:use compojure.core)
+  (:require [myapp.layout :as layout]
+            [noir.session :as session]
+            [noir.response :as resp]
+            [noir.validation :as vali]
+            [noir.util.crypt :as crypt]
+            [myapp.db.core :as db]))
+(ns myapp.routes.home
+  (:use compojure.core)
+  (:require 
+    [myapp.layout :as layout]
+    [myapp.util :as util]
+    [myapp.dbquery :as dbquery]
+    [ring.util.response :as resp]
+    [hiccup.core :as hc]
+    [noir.session :as session]))
+(empty? (session/get :user-id)
+)
+(session/clear!)
+(quit)
+(ns myapp.routes.home
+  (:use compojure.core)
+  (:require 
+    [myapp.layout :as layout]
+    [myapp.util :as util]
+    [myapp.dbquery :as dbquery]
+    [ring.util.response :as resp]
+    [hiccup.core :as hc]
+    [noir.session :as session]))
+(handle-login 50211 "asd")
+(defn handle-login [id pass]
+  (let [user (dbquery/get-user id)]
+    (if (and user (= pass (:password user)))
+      (session/put! :user-id id)
+    (resp/redirect "/"))))
+(handle-login 50211 "asd")
+home-page 
+(home-page )
+(home-page)
+ (handle-login 50211 "asd")
+(session/put! :user-id 50211)
+(ns myapp.db.core
+  (:use korma.core
+        [korma.db :only (defdb)])
+  (:require [myapp.db.schema :as schema]))
+(quit)

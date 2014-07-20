@@ -21,3 +21,7 @@
 	(j/query mysql-db
 		["select distinct plannedOnCenter from cost_on_center"]
 		#_(s/select  :plannedOnCenter :cost_on_center)))
+
+(defn get-user [id]
+	(first (j/query mysql-db
+		(s/select * :users (s/where {:UserId id})))))
