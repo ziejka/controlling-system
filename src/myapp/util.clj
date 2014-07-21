@@ -13,36 +13,6 @@
     (io/slurp-resource filename)
     (md/md-to-html-string)))
 
-
-                  (defn books []
-                    [{:author "Fogus M., Houser C."
-                      :title "The Joy Of Clojure"
-                      :year "2011"
-                      :format "pdf"
-                      :id 1}
-                     {:author "Fogus M., Houser C."
-                      :title "The Joy Of Clojure"
-                      :year "2011"
-                      :format "epub"
-                      :id 2}])
-
-
-                    (defn- list-books []
-                    [:table
-                     [:thead
-                      [:tr
-                       [:th "Author"]
-                       [:th "Title"]
-                       [:th "Published"]
-                       [:th "Format"]]]
-                     (into [:tbody]
-                           (for [book (books)]
-                             [:tr
-                              [:td (:author book)]
-                              [:td (:title book)]
-                              [:td (:year book)]]))])
-
-
 (def login-form
   (hc/html
     (hf/form-to [:post "/login"]
@@ -51,12 +21,6 @@
                (hf/label "pass" "Password: ")
                (hf/password-field "password")
                (hf/submit-button "Login")))) 
-
-
-
-
-
-
 
          #_( [:td (hf/text-field {:placeholder "cost_type_id_cost"} "cost_type_id_cost")]
           [:td (hf/text-field {:placeholder "cost_type_id_cost"} "cost_type_id_cost")]

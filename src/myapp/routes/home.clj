@@ -12,6 +12,8 @@
 (defn get-user []
   (session/get :user))
 
+
+
 ;AUTH ROUTS
 
 (defn site-hendler []
@@ -42,7 +44,7 @@
 
 (defn center-selection []
   (hc/html
-    (hf/drop-down "dropdwon-list" (for [center (dbquery/cost-on-center (get-user))] (vals center)))))
+    (hf/drop-down "dropdwon-list" (for [center (dbquery/plann-on-center (get-user))] (vals center)))))
 
 (defn sendForm []
   (hc/html 
@@ -65,7 +67,7 @@
         [:th "XI"]
         [:th "XII"]]]
      (into [:tbody]
-      (for [center (for [center (dbquery/cost-on-center (get-user))] (vals center))]
+      (for [center (for [center (dbquery/cost-on-center-grid (get-user))] (vals center))]
         [:tr
           [:td center]
           [:td "nazwa"]
@@ -84,6 +86,7 @@
     (hf/submit-button {:class "btn"} "send")])))
 
 ;END OF PAGE'S ELEMENTS
+
 
 
 
