@@ -1,39 +1,3 @@
-(lein)
-(require 'hiccup.core)
-(form-to [:post "/login"]
-  (text-field {:placeholder "screen name"} "id")
-  (password-field {:placeholder "password"} "pass")
-  (submit-button "login"))
-(image {:align "left"} "foo.png")
-(html [:script])
-(use 'hiccup.core)
-(html [:script])
-(form-to [:post "/login"]
-  (text-field {:placeholder "screen name"} "id")
-  (password-field {:placeholder "password"} "pass")
-  (submit-button "login"))
-(image {:align "left"} "foo.png")
-[:div {:id "hello", :class "content"} [:p "Hello world!"]]
-(html [:div#foo.bar.baz "bang"])
-(html (form-to [:post "/login"]
-  (text-field {:placeholder "screen name"} "id")
-  (password-field {:placeholder "password"} "pass")
-  (submit-button "login")))
-(html (image {:align "left"} "foo.png"))
-(html [:ul
-               (for [x (range 1 4)]
-                 [:li x])])
-(use 'hiccup.util)
-(submit-button attr-map? text)
-(html (submit-button attr-map? text))
-(text-field attr-map? name)
-(use 'hiccup.form)
-(text-field attr-map? name)
-](use hiccup.form)
-(use 'hiccup.fomr)
-(use 'hiccupe.form)
-(use 'hiccup.form)
-(form-to [:post "/login"]
   (text-field {:placeholder "screen name"} "id")
   (password-field {:placeholder "password"} "pass")
   (submit-button "login"))
@@ -489,3 +453,48 @@ home-page
         [korma.db :only (defdb)])
   (:require [myapp.db.schema :as schema]))
 (quit)
+(ns myapp.routes.home
+  (:use compojure.core)
+  (:require 
+    [myapp.layout :as layout]
+    [myapp.util :as util]
+    [myapp.dbquery :as dbquery]
+    [ring.util.response :as resp]
+    [hiccup.core :as hc]
+    [noir.session :as session]))
+(dbquery/get-user id)
+(dbquery/get-user 12)
+(dbquery/get-user 50211)
+(defn handle-login [id pass]
+  (let [user (dbquery/get-user id)]
+    (if (= pass (:password user))
+      (session/put! :user-id id)
+      (resp/redirect "/"))))
+(handle-login 50211 "sss")
+(handle-login 50211 "asd")
+(session/get)
+(session/put! k v)
+(session/put! :k v)
+(session/put! :k 12)
+(session/put :k 12)
+(def user {:password "asd"})
+user
+(if (= 2 (:password user)) :true :false)
+(if (= "asd" (:password user)) :t :f)
+(defn handle-login [id pass]
+                                                              (let [user (dbquery/get-user id)]
+                                                                (if (= pass (:password user)) 
+                                                                  :t :f) user))
+(handle-login 50211 "s")
+(defn handle-login [id pass]
+                                                              (let [user (dbquery/get-user id)]
+                                                                (if (= pass (:password user)) 
+                                                                  :t :f)))
+(handle-login 50211 "s")
+(handle-login 50211 "asd")
+(handle-login 23 "asd")
+(defn handle-login [id pass]
+  (let [user (dbquery/get-user id)]
+    (if (and user (= pass (:password user))) :t :f)))
+(handle-login 23 "asd")
+(handle-login 50211 "asd")

@@ -47,8 +47,8 @@
     (hf/form-to [:post "/login"]
                (hf/label "login" "Login: ")
                (hf/text-field "username")[:br]
-               (hf/label "pass" "uassword: ")
-               (hf/password-field "Password")
+               (hf/label "pass" "Password: ")
+               (hf/password-field "password")
                (hf/submit-button "Login")))) 
 
 (def center-selection

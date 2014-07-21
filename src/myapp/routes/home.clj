@@ -8,18 +8,56 @@
     [hiccup.core :as hc]
     [noir.session :as session]))
 
-(def logged (atom 0))
+
+; SESSION
+
+(defn set-user [id]
+  (session/put! :user id)
+  (session/get :user))
+
+(defn remove-user []
+  (session/remove! :user)
+  (session/get :user))
+
+(defn set-user-if-nil [id]
+  (session/get :user id))
+
+
+(defn clear-session []
+  (session/clear!))
+
+;END sesion!
+
+;AUTH ROUTS
+
+(defn site-hendler []
+  (if (empty? (session/get :user)) 
+    (resp/redirect "/login")
+    (resp/redirect "/home")))
 
 (defn handle-login [id pass]
   (let [user (dbquery/get-user id)]
-    (if (= pass (:password user))
-      (do (session/put! :user-id id)
-          (resp/redirect "/home"))
+    (if (and user (= pass (:password user)))
+      (do (session/put! :user id) (resp/redirect "/home"))
       (resp/redirect "/"))))
+
+(defn login-page []
+  (layout/render "login.html"
+    {:forms util/login-form
+     :user-id (session/get :user)} ))
+
+(defn logout []
+  (session/clear!)
+  (resp/redirect "/"))
+
+; END OF AUTH ROUTS
+
+;USERS PAGE ROUTS
 
 (defn home-page []
   (layout/render
-    "home.html" {:content (util/md->html "/md/docs.md")}))
+    "home.html" {:content (util/md->html "/md/docs.md")
+                 :user-id (session/get :user)}))
 
 (defn grid-page []
   (layout/render "grid.html"
@@ -32,13 +70,7 @@
 (defn contact-page []
   (layout/render "contact.html" {:items (range 10)}))
 
-(defn login-page []
-  (layout/render "login.html"
-    {:forms util/login-form} ))
-
-(defn logout []
-  (session/clear!)
-  (resp/redirect "/"))
+;END OF USERS PAGE ROUTS
 
 
 (defroutes home-routes
@@ -47,8 +79,7 @@
        (login-page))
   (POST "/login" [username password]
         (handle-login username password))
-
-  (GET "/" [] (resp/redirect "/login"))
+  (GET "/" [] (site-hendler))
   (GET "/home" [] (home-page))
   (GET "/grid" [] (grid-page))
   (GET "/contact" [] (contact-page))

@@ -11,26 +11,6 @@
             [ring.util.response :as resp]
             [noir.session :as session]))
 
-; SESSION
-
-(defn set-user [id]
-  (session/put! :user id)
-  (session/get :user))
-
-(defn remove-user []
-  (session/remove! :user)
-  (session/get :user))
-
-(defn set-user-if-nil [id]
-  (session/get :user id))
-
-
-(defn clear-session []
-  (session/clear!))
-
-;END sesion!
-
-
 (defroutes app-routes
   ;(GET "/login:id" [id] (set-user id))
   ;(GET "/remove" [] (remove-user))
