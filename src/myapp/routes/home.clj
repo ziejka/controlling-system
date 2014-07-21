@@ -6,27 +6,11 @@
     [myapp.dbquery :as dbquery]
     [ring.util.response :as resp]
     [hiccup.core :as hc]
+    [hiccup.form :as hf]
     [noir.session :as session]))
 
-
-; SESSION
-
-(defn set-user [id]
-  (session/put! :user id)
+(defn get-user []
   (session/get :user))
-
-(defn remove-user []
-  (session/remove! :user)
-  (session/get :user))
-
-(defn set-user-if-nil [id]
-  (session/get :user id))
-
-
-(defn clear-session []
-  (session/clear!))
-
-;END sesion!
 
 ;AUTH ROUTS
 
@@ -52,6 +36,57 @@
 
 ; END OF AUTH ROUTS
 
+
+
+;PAGE'S ELEMENTS
+
+(defn center-selection []
+  (hc/html
+    (hf/drop-down "dropdwon-list" (for [center (dbquery/cost-on-center (get-user))] (vals center)))))
+
+(defn sendForm []
+  (hc/html 
+    (hf/form-to [:post "/create"]
+    [:table.table.table-striped
+    [:thead
+      [:tr
+        [:th "Nr kosztu"]
+        [:th "Nazwa"]
+        [:th "I"]
+        [:th "II"]
+        [:th "III"]
+        [:th "IV"]
+        [:th "V"]
+        [:th "VI"]
+        [:th "VII"]
+        [:th "VIII"]
+        [:th "IX"]
+        [:th "X"]
+        [:th "XI"]
+        [:th "XII"]]]
+     (into [:tbody]
+      (for [center (for [center (dbquery/cost-on-center (get-user))] (vals center))]
+        [:tr
+          [:td center]
+          [:td "nazwa"]
+          [:td (hf/text-field {:placeholder "value"} "value")]
+          [:td (hf/text-field {:placeholder "value"} "value")]
+          [:td (hf/text-field {:placeholder "value"} "value")]
+          [:td (hf/text-field {:placeholder "value"} "value")]
+          [:td (hf/text-field {:placeholder "value"} "value")]
+          [:td (hf/text-field {:placeholder "value"} "value")]
+          [:td (hf/text-field {:placeholder "value"} "value")]
+          [:td (hf/text-field {:placeholder "value"} "value")]
+          [:td (hf/text-field {:placeholder "value"} "value")]
+          [:td (hf/text-field {:placeholder "value"} "value")]
+          [:td (hf/text-field {:placeholder "value"} "value")]
+          [:td (hf/text-field {:placeholder "value"} "value")]]))
+    (hf/submit-button {:class "btn"} "send")])))
+
+;END OF PAGE'S ELEMENTS
+
+
+
 ;USERS PAGE ROUTS
 
 (defn home-page []
@@ -64,13 +99,16 @@
     {:content (list (dbquery/all))
      :items (dbquery/all)
      :years (range 2013 2021)
-     :forms util/sendForm
-     :select util/center-selection}))
+     :forms (sendForm)
+     :select (center-selection)}))
 
 (defn contact-page []
   (layout/render "contact.html" {:items (range 10)}))
 
 ;END OF USERS PAGE ROUTS
+
+
+
 
 
 (defroutes home-routes

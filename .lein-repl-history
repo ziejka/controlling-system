@@ -1,172 +1,3 @@
-  (text-field {:placeholder "screen name"} "id")
-  (password-field {:placeholder "password"} "pass")
-  (submit-button "login"))
-(html (form-to [:post "/login"]
-  (text-field {:placeholder "screen name"} "id")
-  (password-field {:placeholder "password"} "pass")
-  (submit-button "login")))
-(def loggin
-  (hc/html (hf/form-to [:post "/login"]
-    (hf/text-field {:placeholder "screen name"} "id")
-    (hf/password-field {:placeholder "password"} "pass")
-    (hf/submit-button "login"))))
-(def loggin
-  (html (hf/form-to [:post "/login"]
-    (text-field {:placeholder "screen name"} "id")
-    (password-field {:placeholder "password"} "pass")
-    (submit-button "login"))))
-(def loggin
-  (html (form-to [:post "/login"]
-    (text-field {:placeholder "screen name"} "id")
-    (password-field {:placeholder "password"} "pass")
-    (submit-button "login"))))
-loggin
-(require '[hiccup.form :as hf])
-(require '[hiccu[.core :as hc])
-(require ' [hiccup.core :as hc])
-(def loggin
-  (hc/html (hf/form-to [:post "/login"]
-    (hf/text-field {:placeholder "screen name"} "id")
-    (hf/password-field {:placeholder "password"} "pass")
-    (hf/submit-button "login"))))
-(loggin)
-'(loggin)
-loggin
-(str loggin)
-(defn loggin []
-  (hc/html (hf/form-to [:post "/login"]
-    (hf/text-field {:placeholder "screen name"} "id")
-    (hf/password-field {:placeholder "password"} "pass")
-    (hf/submit-button "login"))))
-(loggin)
-(map loggin)
-(list loggin)
-(loggin)
-loggin
-(loggin)
-dwa
-2
-"w"
-loggin
-(def loggin
-  (hc/html (hf/form-to [:post "/login"]
-    (hf/text-field {:placeholder "screen name"} "id")
-    (hf/password-field {:placeholder "password"} "pass")
-    (hf/submit-button "login"))))
-loggin
-'(loggin)
-'loggin
-(val loggin)
-(str loggin)
-(println loggin)
-(doc merge)
-(merge params {:asd 2 :dsad 33))
-(merge {:asd 2 :asd 32)
-(merge {:po 2 :df 445} {:ds 2 :t 5})
-(quit)
-(hf/text-field)
-(use  [hiccup.form :as hf])
-(use ' [hiccup.form :as hf])
-(hf/text-field)
-(use '[hiccup.core :as hc])
-(hc/table)
-(table0
-(table)
-(hc/html table)
-(defn books []
-  [{:author "Fogus M., Houser C."
-    :title "The Joy Of Clojure"
-    :year "2011"
-    :format "pdf"
-    :id 1}
-   {:author "Fogus M., Houser C."
-    :title "The Joy Of Clojure"
-    :year "2011"
-    :format "epub"
-    :id 2}])
-(defn- list-books []
-  [:table
-   [:thead
-    [:tr
-     [:th "Author"]
-     [:th "Title"]
-     [:th "Published"]
-     [:th "Format"]]]
-   (into [:tbody]
-         (for [book (books)]
-           [:tr
-            [:td (:author book)]
-            [:td (:title book)]
-            [:td (:year book)]
-            [:td (link-to (clojure.string/join "/" ["/books" (:id book) (:format book)])
-                          (:format book))]]))])
-(defn- list-books []
-  [:table
-   [:thead
-    [:tr
-     [:th "Author"]
-     [:th "Title"]
-     [:th "Published"]
-     [:th "Format"]]]
-   (into [:tbody]
-         (for [book (books)]
-           [:tr
-            [:td (:author book)]
-            [:td (:title book)]
-            [:td (:year book)]]))
-)
-(defn- list-books []
-  [:table
-   [:thead
-    [:tr
-     [:th "Author"]
-     [:th "Title"]
-     [:th "Published"]
-     [:th "Format"]]]
-   (into [:tbody]
-         (for [book (books)]
-           [:tr
-            [:td (:author book)]
-            [:td (:title book)]
-            [:td (:year book)]]))])
-list-books
-(list-books)
-(common
-)
-(email-field attr-map? name)
-(quit)
-(ns myapp.util
-  (:require [noir.io :as io]
-            [markdown.core :as md]
-            [hiccup.form :as hf]
-            [hiccup.core :as hc]
-            [myapp.dbquery :as dbquery]))
-(ns myapp.util
-  (:require [noir.io :as io]
-            [markdown.core :as md]
-            [hiccup.form :as hf]
-            [hiccup.core :as hc]
-            [myapp.dbquery :as dbquery]))
-(def center-selection
-  (hc/html
-    (hf/drop-down [center (dbquery/cost-on-center)] )))
-(def center-selection
-  (hc/html
-    (hf/drop-down [dbquery/cost-on-center] )))
-(doc drop-down)
-(doc hf/drop-down)
-(def center-selection
-  (hc/html
-    (hf/drop-down "drop" [dbquery/cost-on-center])))
-center-selection
-(def center-selection
-  (hc/html
-    (hf/drop-down "drop" [(dbquery/cost-on-center)])))
-(center-selection)
-center-selection
-(dbquery/cost-on-center)
-(def center-selection
-  (hc/html
     (hf/drop-down "drop" [(dbquery/cost-on-center.plannedOnCenter)])))
 (def center-selection
   (hc/html
@@ -498,3 +329,172 @@ user
     (if (and user (= pass (:password user))) :t :f)))
 (handle-login 23 "asd")
 (handle-login 50211 "asd")
+(ns myapp.util
+  (:require [noir.io :as io]
+            [markdown.core :as md]
+            [hiccup.form :as hf]
+            [hiccup.core :as hc]
+            [myapp.dbquery :as dbquery]
+            [myapp.routes.home :as home]))
+(def center-selection
+  (hc/html
+    (hf/drop-down "dropdwon-list" (for [center (dbquery/cost-on-center home/get-user)] (vals center)))))
+(def center-selection
+  (hc/html
+    (hf/drop-down "dropdwon-list" (for [center (dbquery/cost-on-center 50211 #_(session/get :user))] (vals center)))))
+(dbquery/cost-on-center 50211)
+(dbquery/cost-on-center)
+(quit)
+(ns myapp.util
+  (:require [noir.io :as io]
+            [markdown.core :as md]
+            [hiccup.form :as hf]
+            [hiccup.core :as hc]
+            [myapp.dbquery :as dbquery]
+            [noir.session :as session]))
+(dbquery/cost-on-center)
+(dbquery/cost-on-center 50211)
+(ns myapp.dbquery
+(:require 
+[clojure.java.jdbc :as j]
+[clojure.java.jdbc.sql :as s]))
+((ns myapp.dbquery
+(:require 
+[clojure.java.jdbc :as j]
+(cost-on-center 50211)
+(defn cost-on-center [user]
+(j/query mysql-db
+;#_["select distinct plannedOnCenter from cost_on_center"]
+(s/select :id_cost :cost_type
+(s/where {:id_cost 
+(s/select :id_cost :cost_on_center 
+(s/where {:planned_by user}))}))))
+ cost-on-center
+( cost-on-center)
+( cost-on-center 0)
+( cost-on-center 50211)
+(defn cost-on-center [user]
+(j/query mysql-db
+;#_["select distinct plannedOnCenter from cost_on_center"]
+(s/select :id_cost :cost_type
+(s/join :cost_on_center {:id_cost})
+(s/where {:id_cost 
+(s/select :id_cost :cost_on_center 
+(s/where {:planned_by user}))}))))
+(defn cost-on-center [user]
+(j/query mysql-db
+;#_["select distinct plannedOnCenter from cost_on_center"]
+(s/select :id_cost :cost_type
+(s/join :cost_on_center {:cost_type.id_cost :cost_on_center.id_cost}
+(s/where {:id_cost 
+(s/select :id_cost :cost_on_center 
+(s/where {:planned_by user}))})))))
+(cost-on-center 50211)
+ cost-on-center
+( cost-on-center)
+( cost-on-center 50211)
+(s/where {:id 2})
+(j/query mysql-db
+;#_["select distinct plannedOnCenter f
+(s/select :id_cost :cost_type
+(s/join :cost_on_center {:cost_type.id
+(s/where {:id_cost
+(s/select :id_cost :cost_on_center
+(s/where {:planned_by user}))})))))
+(j/query mysql-db
+;#_["select distinct plannedOn
+(s/select :id_cost :cost_type
+(s/join :cost_on_center {:cost
+(s/where {:id_cost
+(s/select :id_cost :cost_on_ce
+(s/where {:planned_by user}))})
+)
+(j/query mysql-db
+(s/select :id_cost :cost_type
+(s/join :cost_on_center {:cost_type.id_cost :cost_on_center.id_cost}
+(s/where {:id_cost 
+(s/select :id_cost :cost_on_center 
+(s/where {:planned_by user}))}))))
+(j/query mysql-db
+(s/select :id_cost :cost_type
+(s/join :cost_on_center {:cost_type.id_cost :cost_on_center.id_cost}
+(s/where {:id_cost 
+(s/select :id_cost :cost_on_center 
+(s/where {:planned_by 50211}))})))))
+(s/join :cost_on_center {:cost_type.id_cost :cost_on_center.id_cost})
+(s/where {:id_cost 
+(s/select :id_cost :cost_on_center 
+(s/where {:planned_by 50211}))}))
+(cost-on-center 50211)
+(cost-on-center)
+(cost-on-center 50211)
+(defn cost-on-center [user]
+(j/query mysql-db
+(s/select :cost_type.id_cost :cost_type
+(s/join :cost_on_center {:cost_type.id_cost :cost_on_center.id_cost}
+(s/where {:id_cost 
+(s/select :id_cost :cost_on_center 
+(s/where {:planned_by user}))})))))
+ (cost-on-center 50211)
+(defn cost-on-center [user]
+(j/query mysql-db
+["select cost_type.id_cost from cost_type inner join cost_on_center on cost_type.id_cost = cost_on_center.id_cost where cost_on_center.planned_by = ?" user]
+#_(s/select :cost_type.id_cost :cost_type
+(s/join :cost_on_center {:cost_type.id_cost :cost_on_center.id_cost}
+(s/where {:id_cost 
+(s/select :id_cost :cost_on_center 
+(s/where {:planned_by user}))})))))
+(cost-on-center 50211)
+(ns myapp.util
+  (:require [noir.io :as io]
+            [markdown.core :as md]
+            [hiccup.form :as hf]
+            [hiccup.core :as hc]
+            [myapp.dbquery :as dbquery]
+            [noir.session :as session]))
+center-selection
+(def center-selection
+  (hc/html
+    (hf/drop-down "dropdwon-list" (for [center (dbquery/cost-on-center (session/get :user))] (vals center)))))
+(session/get :user)
+(ns myapp.routes.home
+  (:use compojure.core)
+  (:require 
+    [myapp.layout :as layout]
+    [myapp.util :as util]
+    [myapp.dbquery :as dbquery]
+    [ring.util.response :as resp]
+    [hiccup.core :as hc]
+    [noir.session :as session]))
+(session/get :user)
+(defn home-page []
+  (layout/render
+    "home.html" {:content (util/md->html "/md/docs.md")
+                 :user-id (session/get :user)}))
+((dbquery/cost-on-center 50211))
+(dbquery/cost-on-center 50211)
+(use 'noir.session)
+(use noir.session)
+(use '(noir.session))
+(get :user)
+(get)
+(get :user 0)
+(get asd_
+)
+(get :ks)
+(get )
+(put! :user 232)
+(put!)
+(put! 23 23
+)
+(defn get-user []
+  (session/get :user))
+get-user
+(get-user)
+get-user
+(def center-selection
+  (hc/html
+    (hf/drop-down "dropdwon-list" (for [center (dbquery/cost-on-center get-user)] (vals center)))))
+center-selection
+(center-selection)
+(meta center-selection)

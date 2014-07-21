@@ -3,7 +3,8 @@
             [markdown.core :as md]
             [hiccup.form :as hf]
             [hiccup.core :as hc]
-            [myapp.dbquery :as dbquery]))
+            [myapp.dbquery :as dbquery]
+            [noir.session :as session]))
 
 (defn md->html
   "reads a markdown file from public/md and returns an HTML string"
@@ -51,26 +52,9 @@
                (hf/password-field "password")
                (hf/submit-button "Login")))) 
 
-(def center-selection
-  (hc/html
-    (hf/drop-down "dropdwon-list" (for [center (dbquery/cost-on-center)] (vals center)))))
 
-(def sendForm
-  (hc/html 
-    (hf/form-to [:post "/create"]
-    [:table.table.table-striped
-    [:thead
-      [:tr
-        [:th "a"]
-        [:th "a"]]]
-     (into [:tbody]
-      (for [center (for [center (dbquery/cost-on-center)] (vals center))]
-        [:tr
-          [:td center]
-          [:td (hf/text-field {:placeholder "value"} "value")]]))
-          
 
-    (hf/submit-button {:class "btn"} "send")])))
+
 
 
 

@@ -17,11 +17,10 @@
 (defn add-value [params]
 	(j/insert! mysql-db :planned_costs params))
 
-(defn cost-on-center []
+(defn cost-on-center [user]
 	(j/query mysql-db
-		["select distinct plannedOnCenter from cost_on_center"]
-		#_(s/select  :plannedOnCenter :cost_on_center)))
-
+		["select cost_type.id_cost from cost_type inner join cost_on_center on cost_type.id_cost = cost_on_center.id_cost where cost_on_center.planned_by = ?" user]))
+	
 (defn get-user [id]
 	(first (j/query mysql-db
 		(s/select * :users (s/where {:UserId id})))))
