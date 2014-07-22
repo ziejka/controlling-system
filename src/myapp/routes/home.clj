@@ -55,7 +55,7 @@
   (hc/html
     (hf/form-to [:post "/grid"]
       [:select "on-center-choice" (for [center (for [centers (dbquery/plann-on-center 50211 #_(get-user))] (vals centers))] [:option {:value center :name "center"} center])]
-      [:select "year-choice" (for [year (range 2013 2023)] [:option {:value year :name "year"} year])]
+      [:select "year-choice" (for [year (range 2013 2023)] [:option {:value year} year])]
       [:select "version-choice" (for [version ["Plan" "Korekta-1" "Korekta-2"]] [:option {:value version :name "version"} version])]
       (hf/submit-button "selecet"))))
 
@@ -84,7 +84,7 @@
     [:table.table.table-striped
     [:thead
       [:tr
-        [:th center year version]
+        [:th  center year version ]
         [:th "Nr kosztu"]
         [:th "Nazwa"]
         [:th "I"]
@@ -106,11 +106,11 @@
           [:td cost]
           [:td "nazwa"]
           [:td (hf/hidden-field "cost_type_id_cost" cost)
-               (hf/hidden-field "cost_center_id_center" center)
+               (hf/hidden-field "cost_center_id_center" 50211)
                (hf/hidden-field "onYear" year)
                (hf/hidden-field "onMonth" 01)
                (hf/text-field {:placeholder "value"} "value")
-               (hf/hidden-field "verssion" version)]
+               (hf/hidden-field "verssion" )]
 
           [:td (hf/text-field {:placeholder "value"} "value")]
           [:td (hf/text-field {:placeholder "value"} "value")]
