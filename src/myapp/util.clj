@@ -21,10 +21,3 @@
                (hf/label "pass" "Password: ")
                (hf/password-field "password")
                (hf/submit-button "Login")))) 
-
-         #_( [:td (hf/text-field {:placeholder "cost_type_id_cost"} "cost_type_id_cost")]
-          [:td (hf/text-field {:placeholder "cost_type_id_cost"} "cost_type_id_cost")]
-          [:td (hf/text-field {:placeholder "cost_center_id_center"} "cost_center_id_center")]
-          [:td (hf/text-field {:placeholder "onYear"} "onYear")]
-          [:td (hf/text-field {:placeholder "onMonth"} "onMonth")]
-          [:td (hf/text-field {:placeholder "value"} "value")])
