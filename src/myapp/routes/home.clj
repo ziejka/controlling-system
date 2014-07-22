@@ -29,9 +29,8 @@
 
 (defn login-page []
   (layout/render "login.html"
-    {:forms util/login-form
-     :user-id (session/get :user)} ))
-
+    {:forms util/login-form} ))
+;:user-id (session/get :user)
 (defn logout []
   (session/clear!)
   (resp/redirect "/"))
@@ -44,7 +43,18 @@
 
 (defn center-selection []
   (hc/html
-    (hf/drop-down "dropdwon-list" (for [center (dbquery/plann-on-center (get-user))] (vals center)))))
+    [:span "Planned on center: "]
+    (hf/drop-down "on-center-choice" (for [center (dbquery/plann-on-center (get-user))] (vals center)))))
+
+(defn year-selection []
+  (hc/html
+    [:span "Planned on year: "]
+    (hf/drop-down "year-choice" (range 2013 2023))))
+
+(defn versio-selection []
+  (hc/html
+    [:span "Versionn of plan: "]
+    (hf/drop-down "version-choice" ["Plan" "Korekta-1" "Korekta-2"] 0)))
 
 (defn sendForm []
   (hc/html 
@@ -67,11 +77,17 @@
         [:th "XI"]
         [:th "XII"]]]
      (into [:tbody]
-      (for [center (for [center (dbquery/cost-on-center-grid (get-user))] (vals center))]
+      (for [cost (for [costs (dbquery/cost-on-center-grid (get-user))] (vals costs))]
         [:tr
-          [:td center]
+          [:td cost]
           [:td "nazwa"]
-          [:td (hf/text-field {:placeholder "value"} "value")]
+          [:td (hf/hidden-field "cost_type_id_cost" cost)
+               (hf/hidden-field "cost_center_id_center" cost)
+               (hf/hidden-field "onYear" cost)
+               (hf/hidden-field "onMonth" cost)
+               (hf/text-field {:placeholder "value"} "value")
+               (hf/hidden-field "verssion" (:selected center-selection))]
+
           [:td (hf/text-field {:placeholder "value"} "value")]
           [:td (hf/text-field {:placeholder "value"} "value")]
           [:td (hf/text-field {:placeholder "value"} "value")]
@@ -94,19 +110,24 @@
 
 (defn home-page []
   (layout/render
-    "home.html" {:content (util/md->html "/md/docs.md")
-                 :user-id (session/get :user)}))
+    "home.html" {
+      :content (util/md->html "/md/docs.md")
+      :user-id (session/get :user)}))
 
 (defn grid-page []
   (layout/render "grid.html"
     {:content (list (dbquery/all))
      :items (dbquery/all)
-     :years (range 2013 2021)
+     :version (versio-selection)
+     :year (year-selection)
      :forms (sendForm)
-     :select (center-selection)}))
+     :select (center-selection)
+     :user-id (session/get :user)}))
 
 (defn contact-page []
-  (layout/render "contact.html" {:items (range 10)}))
+  (layout/render "contact.html" {
+    :items (range 10)
+    :user-id (session/get :user)}))
 
 ;END OF USERS PAGE ROUTS
 

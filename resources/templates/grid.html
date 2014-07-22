@@ -1,7 +1,7 @@
 {% extends "templates/base.html" %}
 {% block content %}
-<table class="table table-striped">
-<!--	<tr>
+<!--<table class="table table-striped">
+	<tr>
 		<th>Marka</th>
 		<th>ID</th>
 		<th>Rok</th>
@@ -21,7 +21,7 @@
 		</tr>
 		{% endfor %}
 	</table> -->
-	<div>{{select|safe}} </div>
+	<div>{{select|safe}} {{year|safe}} {{version|safe}} </div>
 	<div>{{forms|safe}}</div>
 	{% endblock %}
 
