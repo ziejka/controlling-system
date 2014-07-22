@@ -1,6 +1,7 @@
 (ns myapp.handler
   (:require [compojure.core :refer [defroutes]]
             [myapp.routes.home :refer [home-routes]]
+            [myapp.routes.grid :refer [grid-routes]]
             [myapp.middleware :as middleware]
             [noir.util.middleware :refer [app-handler]]
             [compojure.route :as route]
@@ -12,10 +13,6 @@
             [noir.session :as session]))
 
 (defroutes app-routes
-  ;(GET "/login:id" [id] (set-user id))
-  ;(GET "/remove" [] (remove-user))
-  ;(GET "/set-if-nil/:id" [id] (set-user-if-nil id))
-  ;(GET "/logout" [] (clear-session))
   (route/resources "/")
   (route/not-found "Not Found"))2
 
@@ -50,8 +47,8 @@
 
 (def app (session/wrap-noir-session (app-handler
            ;; add your application routes here
-           [home-routes app-routes]
-           :session-options {:timeout (* 1 60)
+           [home-routes grid-routes app-routes]
+           :session-options {:timeout (* 30 60)
                       :timeout-response (resp/redirect "/")}
            ;; add custom middleware here
            :middleware [middleware/wrap-request-logging

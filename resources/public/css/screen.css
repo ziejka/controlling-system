@@ -7,3 +7,8 @@ body {
 #value {
 	width: 80px;
 }
+
+.float-left {
+  float: left;
+  width: 150px;
+}
