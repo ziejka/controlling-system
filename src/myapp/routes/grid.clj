@@ -17,45 +17,33 @@
 (defn center-selection []
   (hc/html
    (hf/form-to [:post "/grid"]
-      [:div.float-left (for [center (for [centers (dbquery/plann-on-center (get-user))] (vals centers))] [:div [:input {:type "radio" :name "center" :value center :class "radio"} [:span center]]])]
-      [:div.float-left (for [years (range 2013 2016)] [:div [:input {:type "radio" :name "year" :value years :class "radio"} [:span years]]])]
-      [:div.float-left (for [version ["Plan" "Korekta-1" "Korekta-2"]] [:div [:input {:type "radio" :name "version" :value version :class "radio"} [:span version]]])]
+      [:div.float-left (for [center (for [centers (dbquery/plan-on-center (get-user))] (:plannedoncenter centers))]
+                         [:div [:input {:type "radio" :name "center" :value center :class "radio"} center]])]
+      [:div.float-left (for [years (range 2013 2016)]
+                         [:div [:input {:type "radio" :name "year" :value years :class "radio"} years]])]
+      [:div.float-left (for [version ["Plan" "Korekta-1" "Korekta-2"]]
+                         [:div [:input {:type "radio" :name "version" :value version :class "radio"} version]])]
    (hf/submit-button "select"))))
 
-(defn sendForm ([] (hc/html [:p "Wybierz centrum kosztowe na jakie chcesz planować"]))
-  ([center year version]
+(defn sendForm
+  [center year version]
    (hc/html
     (hf/form-to [:post "/create"]
     [:table.table.table-striped
     [:thead
       [:tr
-        [:th center year version]
-        [:th "Nr kosztu"]
-        [:th "Nazwa"]
-        [:th "I"]
-        [:th "II"]
-        [:th "III"]
-        [:th "IV"]
-        [:th "V"]
-        [:th "VI"]
-        [:th "VII"]
-        [:th "VIII"]
-        [:th "IX"]
-        [:th "X"]
-        [:th "XI"]
-        [:th "XII"]]]
+        [:th "Nr kosztu"] [:th "Nazwa"] [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]
      (into [:tbody]
-      (for [cost (for [costs (dbquery/cost-on-center-grid 50211 #_(get-user))] (vals costs))]
+      (for [cost (for [costs (dbquery/cost-on-center-grid (get-user) center)] (:id_cost costs))]
         [:tr
-       ;   [:td center year version]
-          [:td cost]
-          [:td "nazwa"]
-          [:td (hf/hidden-field "cost_type_id_cost" cost)
-               (hf/hidden-field "cost_center_id_center" year)
-               (hf/hidden-field "onYear" year)
-               (hf/hidden-field "onMonth" 01)
-               (hf/text-field {:placeholder "value"} "value")
-               (hf/hidden-field "verssion" version)]
+       [:td cost]
+       [:td "nazwa"]
+       [:td (hf/hidden-field "cost_type_id_cost" cost)
+            (hf/hidden-field "cost_center_id_center" center)
+            (hf/hidden-field "onYear" year)
+            (hf/hidden-field "onMonth" 01)
+            (hf/text-field {:placeholder "value"} "value")
+            (hf/hidden-field "verssion" version)]
 
           [:td (hf/text-field {:placeholder "value"} "value")]
           [:td (hf/text-field {:placeholder "value"} "value")]
@@ -68,7 +56,7 @@
           [:td (hf/text-field {:placeholder "value"} "value")]
           [:td (hf/text-field {:placeholder "value"} "value")]
           [:td (hf/text-field {:placeholder "value"} "value")]]))
-    (hf/submit-button {:class "btn"} "send")]))))
+    (hf/submit-button {:class "btn"} "send")])))
 
 
 ; END OF PAGE ELEMENT
