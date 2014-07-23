@@ -12,3 +12,13 @@ body {
   float: left;
   width: 150px;
 }
+
+.radio {
+  display: inline-block !important;
+  margin: 3px 4px 0px !important;
+}
+
+.container {
+  width: 100% !important;
+  padding: 0 !important;
+}

@@ -37,25 +37,79 @@
       (for [cost (for [costs (dbquery/cost-on-center-grid (get-user) center)] (:id_cost costs))]
         [:tr
        [:td cost]
-       [:td "nazwa"]
+       [:td (:cost_name (dbquery/get-cost-name cost))]
        [:td (hf/hidden-field "cost_type_id_cost" cost)
             (hf/hidden-field "cost_center_id_center" center)
             (hf/hidden-field "onYear" year)
-            (hf/hidden-field "onMonth" 01)
+            (hf/hidden-field "onMonth" 1)
             (hf/text-field {:placeholder "value"} "value")
             (hf/hidden-field "verssion" version)]
-
-          [:td (hf/text-field {:placeholder "value"} "value")]
-          [:td (hf/text-field {:placeholder "value"} "value")]
-          [:td (hf/text-field {:placeholder "value"} "value")]
-          [:td (hf/text-field {:placeholder "value"} "value")]
-          [:td (hf/text-field {:placeholder "value"} "value")]
-          [:td (hf/text-field {:placeholder "value"} "value")]
-          [:td (hf/text-field {:placeholder "value"} "value")]
-          [:td (hf/text-field {:placeholder "value"} "value")]
-          [:td (hf/text-field {:placeholder "value"} "value")]
-          [:td (hf/text-field {:placeholder "value"} "value")]
-          [:td (hf/text-field {:placeholder "value"} "value")]]))
+         [:td (hf/hidden-field "cost_type_id_cost" cost)
+            (hf/hidden-field "cost_center_id_center" center)
+            (hf/hidden-field "onYear" year)
+            (hf/hidden-field "onMonth" 2)
+            (hf/text-field {:placeholder "value"} "value")
+            (hf/hidden-field "verssion" version)]
+         [:td (hf/hidden-field "cost_type_id_cost" cost)
+            (hf/hidden-field "cost_center_id_center" center)
+            (hf/hidden-field "onYear" year)
+            (hf/hidden-field "onMonth" 3)
+            (hf/text-field {:placeholder "value"} "value")
+            (hf/hidden-field "verssion" version)]
+         [:td (hf/hidden-field "cost_type_id_cost" cost)
+            (hf/hidden-field "cost_center_id_center" center)
+            (hf/hidden-field "onYear" year)
+            (hf/hidden-field "onMonth" 4)
+            (hf/text-field {:placeholder "value"} "value")
+            (hf/hidden-field "verssion" version)]
+         [:td (hf/hidden-field "cost_type_id_cost" cost)
+            (hf/hidden-field "cost_center_id_center" center)
+            (hf/hidden-field "onYear" year)
+            (hf/hidden-field "onMonth" 5)
+            (hf/text-field {:placeholder "value"} "value")
+            (hf/hidden-field "verssion" version)]
+         [:td (hf/hidden-field "cost_type_id_cost" cost)
+            (hf/hidden-field "cost_center_id_center" center)
+            (hf/hidden-field "onYear" year)
+            (hf/hidden-field "onMonth" 6)
+            (hf/text-field {:placeholder "value"} "value")
+            (hf/hidden-field "verssion" version)]
+         [:td (hf/hidden-field "cost_type_id_cost" cost)
+            (hf/hidden-field "cost_center_id_center" center)
+            (hf/hidden-field "onYear" year)
+            (hf/hidden-field "onMonth" 7)
+            (hf/text-field {:placeholder "value"} "value")
+            (hf/hidden-field "verssion" version)]
+         [:td (hf/hidden-field "cost_type_id_cost" cost)
+            (hf/hidden-field "cost_center_id_center" center)
+            (hf/hidden-field "onYear" year)
+            (hf/hidden-field "onMonth" 8)
+            (hf/text-field {:placeholder "value"} "value")
+            (hf/hidden-field "verssion" version)]
+         [:td (hf/hidden-field "cost_type_id_cost" cost)
+            (hf/hidden-field "cost_center_id_center" center)
+            (hf/hidden-field "onYear" year)
+            (hf/hidden-field "onMonth" 9)
+            (hf/text-field {:placeholder "value"} "value")
+            (hf/hidden-field "verssion" version)]
+         [:td (hf/hidden-field "cost_type_id_cost" cost)
+            (hf/hidden-field "cost_center_id_center" center)
+            (hf/hidden-field "onYear" year)
+            (hf/hidden-field "onMonth" 10)
+            (hf/text-field {:placeholder "value"} "value")
+            (hf/hidden-field "verssion" version)]
+         [:td (hf/hidden-field "cost_type_id_cost" cost)
+            (hf/hidden-field "cost_center_id_center" center)
+            (hf/hidden-field "onYear" year)
+            (hf/hidden-field "onMonth" 11)
+            (hf/text-field {:placeholder "value"} "value")
+            (hf/hidden-field "verssion" version)]
+         [:td (hf/hidden-field "cost_type_id_cost" cost)
+            (hf/hidden-field "cost_center_id_center" center)
+            (hf/hidden-field "onYear" year)
+            (hf/hidden-field "onMonth" 12)
+            (hf/text-field {:placeholder "value"} "value")
+            (hf/hidden-field "verssion" version)]]))
     (hf/submit-button {:class "btn"} "send")])))
 
 

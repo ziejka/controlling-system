@@ -17,20 +17,10 @@
 (defn add-value [params]
 	(j/insert! mysql-db :planned_costs params))
 
-#_(defn cost-on-center-grid [user]
-	(j/query mysql-db
-		["select cost_type.id_cost from cost_type
-     inner join cost_on_center on cost_type.id_cost = cost_on_center.id_cost
-     where cost_on_center.planned_by = ?" user]))
-
-#_(defn cost-on-center-grid [user center]
+(defn cost-on-center-grid [user center]
 	(j/query mysql-db
     (s/select :id_cost :cost_on_center
       (s/where {:planned_by user :plannedOnCenter center}))))
-
-(defn cost-on-center-grid [user center]
-  (j/query mysql-db
-    ["SELECT id_cost FROM cost_on_center WHERE planned_by = ? AND plannedOnCenter = ?" user center]))
 
 (defn plan-on-center [user]
 	(j/query mysql-db
@@ -40,3 +30,8 @@
 (defn get-user [id]
 	(first (j/query mysql-db
 		(s/select * :users (s/where {:UserId id})))))
+
+(defn get-cost-name [cost]
+	(first (j/query mysql-db
+    (s/select :cost_name :cost_type
+              (s/where {:id_cost cost})))))
