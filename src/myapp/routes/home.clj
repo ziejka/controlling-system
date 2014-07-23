@@ -1,13 +1,13 @@
 (ns myapp.routes.home
   (:use compojure.core)
   (:require
-    [myapp.layout :as layout]
-    [myapp.util :as util]
-    [myapp.dbquery :as dbquery]
-    [ring.util.response :as resp]
-    [hiccup.core :as hc]
-    [hiccup.form :as hf]
-    [noir.session :as session]))
+   [myapp.layout :as layout]
+   [myapp.util :as util]
+   [myapp.dbquery :as dbquery]
+   [ring.util.response :as resp]
+   [hiccup.core :as hc]
+   [hiccup.form :as hf]
+   [noir.session :as session]))
 
 (defn get-user []
   (session/get :user))
@@ -28,7 +28,7 @@
 
 (defn login-page []
   (layout/render "login.html"
-    {:forms util/login-form} ))
+                 {:forms util/login-form} ))
 ;:user-id (session/get :user)
 (defn logout []
   (session/clear!)
@@ -41,40 +41,40 @@
 ;PAGE'S ELEMENTS
 
 #_(defn center-selection!!! []
-  (hc/html
-    (hf/form-to [:post "/grid"]
-      [:span "Planned on center: "]
-    (hf/drop-down "on-center-choice" (for [center (dbquery/plann-on-center (get-user))] (vals center)))
-      [:span "Planned on year: "]
-    (hf/drop-down "year-choice" (range 2013 2023))
-      [:span "Versionn of plan: "]
-    (hf/drop-down "version-choice" ["Plan" "Korekta-1" "Korekta-2"])
-    (hf/submit-button "selecet"))))
+    (hc/html
+     (hf/form-to [:post "/grid"]
+                 [:span "Planned on center: "]
+                 (hf/drop-down "on-center-choice" (for [center (dbquery/plann-on-center (get-user))] (vals center)))
+                 [:span "Planned on year: "]
+                 (hf/drop-down "year-choice" (range 2013 2023))
+                 [:span "Versionn of plan: "]
+                 (hf/drop-down "version-choice" ["Plan" "Korekta-1" "Korekta-2"])
+                 (hf/submit-button "selecet"))))
 
 
 
 #_(defn center-selection []
-  (hc/html
-   ))
+    (hc/html
+     ))
 
 
 #_(defn center-selection []
-  (hc/html
-    (hf/form-to [:post "/grid"]
-      [:input {:value 50211 :name "center"}]
-      [:input {:value 2013 :name "year"}]
-      [:input {:value "Plan" :name "version"}]
-      (hf/submit-button "selecet"))))
+    (hc/html
+     (hf/form-to [:post "/grid"]
+                 [:input {:value 50211 :name "center"}]
+                 [:input {:value 2013 :name "year"}]
+                 [:input {:value "Plan" :name "version"}]
+                 (hf/submit-button "selecet"))))
 
 #_(defn year-selection []
-  (hc/html
-    [:span "Planned on year: "]
-    (hf/drop-down "year-choice" (range 2013 2023))))
+    (hc/html
+     [:span "Planned on year: "]
+     (hf/drop-down "year-choice" (range 2013 2023))))
 
 #_(defn version-selection []
-  (hc/html
-    [:span "Versionn of plan: "]
-    (hf/drop-down "version-choice" ["Plan" "Korekta-1" "Korekta-2"] 0)))
+    (hc/html
+     [:span "Versionn of plan: "]
+     (hf/drop-down "version-choice" ["Plan" "Korekta-1" "Korekta-2"] 0)))
 
 
 
@@ -85,14 +85,14 @@
 
 (defn home-page []
   (layout/render
-    "home.html" {
-      :content (util/md->html "/md/docs.md")
-      :user-id (session/get :user)}))
+   "home.html" {
+                :content (util/md->html "/md/docs.md")
+                :user-id (session/get :user)}))
 
 (defn contact-page []
   (layout/render "contact.html" {
-    :items (range 10)
-    :user-id (session/get :user)}))
+                                 :items (range 10)
+                                 :user-id (session/get :user)}))
 
 ;END OF USERS PAGE ROUTS
 
@@ -105,8 +105,5 @@
   (GET "/" [] (site-hendler))
   (GET "/home" [] (home-page))
   (GET "/contact" [] (contact-page))
-  (POST "/create" [& params]
-    (do (dbquery/add-value params)
-      (resp/redirect "/grid")))
   (GET "/logout" []
-        (logout)))
+       (logout)))
