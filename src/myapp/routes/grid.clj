@@ -16,19 +16,23 @@
 
 (defn center-selection []
   (hc/html
-   (hf/form-to {:class "padding"}
-               [:post "/grid"]
-               [:div.float-left (for [center (for [centers (dbquery/plan-on-center (get-user))] (:plannedoncenter centers))]
-                                  [:div [:input {:type "radio" :name "center" :value center :class "radio"} center]])]
-               [:div.float-left (for [years (range 2013 2016)]
-                                  [:div [:input {:type "radio" :name "year" :value years :class "radio"} years]])]
-               [:div.float-left (for [version [1 2 3]]
-                                  [:div [:input {:type "radio" :name "version" :value version :class "radio"} version]])]
-               (hf/submit-button "select"))))
+   [:h3 "Wybierz nr centrum rok oraz wersję na jaką chcesz zaplanować"][:br]
+   (hf/form-to [:post "/grid"]
+               [:div.float-left [:h4 "Centrum"] [:div.radioWrapper
+                (for [center (for [centers (dbquery/plan-on-center (get-user))] (:plannedoncenter centers))]
+                  [:div  [:input {:type "radio" :name "center" :value center :class "radio"} [:span.radio-name center]]])]]
+               [:div.float-left [:h4 "Rok"] [:div.radioWrapper
+                (for [years (range 2013 2016)]
+                  [:div [:input {:type "radio" :name "year" :value years :class "radio"} [:span.radio-name years]]])]]
+               [:div.float-left [:h4 "Wersja"] [:div.radioWrapper
+                (for [version [1 2 3]]
+                  [:div [:input {:type "radio" :name "version" :value version :class "radio"} [:span.radio-name (dbquery/get-version-name version)]]])]]
+               (hf/submit-button {:class "btn"} "select"))))
 
 (defn sendForm
   [center year version]
   (hc/html
+   [:h3.padding "Planujesz na cetrum: " [:B center]" " [:b (dbquery/get-center-name center)]  ", na rok " [:b year] ", wersja: "[:b (dbquery/get-version-name version)]]
    (hf/form-to [:post "/create"]
                [:table.table.table-striped
                 [:thead
