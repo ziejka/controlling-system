@@ -16,8 +16,7 @@
 
 (defn add-value [params]
 	(apply j/insert! mysql-db :planned_costs
-         (for [v (range (count (:value params)))] (apply conj (for [k (keys params)] {k (nth (k params) v)}))
-         )))
+         (for [v (range (count (:value params)))] (apply conj (for [k (keys params)] {k (nth (k params) v)})))))
 
 (defn cost-on-center-grid [user center]
 	(j/query mysql-db
