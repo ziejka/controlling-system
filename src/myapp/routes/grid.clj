@@ -132,11 +132,8 @@
   (layout/render "grid.html"
                  {:content (list (dbquery/all))
                   :items (dbquery/all)
-                  ; :version (versio-selection)
-                  ;:year (year-selection)
                   :forms (sendForm center year version)
-                  ;:select (center-selection)
-                  :user-id (session/get :user)}))
+                  :user-id (get-user)}))
 
 ;END OF PAGE RENDER
 
