@@ -37,6 +37,8 @@
                [:table.table.table-striped
                 [:thead
                  [:tr
+                  [:th {:colspan 2 :style "border-bottom: none;"}] [:th.middle {:colspan 12 :style "text-align: center; border-bottom: none;"} "Miesiąc"]]
+                 [:tr
                   [:th "Nr kosztu"] [:th "Nazwa"] [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]
                 (into [:tbody]
                       (for [cost (for [costs (dbquery/cost-on-center-grid (get-user) center)] (:id_cost costs))]
