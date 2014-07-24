@@ -40,42 +40,6 @@
 
 ;PAGE'S ELEMENTS
 
-#_(defn center-selection!!! []
-    (hc/html
-     (hf/form-to [:post "/grid"]
-                 [:span "Planned on center: "]
-                 (hf/drop-down "on-center-choice" (for [center (dbquery/plann-on-center (get-user))] (vals center)))
-                 [:span "Planned on year: "]
-                 (hf/drop-down "year-choice" (range 2013 2023))
-                 [:span "Versionn of plan: "]
-                 (hf/drop-down "version-choice" ["Plan" "Korekta-1" "Korekta-2"])
-                 (hf/submit-button "selecet"))))
-
-
-
-#_(defn center-selection []
-    (hc/html
-     ))
-
-
-#_(defn center-selection []
-    (hc/html
-     (hf/form-to [:post "/grid"]
-                 [:input {:value 50211 :name "center"}]
-                 [:input {:value 2013 :name "year"}]
-                 [:input {:value "Plan" :name "version"}]
-                 (hf/submit-button "selecet"))))
-
-#_(defn year-selection []
-    (hc/html
-     [:span "Planned on year: "]
-     (hf/drop-down "year-choice" (range 2013 2023))))
-
-#_(defn version-selection []
-    (hc/html
-     [:span "Versionn of plan: "]
-     (hf/drop-down "version-choice" ["Plan" "Korekta-1" "Korekta-2"] 0)))
-
 
 
 ;END OF PAGE'S ELEMENTS
@@ -85,13 +49,11 @@
 
 (defn home-page []
   (layout/render
-   "home.html" {
-                :content (util/md->html "/md/docs.md")
+   "home.html" {:content (util/md->html "/md/docs.md")
                 :user-id (session/get :user)}))
 
 (defn contact-page []
-  (layout/render "contact.html" {
-                                 :items (range 10)
+  (layout/render "contact.html" {:items (range 10)
                                  :user-id (session/get :user)}))
 
 ;END OF USERS PAGE ROUTS

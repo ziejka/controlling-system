@@ -21,7 +21,7 @@
                                   [:div [:input {:type "radio" :name "center" :value center :class "radio"} center]])]
                [:div.float-left (for [years (range 2013 2016)]
                                   [:div [:input {:type "radio" :name "year" :value years :class "radio"} years]])]
-               [:div.float-left (for [version ["Plan" "Korekta-1" "Korekta-2"]]
+               [:div.float-left (for [version [1 2 3]]
                                   [:div [:input {:type "radio" :name "version" :value version :class "radio"} version]])]
                (hf/submit-button "select"))))
 
