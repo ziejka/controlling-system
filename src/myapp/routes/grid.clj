@@ -16,7 +16,8 @@
 
 (defn center-selection []
   (hc/html
-   (hf/form-to [:post "/grid"]
+   (hf/form-to {:class "padding"}
+               [:post "/grid"]
                [:div.float-left (for [center (for [centers (dbquery/plan-on-center (get-user))] (:plannedoncenter centers))]
                                   [:div [:input {:type "radio" :name "center" :value center :class "radio"} center]])]
                [:div.float-left (for [years (range 2013 2016)]
@@ -110,7 +111,7 @@
                           (hf/hidden-field "onMonth" 12)
                           (hf/text-field {:placeholder "value"} "value")
                           (hf/hidden-field "verssion" version)]]))
-                (hf/submit-button {:class "btn"} "send")])))
+                (hf/submit-button {:class "btn leftMargin"} "send")])))
 
 
 ; END OF PAGE ELEMENT
