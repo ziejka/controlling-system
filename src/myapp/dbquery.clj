@@ -34,8 +34,8 @@
 
 (defn get-cost-name [cost]
   (:cost_name (first (j/query mysql-db
-                  (s/select :cost_name :cost_type
-                            (s/where {:id_cost cost}))))))
+                              (s/select :cost_name :cost_type
+                                        (s/where {:id_cost cost}))))))
 
 (defn get-version-name [idVersion]
   (:nameversion (first (j/query mysql-db
@@ -47,7 +47,40 @@
                                  (s/select :center_name :cost_center
                                            (s/where {:id_center idCenter}))))))
 
-(defn get-guidelines [id-center]
+(defn get-plan-costs [id-center year version]
   (j/query mysql-db
-           ["select p.cost_type_id_cost, p.onYear, p.onMonth, p.value, p.verssion from planned_costs p
-            where p.cost_center_id_center = ?" id-center]))
+           (s/select :cost_type_id_cost :planned_costs
+                     (s/where {:cost_center_id_center id-center
+                               :onYear year
+                               :verssion version}))))
+
+(defn get-plan-year [id-center]
+  (for
+    [y (distinct
+        (j/query mysql-db
+                 (s/select :onYear :planned_costs
+                           (s/where
+                            {:cost_center_id_center id-center}))))] (:onyear y)))
+
+
+(defn get-plan-version [id-center]
+  (for
+    [v (distinct
+        (j/query mysql-db
+                 (s/select :verssion :planned_costs
+                           (s/where
+                            {:cost_center_id_center id-center}))))] (:verssion v)))
+
+(defn get-plan-value [id-center id-cost year month version]
+  (:value
+   (first
+    (j/query mysql-db
+             (s/select :value :planned_costs
+                       (s/where
+                        {:cost_center_id_center id-center
+                         :cost_type_id_cost id-cost
+                         :onYear year
+                         :onMonth month
+                         :verssion version}))))))
+
+(get-plan-value 55055 4010100 2016 6 3)

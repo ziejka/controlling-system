@@ -12,27 +12,57 @@
 (defn get-user []
   (session/get :user))
 
-(defn guide-grid [user]
+(defn guide-select
+  [id-user]
   (hc/html
-   [:table.table.table-striped
-    [:thead
-     [:tr
-      [:th "Nr Kosztu"] [:th "Nazwa"] [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]
-   (into [:tbody]
-         (for [cost-id (distinct (for [row (dbquery/get-guidelines 50333)] (:cost_type_id_cost row)))]
-           [:tr
-            [:td cost-id]
-            [:td (dbquery/get-cost-name cost-id)]
-            (let [v (:value (dbquery/get-guidelines 50333))]
-              [:td v])]))]))
+   (hf/form-to {:class "leftMargin"}
+               [:post "/guidelines"]
+               [:div.float-left
+                [:div.radioWrapper
+                 (let [y (dbquery/get-plan-year id-user)]
+                   (if (= 1 (count y))
+                     [:input {:type "radio" :name "year" :value y :class "radio"} [:span.radio-name y]]
+                     (for [year y]
+                       [:input {:type "radio" :name "year" :value year :class "radio"} [:span.radio-name year]])))]]
+               [:div.float-left
+                [:div.radioWrapper
+                 (let [v (dbquery/get-plan-version id-user)]
+                   (if (= 1 (count v))
+                     [:input {:type "radio" :name "version" :value (first v) :class "radio"} [:span.radio-name (dbquery/get-version-name (first v))]]
+                     (for [version v]
+                       [:input {:type "radio" :name "version" :value (first version) :class "radio"} [:span.radio-name (dbquery/get-version-name (first version))]])))]]
+               (hf/submit-button {:class "btn"} "select")   )))
 
 
+(defn guide-grid
+  ([] (hc/html
+       [:h4.padding "Wybeirz rok i wersję" ]))
+  ([user year version]
+   (hc/html
+    [:table.table.table-striped
+     [:thead
+      [:tr
+       [:th "Nr Kosztu"] [:th "Nazwa" version] [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]
+     (into [:tbody]
+           (for [cost-id (distinct (for [row (dbquery/get-plan-costs user year version)] (:cost_type_id_cost row)))]
+             [:tr
+              [:td cost-id]
+              [:td (dbquery/get-cost-name cost-id)]
+              (for [month (range 1 13)]
+                [:td (dbquery/get-plan-value user cost-id year month version)])]))])))
 
+
+(defn guide-gird-page [id-center year version]
+  (layout/render "guidelines.html" {:guide-select (guide-select id-center)
+                                    :guide-grid (guide-grid id-center year version)
+                                    :user-id id-center}))
 
 
 (defn guide-page [id-center]
-  (layout/render "guidelines.html" {:guide-grid (guide-grid id-center)
+  (layout/render "guidelines.html" {:guide-grid (guide-grid)
+                                    :guide-select (guide-select id-center)
                                     :user-id id-center}))
 
 (defroutes guide-routes
-  (GET "/guidelines" [] (guide-page (get-user))))
+  (GET "/guidelines" [] (guide-page (get-user)))
+  (POST "/guidelines" [year version] (guide-gird-page (get-user) year version)))
