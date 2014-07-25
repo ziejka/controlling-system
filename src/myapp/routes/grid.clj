@@ -44,7 +44,7 @@
                       (for [cost (for [costs (dbquery/cost-on-center-grid (get-user) center)] (:id_cost costs))]
                         [:tr
                          [:td cost]
-                         [:td (:cost_name (dbquery/get-cost-name cost))]
+                         [:td (dbquery/get-cost-name cost)]
                          [:td (hf/hidden-field "cost_type_id_cost" cost)
                           (hf/hidden-field "cost_center_id_center" center)
                           (hf/hidden-field "onYear" year)
@@ -130,10 +130,10 @@
 
 (defn grid-page [center year version]
   (layout/render "grid.html"
-                 {:content (list (dbquery/all))
+                 {:user-id center
+                  :content (list (dbquery/all))
                   :items (dbquery/all)
-                  :forms (sendForm center year version)
-                  :user-id (get-user)}))
+                  :forms (sendForm center year version)}))
 
 ;END OF PAGE RENDER
 

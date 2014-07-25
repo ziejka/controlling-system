@@ -33,9 +33,9 @@
                   (s/select * :users (s/where {:UserId id})))))
 
 (defn get-cost-name [cost]
-  (first (j/query mysql-db
+  (:cost_name (first (j/query mysql-db
                   (s/select :cost_name :cost_type
-                            (s/where {:id_cost cost})))))
+                            (s/where {:id_cost cost}))))))
 
 (defn get-version-name [idVersion]
   (:nameversion (first (j/query mysql-db
@@ -46,3 +46,8 @@
   (:center_name  (first (j/query mysql-db
                                  (s/select :center_name :cost_center
                                            (s/where {:id_center idCenter}))))))
+
+(defn get-guidelines [id-center]
+  (j/query mysql-db
+           ["select p.cost_type_id_cost, p.onYear, p.onMonth, p.value, p.verssion from planned_costs p
+            where p.cost_center_id_center = ?" id-center]))
