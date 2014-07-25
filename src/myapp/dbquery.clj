@@ -71,16 +71,51 @@
                            (s/where
                             {:cost_center_id_center id-center}))))] (:verssion v)))
 
-(defn get-plan-value [id-center id-cost year month version]
-  (:value
-   (first
-    (j/query mysql-db
-             (s/select :value :planned_costs
-                       (s/where
-                        {:cost_center_id_center id-center
-                         :cost_type_id_cost id-cost
-                         :onYear year
-                         :onMonth month
-                         :verssion version}))))))
+(defn get-plan-value
+  ([id-center id-cost year version]
+   (for
+     [v (j/query mysql-db
+                 (s/select :value :planned_costs
+                           (s/where
+                            {:cost_center_id_center id-center
+                             :cost_type_id_cost id-cost
+                             :onYear year
+                             :verssion version})))] (:value v)))
+  ([id-center id-cost year month version]
+   (:value
+    (first
+     (j/query mysql-db
+              (s/select :value :planned_costs
+                        (s/where
+                         {:cost_center_id_center id-center
+                          :cost_type_id_cost id-cost
+                          :onYear year
+                          :onMonth month
+                          :verssion version})))))))
 
-(get-plan-value 55055 4010100 2016 6 3)
+
+(defn get-quarter-value
+  [id-center id-cost year version term]
+  (:value
+  (first
+     (j/query mysql-db
+                ["select sum(p.value) value from planned_costs p
+                 where p.cost_center_id_center = ?
+                 and p.cost_type_id_cost = ?
+                 and p.onYear = ?
+                 and p.verssion = ?
+                 and p.term =?"
+                 id-center id-cost year version term]))))
+
+(:value (first
+ (j/query mysql-db
+                ["select sum(p.value) value from planned_costs p
+                 where p.cost_center_id_center = ?
+                 and p.cost_type_id_cost = ?
+                 and p.onYear = ?
+                 and p.verssion = ?
+                 and p.term =?"
+                 50333 4010100 2014 2 1])))
+
+
+(get-quarter-value 50333 4010100 2014 2 1)
