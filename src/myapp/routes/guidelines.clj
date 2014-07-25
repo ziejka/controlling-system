@@ -28,9 +28,11 @@
                 [:div.radioWrapper
                  (let [v (dbquery/get-plan-version id-user)]
                    (if (= 1 (count v))
-                     [:input {:type "radio" :name "version" :value (first v) :class "radio"} [:span.radio-name (dbquery/get-version-name (first v))]]
+                     [:input {:type "radio" :name "version" :value (first v) :class "radio"}
+                      [:span.radio-name (dbquery/get-version-name (first v))]]
                      (for [version v]
-                       [:input {:type "radio" :name "version" :value version :class "radio"} [:span.radio-name (dbquery/get-version-name version)]])))]]
+                       [:input {:type "radio" :name "version" :value version :class "radio"}
+                        [:span.radio-name (dbquery/get-version-name version)]])))]]
                (hf/submit-button {:class "btn"} "select")   )))
 
 
@@ -40,24 +42,34 @@
   ([user year version]
    (hc/html
     [:br]
-    [:h4.leftMargin "Wytyczne dla centrum: "[:b user] " "[:b (dbquery/get-center-name user)] " na rok "[:b year] " wersja: "[:b (dbquery/get-version-name version)]]
+    [:h4.leftMargin "Wytyczne dla centrum: "
+     [:b user] " "
+     [:b (dbquery/get-center-name user)] " na rok "
+     [:b year] " wersja: "[:b (dbquery/get-version-name version)]]
     [:br]
     [:table.table.table-striped
      [:thead
       [:tr
        [:th "Nr Kosztu"] [:th "Nazwa"] [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"]
        [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"] [:th "Rocznie"] [:th "Kwartał I"] [:th "Kwartał II"] [:th "Kwartał IIII"] [:th "Kwartał IV"]]]
-     (into [:tbody]
-           (for [cost-id (distinct (for [row (dbquery/get-plan-costs user year version)] (:cost_type_id_cost row)))]
-             [:tr
-              [:td cost-id]
-              [:td (dbquery/get-cost-name cost-id)]
-              (for [month (range 1 13)]
-                [:td (dbquery/get-plan-value user cost-id year month version)])
-              [:td [:b (apply + (dbquery/get-plan-value user cost-id year version))]]
-              (for [t (range 1 5)]
-                [:td (dbquery/get-quarter-value user cost-id year version t)])
-              ]))])))
+     (into
+      [:tbody]
+      (for
+        [cost-id
+         (distinct
+          (for
+            [row
+             (dbquery/get-plan-costs user year version)]
+            (:cost_type_id_cost row)))]
+        [:tr
+         [:td cost-id]
+         [:td (dbquery/get-cost-name cost-id)]
+         (for [month (range 1 13)]
+           [:td (dbquery/get-plan-value user cost-id year month version)])
+         [:td [:b (apply + (dbquery/get-plan-value user cost-id year version))]]
+         (for [t (range 1 5)]
+           [:td (dbquery/get-quarter-value user cost-id year version t)])
+         ]))])))
 
 
 (defn guide-gird-page [id-center year version]
