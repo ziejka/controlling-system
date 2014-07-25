@@ -30,7 +30,7 @@
                    (if (= 1 (count v))
                      [:input {:type "radio" :name "version" :value (first v) :class "radio"} [:span.radio-name (dbquery/get-version-name (first v))]]
                      (for [version v]
-                       [:input {:type "radio" :name "version" :value (first version) :class "radio"} [:span.radio-name (dbquery/get-version-name (first version))]])))]]
+                       [:input {:type "radio" :name "version" :value version :class "radio"} [:span.radio-name (dbquery/get-version-name version)]])))]]
                (hf/submit-button {:class "btn"} "select")   )))
 
 
