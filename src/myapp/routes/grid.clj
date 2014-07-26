@@ -75,9 +75,9 @@
 (defn revenue-select []
   (hc/html
    (hf/form-to [:post "/plan-revenue"]
-               [:div.float-left [:h4 "Marak"] [:div.radioWrapper
-                                             (for [brand  (dbquery/get-brand-id)]
-                                               [:div [:input {:type "radio" :name "brand-name" :value brand :class "radio"} [:span.radio-name (dbquery/get-brand-name brand)]]])]]
+               [:div.float-left [:h4 "Marka"] [:div.radioWrapper
+                                               (for [brand  (dbquery/get-brand-id)]
+                                                 [:div [:input {:type "radio" :name "brand-name" :value brand :class "radio"} [:span.radio-name (dbquery/get-brand-name brand)]]])]]
                [:div.float-left [:h4 "Rok"] [:div.radioWrapper
                                              (for [years (range 2013 2016)]
                                                [:div [:input {:type "radio" :name "year" :value years :class "radio"} [:span.radio-name years]]])]]
@@ -94,81 +94,40 @@
     [:h3.padding "Planujesz dla marki: "[:b (dbquery/get-brand-name brand-id)]  ", na rok " [:b year] ", wersja: "[:b (dbquery/get-version-name version)]]
     [:br]
     (hf/form-to [:post "revenue-create"]
+                (hf/submit-button {:class "btn leftMargin"} "send")
+                [:br]
                 [:table.table.table-striped.revenue.table-bordered
                  [:thead
                   [:tr
-                   [:th.long {:rowspan "2"} "Rynek"] [:th.longb {:rowspan "2"} "Rynek szczegół"]
-                   [:th {:colspan "3"} "I"]   [:th {:colspan "3"} "II"]   [:th {:colspan "3"} "III"]
-                   [:th {:colspan "3"} "IV"]  [:th {:colspan "3"} "V"]    [:th {:colspan "3"} "VI"]
-                   [:th {:colspan "3"} "VII"] [:th {:colspan "3"} "VIII"] [:th {:colspan "3"} "IX"]
-                   [:th {:colspan "3"} "X"]   [:th {:colspan "3"} "XI"]   [:th {:colspan "3"} "XII"]]
-                  [:tr (for [m (range 12)]
-                         (list [:th "Sprzedaż"] [:th "Marża"] [:th "Marża [%]"]))]]
+                   [:th "Ms"] [:th "Co?"]
+                   (for [market (dbquery/get-market-id-all)]
+                     [:th (dbquery/get-market-name market)])]]
                  [:tbody
+                  (for [month (range 1 13)]
+                    (list
                      [:tr
-                      [:td "Rynek Tradycyjy"]
-                      (for [n (range 37)]
-                        [:td ])]
+                      [:td {:rowspan "4"} month]]
                      [:tr
-                      [:td {:rowspan "3"}]]
-                     (for [market (dbquery/get-market-id dbquery/get-market-11)]
-                       [:tr
-                        [:td (dbquery/get-market-name market)]
-                        (for [month (range 1 13)]
-                          (list
-                           [:td
-                            (hf/hidden-field "id_market_type" market)
-                            (hf/hidden-field "id_brands" brand-id)
-                            (hf/hidden-field "r_year" year)
-                            (hf/hidden-field "r_month" month)
-                            (hf/hidden-field "version" version)
-                            (hf/text-field {:placeholder "value"} "value")]
-                           [:td
-                            (hf/text-field {:placeholder "profit_margin"} "profit_margin")]
-                           [:td "suma"]))])
+                      [:td "Sprzedaż"]
+                      (for [market (dbquery/get-market-id-all)]
+                        [:td
+                         (hf/hidden-field "id_market_type" market)
+                         (hf/hidden-field "id_brands" brand-id)
+                         (hf/hidden-field "r_year" year)
+                         (hf/hidden-field "r_month" month)
+                         (hf/hidden-field "version" version)
+                         (hf/text-field {:placeholder "value"} "value")])]
                      [:tr
-                      [:td "Rynek Nowoczesny"]
-                      (for [n (range 37)]
-                        [:td ])]
+                      [:td "Marża"]
+                      (for [market (dbquery/get-market-id-all)]
+                        [:td
+                         (hf/text-field {:placeholder "margin"} "profit_margin")])]
                      [:tr
-                      [:td {:rowspan "4"}]]
-                     (for [market (dbquery/get-market-id dbquery/get-market-12)]
-                       [:tr
-                        [:td (dbquery/get-market-name market)]
-                        (for [month (range 1 13)]
-                          (list
-                           [:td
-                            (hf/hidden-field "id_market_type" market)
-                            (hf/hidden-field "id_brands" brand-id)
-                            (hf/hidden-field "r_year" year)
-                            (hf/hidden-field "r_month" month)
-                            (hf/hidden-field "version" version)
-                            (hf/text-field {:placeholder "value"} "value")]
-                           [:td
-                            (hf/text-field {:placeholder "profit_margin"} "profit_margin")]
-                           [:td "suma"]))])
-                     [:tr
-                      [:td "Rynek Specjalistyczny"]
-                      (for [n (range 37)]
-                        [:td ])]
-                     [:tr
-                      [:td {:rowspan "3"}]]
-                     (for [market (dbquery/get-market-id dbquery/get-market-13)]
-                       [:tr
-                        [:td (dbquery/get-market-name market)]
-                        (for [month (range 1 13)]
-                          (list
-                           [:td
-                            (hf/hidden-field "id_market_type" market)
-                            (hf/hidden-field "id_brands" brand-id)
-                            (hf/hidden-field "r_year" year)
-                            (hf/hidden-field "r_month" month)
-                            (hf/hidden-field "version" version)
-                            (hf/text-field {:placeholder "value"} "value")]
-                           [:td
-                            (hf/text-field {:placeholder "profit_margin"} "profit_margin")]
-                           [:td "suma"]))])]
-                 (hf/submit-button {:class "btn leftMargin"} "send")]))))
+                      [:td "Marża %"]
+                      (for [market (dbquery/get-market-id-all)]
+                        [:td "suma"])]))]]
+
+                ))))
 
 ; END OF PAGE ELEMENT
 
@@ -182,8 +141,7 @@
 
 (defn plan-revenue-grid [year version brand-name]
   (layout/render "grid.html" {:user-id (get-user)
-                              :forms (revenueSendForm year version brand-name)
-                              :select (revenue-select)}))
+                              :forms (revenueSendForm year version brand-name)}))
 
 (defn plan-page []
   (layout/render "plan.html" {:user-id (get-user)

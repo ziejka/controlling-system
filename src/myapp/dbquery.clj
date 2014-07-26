@@ -127,6 +127,14 @@
   (for [brand (get-brand-all)]
     (:id_brands brand)))
 
+(defn get-market-id-all []
+  (for
+    [m (j/query mysql-db
+           (s/select :id_type :market_type))]
+    (:id_type m)))
+
+(get-market-id-all)
+
 (defn get-market-11 []
   (j/query mysql-db
            ["select * from market_type
