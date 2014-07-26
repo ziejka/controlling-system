@@ -92,7 +92,7 @@
                 [:table.table.table-striped.revenue.table-bordered
                  [:thead
                   [:tr
-                   [:th {:rowspan "2"} "Marka"] [:th {:rowspan "2"} "Rynek"] [:th {:rowspan "2"} "Rynek szczegół"]
+                   [:th {:rowspan "2"} "Marka"] [:th.long {:rowspan "2"} "Rynek"] [:th.longb {:rowspan "2"} "Rynek szczegół"]
                    [:th {:colspan "3"} "I"]   [:th {:colspan "3"} "II"]   [:th {:colspan "3"} "III"]
                    [:th {:colspan "3"} "IV"]  [:th {:colspan "3"} "V"]    [:th {:colspan "3"} "VI"]
                    [:th {:colspan "3"} "VII"] [:th {:colspan "3"} "VIII"] [:th {:colspan "3"} "IX"]
@@ -109,38 +109,68 @@
                      [:tr
                       [:td {:rowspan "14"}]]
                      [:tr
-                         [:td "Rynek Tradycyjy"]
-                         (for [n (range 37)]
-                           [:td ])]
-                        [:tr
-                         [:td {:rowspan "3"}]]
+                      [:td "Rynek Tradycyjy"]
+                      (for [n (range 37)]
+                        [:td ])]
+                     [:tr
+                      [:td {:rowspan "3"}]]
                      (for [market-name (dbquery/get-market-name dbquery/get-market-11)]
                        [:tr
                         [:td market-name]
-                        (for [n (range 38)]
-                          [:td ])])
+                        (for [month (range 1 13)]
+                          (list
+                           [:td
+                            (hf/hidden-field "id_market_type" market-name)
+                            (hf/hidden-field "id_brands" brand-name)
+                            (hf/hidden-field "r_year" year)
+                            (hf/hidden-field "r_month" month)
+                            (hf/hidden-field "version" version)
+                            (hf/text-field {:placeholder "value"} "value")]
+                           [:td
+                            (hf/text-field {:placeholder "profit_margin"} "profit_margin")]
+                           [:td "suma"]))])
                      [:tr
-                         [:td "Rynek Nowoczesny"]
-                         (for [n (range 37)]
-                           [:td ])]
-                        [:tr
-                         [:td {:rowspan "4"}]]
+                      [:td "Rynek Nowoczesny"]
+                      (for [n (range 37)]
+                        [:td ])]
+                     [:tr
+                      [:td {:rowspan "4"}]]
                      (for [market-name (dbquery/get-market-name dbquery/get-market-12)]
                        [:tr
                         [:td market-name]
-                        (for [n (range 38)]
-                          [:td ])])
+                        (for [month (range 1 13)]
+                          (list
+                           [:td
+                            (hf/hidden-field "id_market_type" market-name)
+                            (hf/hidden-field "id_brands" brand-name)
+                            (hf/hidden-field "r_year" year)
+                            (hf/hidden-field "r_month" month)
+                            (hf/hidden-field "version" version)
+                            (hf/text-field {:placeholder "value"} "value")]
+                           [:td
+                            (hf/text-field {:placeholder "profit_margin"} "profit_margin")]
+                           [:td "suma"]))])
                      [:tr
-                         [:td "Rynek Specjalistyczny"]
-                         (for [n (range 37)]
-                           [:td ])]
-                        [:tr
-                         [:td {:rowspan "3"}]]
+                      [:td "Rynek Specjalistyczny"]
+                      (for [n (range 37)]
+                        [:td ])]
+                     [:tr
+                      [:td {:rowspan "3"}]]
                      (for [market-name (dbquery/get-market-name dbquery/get-market-13)]
                        [:tr
                         [:td market-name]
-                        (for [n (range 38)]
-                          [:td ])])
+                        (for [month (range 1 13)]
+                          (list
+                           [:td
+                            (hf/hidden-field "id_market_type" market-name)
+                            (hf/hidden-field "id_brands" brand-name)
+                            (hf/hidden-field "r_year" year)
+                            (hf/hidden-field "r_month" month)
+                            (hf/hidden-field "version" version)
+                            (hf/text-field {:placeholder "value"} "value")]
+                           [:td
+                            (hf/text-field {:placeholder "profit_margin"} "profit_margin")]
+                           [:td "suma"]))])
                      ))
                   ]]))))
 
