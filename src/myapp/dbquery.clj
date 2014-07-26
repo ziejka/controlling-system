@@ -10,14 +10,16 @@
                :password ""
                :zeroDateTimeBehavior "convertToNull"})
 
-(declare add-revenue-plan)
-
 (defn all []
   (j/query mysql-db
            (s/select * :brands)))
 
 (defn add-value [params]
   (apply j/insert! mysql-db :planned_costs
+         (for [v (range (count (:value params)))] (apply conj (for [k (keys params)] {k (nth (k params) v)})))))
+
+(defn add-revenue-plan [params]
+  (apply j/insert! mysql-db :planned_revenues
          (for [v (range (count (:value params)))] (apply conj (for [k (keys params)] {k (nth (k params) v)})))))
 
 (defn cost-on-center-grid [user center]
@@ -114,9 +116,12 @@
   (j/query mysql-db
            (s/select * :brands)))
 
-(defn get-brand-name []
-  (for [brand (get-brand-all)]
-    (:brand_name brand)))
+(defn get-brand-name [brand-id]
+ (:brand_name
+  (first
+  (j/query mysql-db
+          (s/select :brand_name :brands
+                    (s/where {:id_brands brand-id}))))))
 
 (defn get-brand-id []
   (for [brand (get-brand-all)]
@@ -138,8 +143,21 @@
             where id_type like '73013%'"]))
 
 (defn get-market-name [m]
-  (for [market (m)]
-    (:type_name market)))
+  (:type_name
+   (first
+    (j/query mysql-db
+             (s/select :type_name :market_type
+              (s/where
+              {:id_type m}))))))
+
+(defn get-market-id [m]
+  (for [mr (m)]
+    (:id_type mr)))
 
 (get-market-name get-market-11)
 
+(get-market-11)
+
+
+
+(first (get-market-11))
