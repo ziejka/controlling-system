@@ -99,25 +99,47 @@
 (defn get-quarter-value
   [id-center id-cost year version term]
   (:value
-  (first
-     (j/query mysql-db
-                ["select sum(p.value) value from planned_costs p
-                 where p.cost_center_id_center = ?
-                 and p.cost_type_id_cost = ?
-                 and p.onYear = ?
-                 and p.verssion = ?
-                 and p.term =?"
-                 id-center id-cost year version term]))))
-
-(:value (first
- (j/query mysql-db
-                ["select sum(p.value) value from planned_costs p
-                 where p.cost_center_id_center = ?
-                 and p.cost_type_id_cost = ?
-                 and p.onYear = ?
-                 and p.verssion = ?
-                 and p.term =?"
-                 50333 4010100 2014 2 1])))
+   (first
+    (j/query mysql-db
+             ["select sum(p.value) value from planned_costs p
+              where p.cost_center_id_center = ?
+              and p.cost_type_id_cost = ?
+              and p.onYear = ?
+              and p.verssion = ?
+              and p.term =?"
+              id-center id-cost year version term]))))
 
 
-(get-quarter-value 50333 4010100 2014 2 1)
+(defn get-brand-all []
+  (j/query mysql-db
+           (s/select * :brands)))
+
+(defn get-brand-name []
+  (for [brand (get-brand-all)]
+    (:brand_name brand)))
+
+(defn get-brand-id []
+  (for [brand (get-brand-all)]
+    (:id_brands brand)))
+
+(defn get-market-11 []
+  (j/query mysql-db
+           ["select * from market_type
+            where id_type like '73011%'"]))
+
+(defn get-market-12 []
+  (j/query mysql-db
+           ["select * from market_type
+            where id_type like '73012%'"]))
+
+(defn get-market-13 []
+  (j/query mysql-db
+           ["select * from market_type
+            where id_type like '73013%'"]))
+
+(defn get-market-name [m]
+  (for [market (m)]
+    (:type_name market)))
+
+(get-market-name get-market-11)
+

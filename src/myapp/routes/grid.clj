@@ -90,20 +90,67 @@
    (hc/html
     (hf/form-to [:post "revenue-create"]
                 [:table.table.table-striped.revenue.table-bordered
-                 [:thead]
-                 [:tr
-                  [:th {:rowspan "2"} "Marka"] [:th {:rowspan "2"} "Rynek"] [:th {:rowspan "2"} "Rynek szczegół"]
-                  [:th {:colspan "3"} "I"]   [:th {:colspan "3"} "II"]   [:th {:colspan "3"} "III"]
-                  [:th {:colspan "3"} "IV"]  [:th {:colspan "3"} "V"]    [:th {:colspan "3"} "VI"]
-                  [:th {:colspan "3"} "VII"] [:th {:colspan "3"} "VIII"] [:th {:colspan "3"} "IX"]
-                  [:th {:colspan "3"} "X"]   [:th {:colspan "3"} "XI"]   [:th {:colspan "3"} "XII"]]
-                 [:tr (for [m (range 12)]
-                  (list [:th "Sprzedaż"] [:th "Marża"] [:th "Marża [%]"]))]]))))
+                 [:thead
+                  [:tr
+                   [:th {:rowspan "2"} "Marka"] [:th {:rowspan "2"} "Rynek"] [:th {:rowspan "2"} "Rynek szczegół"]
+                   [:th {:colspan "3"} "I"]   [:th {:colspan "3"} "II"]   [:th {:colspan "3"} "III"]
+                   [:th {:colspan "3"} "IV"]  [:th {:colspan "3"} "V"]    [:th {:colspan "3"} "VI"]
+                   [:th {:colspan "3"} "VII"] [:th {:colspan "3"} "VIII"] [:th {:colspan "3"} "IX"]
+                   [:th {:colspan "3"} "X"]   [:th {:colspan "3"} "XI"]   [:th {:colspan "3"} "XII"]]
+                  [:tr (for [m (range 12)]
+                         (list [:th "Sprzedaż"] [:th "Marża"] [:th "Marża [%]"]))]]
+                 [:tbody
+                  (for [brand-name (dbquery/get-brand-name)]
+                    (list
+                     [:tr
+                      [:td brand-name]
+                      (for [n (range 38)]
+                        [:td ])]
+                     [:tr
+                      [:td {:rowspan "14"}]]
+                     [:tr
+                         [:td "Rynek Tradycyjy"]
+                         (for [n (range 37)]
+                           [:td ])]
+                        [:tr
+                         [:td {:rowspan "3"}]]
+                     (for [market-name (dbquery/get-market-name dbquery/get-market-11)]
+                       [:tr
+                        [:td market-name]
+                        (for [n (range 38)]
+                          [:td ])])
+                     [:tr
+                         [:td "Rynek Nowoczesny"]
+                         (for [n (range 37)]
+                           [:td ])]
+                        [:tr
+                         [:td {:rowspan "4"}]]
+                     (for [market-name (dbquery/get-market-name dbquery/get-market-12)]
+                       [:tr
+                        [:td market-name]
+                        (for [n (range 38)]
+                          [:td ])])
+                     [:tr
+                         [:td "Rynek Specjalistyczny"]
+                         (for [n (range 37)]
+                           [:td ])]
+                        [:tr
+                         [:td {:rowspan "3"}]]
+                     (for [market-name (dbquery/get-market-name dbquery/get-market-13)]
+                       [:tr
+                        [:td market-name]
+                        (for [n (range 38)]
+                          [:td ])])
+                     ))
+                  ]]))))
 
 (hc/html [:tr (for [m (range 12)]
-                  (list [:th "Sprzedaż"] [:th "Marża"] [:th "Marża [%]"]))])
+                (list [:th "Sprzedaż"] [:th "Marża"] [:th "Marża [%]"]))])
 
-
+(for [brand-name (dbquery/get-brand-name)]
+  [:tr
+   [:td {:rowspan "7"} brand-name]
+   [:td ]])
 ; END OF PAGE ELEMENT
 
 
