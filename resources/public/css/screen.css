@@ -38,6 +38,7 @@ body {
 
 .padding {
   padding: 0 30px;
+  display: table-cell;
 }
 
 .leftMargin {
@@ -47,3 +48,8 @@ body {
   margin: -25px 0px 7px 20px;
   display: block;
 }
+
+.revenue th {
+  text-align: center;
+  vertical-align: middle !important;
+  }

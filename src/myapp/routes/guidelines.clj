@@ -21,7 +21,7 @@
                 [:div.radioWrapper
                  (let [y (dbquery/get-plan-year id-user)]
                    (if (= 1 (count y))
-                     [:input {:type "radio" :name "year" :value y :class "radio"} [:span.radio-name y]]
+                     [:input {:type "radio" :name "year" :value (first y) :class "radio"} [:span.radio-name (first y)]]
                      (for [year y]
                        [:input {:type "radio" :name "year" :value year :class "radio"} [:span.radio-name year]])))]]
                [:div.float-left

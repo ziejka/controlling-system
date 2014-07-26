@@ -10,6 +10,8 @@
                :password ""
                :zeroDateTimeBehavior "convertToNull"})
 
+(declare add-revenue-plan)
+
 (defn all []
   (j/query mysql-db
            (s/select * :brands)))

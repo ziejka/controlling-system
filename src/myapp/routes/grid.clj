@@ -19,11 +19,11 @@
 
 (defn plan-handler []
   (let [user (get-user)]
-  (if (empty? user)
-    (resp/redirect "/")
-    (if (= 730 user)
-      (plan-revenue)
-      (plan-page)))))
+    (if (empty? user)
+      (resp/redirect "/")
+      (if (= "730" user)
+        (plan-revenue)
+        (plan-page)))))
 
 
 ;END OF PLAN HANDLER
@@ -36,14 +36,14 @@
    [:h3 "Wybierz nr centrum rok oraz wersję na jaką chcesz zaplanować"][:br]
    (hf/form-to [:post "/grid"]
                [:div.float-left [:h4 "Centrum"] [:div.radioWrapper
-                (for [center (for [centers (dbquery/plan-on-center (get-user))] (:plannedoncenter centers))]
-                  [:div  [:input {:type "radio" :name "center" :value center :class "radio"} [:span.radio-name center]]])]]
+                                                 (for [center (for [centers (dbquery/plan-on-center (get-user))] (:plannedoncenter centers))]
+                                                   [:div  [:input {:type "radio" :name "center" :value center :class "radio"} [:span.radio-name center]]])]]
                [:div.float-left [:h4 "Rok"] [:div.radioWrapper
-                (for [years (range 2013 2016)]
-                  [:div [:input {:type "radio" :name "year" :value years :class "radio"} [:span.radio-name years]]])]]
+                                             (for [years (range 2013 2016)]
+                                               [:div [:input {:type "radio" :name "year" :value years :class "radio"} [:span.radio-name years]]])]]
                [:div.float-left [:h4 "Wersja"] [:div.radioWrapper
-                (for [version [1 2 3]]
-                  [:div [:input {:type "radio" :name "version" :value version :class "radio"} [:span.radio-name (dbquery/get-version-name version)]]])]]
+                                                (for [version [1 2 3]]
+                                                  [:div [:input {:type "radio" :name "version" :value version :class "radio"} [:span.radio-name (dbquery/get-version-name version)]]])]]
                (hf/submit-button {:class "btn"} "select"))))
 
 (defn sendForm
@@ -65,12 +65,43 @@
                          (for [month (range 1 13)]
                            [:td
                             (hf/hidden-field "cost_type_id_cost" cost)
-                          (hf/hidden-field "cost_center_id_center" center)
-                          (hf/hidden-field "onYear" year)
-                          (hf/hidden-field "onMonth" month)
-                          (hf/text-field {:placeholder "value"} "value")
-                          (hf/hidden-field "verssion" version)])]))
+                            (hf/hidden-field "cost_center_id_center" center)
+                            (hf/hidden-field "onYear" year)
+                            (hf/hidden-field "onMonth" month)
+                            (hf/text-field {:placeholder "value"} "value")
+                            (hf/hidden-field "verssion" version)])]))
                 (hf/submit-button {:class "btn leftMargin"} "send")])))
+
+(defn revenue-select []
+  (hc/html
+   (hf/form-to [:post "/plan-revenue"]
+               [:div.float-left [:h4 "Rok"] [:div.radioWrapper
+                                             (for [years (range 2013 2016)]
+                                               [:div [:input {:type "radio" :name "year" :value years :class "radio"} [:span.radio-name years]]])]]
+               [:div.float-left [:h4 "Wersja"] [:div.radioWrapper
+                                                (for [version [1 2 3]]
+                                                  [:div [:input {:type "radio" :name "version" :value version :class "radio"} [:span.radio-name (dbquery/get-version-name version)]]])]]
+               (hf/submit-button {:class "btn"} "select"))))
+
+(defn revenueSendForm
+  ([] (hc/html
+       [:h4.padding "Wybeirz rok i wersję" ]))
+  ([year version]
+   (hc/html
+    (hf/form-to [:post "revenue-create"]
+                [:table.table.table-striped.revenue.table-bordered
+                 [:thead]
+                 [:tr
+                  [:th {:rowspan "2"} "Marka"] [:th {:rowspan "2"} "Rynek"] [:th {:rowspan "2"} "Rynek szczegół"]
+                  [:th {:colspan "3"} "I"]   [:th {:colspan "3"} "II"]   [:th {:colspan "3"} "III"]
+                  [:th {:colspan "3"} "IV"]  [:th {:colspan "3"} "V"]    [:th {:colspan "3"} "VI"]
+                  [:th {:colspan "3"} "VII"] [:th {:colspan "3"} "VIII"] [:th {:colspan "3"} "IX"]
+                  [:th {:colspan "3"} "X"]   [:th {:colspan "3"} "XI"]   [:th {:colspan "3"} "XII"]]
+                 [:tr (for [m (range 12)]
+                  (list [:th "Sprzedaż"] [:th "Marża"] [:th "Marża [%]"]))]]))))
+
+(hc/html [:tr (for [m (range 12)]
+                  (list [:th "Sprzedaż"] [:th "Marża"] [:th "Marża [%]"]))])
 
 
 ; END OF PAGE ELEMENT
@@ -79,16 +110,22 @@
 ; PAGE RENDER
 
 (defn plan-revenue []
-  (layout/render "plan.html" {:select (center-selection)}))
+  (layout/render "grid.html" {:user-id (get-user)
+                              :forms (revenueSendForm)
+                              :select (revenue-select)}))
+
+(defn plan-revenue-grid [year version]
+  (layout/render "grid.html" {:user-id (get-user)
+                              :forms (revenueSendForm year version)
+                              :select (revenue-select)}))
 
 (defn plan-page []
-  (layout/render "plan.html" {:select (center-selection)}))
+  (layout/render "plan.html" {:user-id (get-user)
+                              :select (center-selection)}))
 
 (defn grid-page [center year version]
   (layout/render "grid.html"
                  {:user-id center
-                  :content (list (dbquery/all))
-                  :items (dbquery/all)
                   :forms (sendForm center year version)}))
 
 ;END OF PAGE RENDER
@@ -100,4 +137,9 @@
           (grid-page center year version)))
   (POST "/create" [& params]
         (do (dbquery/add-value params)
+          (resp/redirect "/plan")))
+  (POST "/plan-revenue" [year version]
+        (plan-revenue-grid year version))
+  (POST "/revenue-create" [& params]
+        (do (dbquery/add-revenue-plan params)
           (resp/redirect "/plan"))))

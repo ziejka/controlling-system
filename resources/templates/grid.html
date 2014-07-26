@@ -7,12 +7,12 @@
 		<th>Rok</th>
 	</tr>
 	{% for item in items %}
-	<tr> 
+	<tr>
 		<td> {{item.brand_name}} </th>
 		<td> {{item.id_brands}} </td>
 
 		<td>
-			<select> 
+			<select>
 				{% for year in years %}
 					<option> {{year}} </option>
 				{% endfor %}
@@ -22,7 +22,10 @@
 		{% endfor %}
 		{{year|safe}} {{version|safe}}
 	</table> -->
-	<div>{{select|safe}}  </div>
-	<div>{{forms|safe}}</div>
+	<div  class = "padding"> {{select|safe}}  </div>
+</br>
+</br>
+
+    <div>{{forms|safe}}</div>
 	{% endblock %}
 
