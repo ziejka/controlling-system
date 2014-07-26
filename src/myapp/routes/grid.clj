@@ -12,6 +12,23 @@
 (defn get-user []
   (session/get :user))
 
+;PLAN HANDLER
+
+(declare plan-page)
+(declare plan-revenue)
+
+(defn plan-handler []
+  (let [user (get-user)]
+  (if (empty? user)
+    (resp/redirect "/")
+    (if (= 730 user)
+      (plan-revenue)
+      (plan-page)))))
+
+
+;END OF PLAN HANDLER
+
+
 ; PAGE ELEMENT
 
 (defn center-selection []
@@ -61,6 +78,9 @@
 
 ; PAGE RENDER
 
+(defn plan-revenue []
+  (layout/render "plan.html" {:select (center-selection)}))
+
 (defn plan-page []
   (layout/render "plan.html" {:select (center-selection)}))
 
@@ -74,7 +94,7 @@
 ;END OF PAGE RENDER
 
 (defroutes grid-routes
-  (GET "/plan" [] (plan-page))
+  (GET "/plan" [] (plan-handler))
   (POST "/grid" [center year version]
         (do (sendForm center year version)
           (grid-page center year version)))
