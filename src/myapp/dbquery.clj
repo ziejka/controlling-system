@@ -133,8 +133,6 @@
            (s/select :id_type :market_type))]
     (:id_type m)))
 
-(get-market-id-all)
-
 (defn get-market-11 []
   (j/query mysql-db
            ["select * from market_type
@@ -161,11 +159,3 @@
 (defn get-market-id [m]
   (for [mr (m)]
     (:id_type mr)))
-
-(get-market-name get-market-11)
-
-(get-market-11)
-
-
-
-(first (get-market-11))
