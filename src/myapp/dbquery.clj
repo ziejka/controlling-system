@@ -159,3 +159,14 @@
 (defn get-market-id [m]
   (for [mr (m)]
     (:id_type mr)))
+
+(defn get-revenue-value [brand-name market year month version]
+  (first
+   (j/query mysql-db
+           (s/select [:value :profit_margin]
+                     :planned_revenues
+                     (s/where {:id_brands brand-name
+                               :id_market_type market
+                               :r_year year
+                               :r_month month
+                               :version version})))))

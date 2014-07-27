@@ -125,9 +125,7 @@
                      [:tr
                       [:td "Marża %"]
                       (for [market (dbquery/get-market-id-all)]
-                        [:td "suma"])]))]]
-
-                ))))
+                        [:td "suma"])]))]]))))
 
 ; END OF PAGE ELEMENT
 

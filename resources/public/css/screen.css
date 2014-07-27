@@ -54,6 +54,10 @@ body {
   vertical-align: middle !important;
   }
 
+.revenue input {
+  width: 90px !important;;
+}
+
 .long {
   padding-right: 110px !important;
 }
