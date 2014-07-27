@@ -96,7 +96,7 @@
     (hf/form-to [:post "revenue-create"]
                 (hf/submit-button {:class "btn leftMargin"} "send")
                 [:br]
-                [:table.table.table-striped.revenue.table-bordered
+                [:table.table.revenue.table-bordered
                  [:thead
                   [:tr
                    [:th "Ms"] [:th "Co?"]
