@@ -111,7 +111,6 @@
               and p.term =?"
               id-center id-cost year version term]))))
 
-
 (defn get-brand-all []
   (j/query mysql-db
            (s/select * :brands)))

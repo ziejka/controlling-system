@@ -7,7 +7,8 @@
    [ring.util.response :as resp]
    [hiccup.core :as hc]
    [hiccup.form :as hf]
-   [noir.session :as session]))
+   [noir.session :as session]
+   [reagent.core :as reagent :refer [atom]]))
 
 (defn get-user []
   (session/get :user))
@@ -27,6 +28,13 @@
 
 
 ;END OF PLAN HANDLER
+
+#_(defn timer-component []
+  (let [seconds-elapsed (atom 0)]
+    (fn []
+      (js/setTimeout #(swap! seconds-elapsed inc) 1000)
+      [:div
+       "Seconds Elapsed: " @seconds-elapsed])))
 
 
 ; PAGE ELEMENT
@@ -56,7 +64,8 @@
                  [:tr
                   [:th {:colspan 2 :style "border-bottom: none;"}] [:th.middle {:colspan 12 :style "text-align: center; border-bottom: none;"} "Miesiąc"]]
                  [:tr
-                  [:th "Nr kosztu"] [:th "Nazwa"] [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]
+                  [:th "Nr kosztu"] [:th "Nazwa"] [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]
+                  [:th "Rok"] [:th "Kw. I"] [:th "Kw. II"] [:th "Kw. III"] [:th "Kw. IV"]]]
                 (into [:tbody]
                       (for [cost (for [costs (dbquery/cost-on-center-grid (get-user) center)] (:id_cost costs))]
                         [:tr
@@ -69,7 +78,12 @@
                             (hf/hidden-field "onYear" year)
                             (hf/hidden-field "onMonth" month)
                             (hf/text-field {:placeholder "value"} "value")
-                            (hf/hidden-field "verssion" version)])]))
+                            (hf/hidden-field "verssion" version)])
+                         [:td [:b "timer-component"]]
+                         [:td "a"]
+                         [:td "b"]
+                         [:td "c"]
+                         [:td "d"]]))
                 (hf/submit-button {:class "btn leftMargin"} "send")])))
 
 (defn revenue-select []
