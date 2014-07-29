@@ -112,7 +112,7 @@
                     (list
                      [:tr
                       [:td {:rowspan "4"} month]]
-                     [:tr
+                     [:tr {:class "sale"}
                       [:td "Sprzedaż"]
                       (for [market (dbquery/get-market-id-all)]
                         [:td
@@ -122,15 +122,15 @@
                          (hf/hidden-field "r_month" month)
                          (hf/hidden-field "version" version)
                          (hf/text-field {:placeholder "0" :required ""} "value")])]
-                     [:tr
+                     [:tr {:class "margin"}
                       [:td "Marża"]
                       (for [market (dbquery/get-market-id-all)]
                         [:td
                          (hf/text-field {:placeholder "0" :required ""} "profit_margin")])]
-                     [:tr
+                     [:tr {:class "marginP"}
                       [:td "Marża %"]
                       (for [market (dbquery/get-market-id-all)]
-                        [:td "suma"])]))]]))))
+                        [:td {:class "myMargin"} "suma"])]))]]))))
 
 ; END OF PAGE ELEMENT
 
