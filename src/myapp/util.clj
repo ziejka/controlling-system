@@ -15,7 +15,8 @@
 
 (def login-form
   (hc/html
-    (hf/form-to [:post "/login"]
+    (hf/form-to {:id "loginForm"}
+     [:post "/login"]
                (hf/label "login" "Login: ")
                (hf/text-field "username")[:br]
                (hf/label "pass" "Password: ")

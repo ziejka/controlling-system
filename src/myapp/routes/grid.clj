@@ -7,8 +7,7 @@
    [ring.util.response :as resp]
    [hiccup.core :as hc]
    [hiccup.form :as hf]
-   [noir.session :as session]
-   [reagent.core :as reagent :refer [atom]]))
+   [noir.session :as session]))
 
 (defn get-user []
   (session/get :user))
@@ -28,14 +27,6 @@
 
 
 ;END OF PLAN HANDLER
-
-#_(defn timer-component []
-  (let [seconds-elapsed (atom 0)]
-    (fn []
-      (js/setTimeout #(swap! seconds-elapsed inc) 1000)
-      [:div
-       "Seconds Elapsed: " @seconds-elapsed])))
-
 
 ; PAGE ELEMENT
 
