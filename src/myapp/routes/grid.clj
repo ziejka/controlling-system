@@ -70,7 +70,7 @@
                             (hf/hidden-field "onMonth" month)
                             (hf/text-field {:placeholder "0" :required "" :class "value"} "value")
                             (hf/hidden-field "verssion" version)])
-                         [:td {:class "sum"}]
+                         [:td {:class "sum"} "0"]
                          [:td "a"]
                          [:td "b"]
                          [:td "c"]

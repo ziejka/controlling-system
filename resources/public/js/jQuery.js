@@ -1,8 +1,7 @@
-$(document).ready(
+ $(document).ready(
   function () {
     calc;
     $('.value').change(calc);
-
     function calc() {
      $('tr.calc').each(function(){
         var totalPoints = 0;
