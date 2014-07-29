@@ -18,7 +18,7 @@
     (hf/form-to {:id "loginForm"}
      [:post "/login"]
                (hf/label "login" "Login: ")
-               (hf/text-field "username")[:br]
+               (hf/text-field {:required ""} "username")[:br]
                (hf/label "pass" "Password: ")
-               (hf/password-field "password")
-               (hf/submit-button "Login"))))
+               (hf/password-field {:required ""} "password")
+               (hf/submit-button {:id "submit"} "Login"))))

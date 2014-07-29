@@ -12,7 +12,8 @@
                  [org.clojure/java.jdbc "0.3.0-alpha5"]
                  [mysql/mysql-connector-java "5.1.25"]
                  [hiccup "1.0.4"]
-                 [org.clojure/clojurescript "0.0-2173"]]
+                 [org.clojure/clojurescript "0.0-2173"]
+                 [domina "1.0.3-SNAPSHOT"]]
 
   :repl-options {:init-ns myapp.repl}
   :plugins [[lein-ring "0.8.10"]
