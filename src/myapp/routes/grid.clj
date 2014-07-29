@@ -59,7 +59,7 @@
                   [:th "Rok"] [:th "Kw. I"] [:th "Kw. II"] [:th "Kw. III"] [:th "Kw. IV"]]]
                 (into [:tbody]
                       (for [cost (for [costs (dbquery/cost-on-center-grid (get-user) center)] (:id_cost costs))]
-                        [:tr
+                        [:tr {:class "calc"}
                          [:td cost]
                          [:td (dbquery/get-cost-name cost)]
                          (for [month (range 1 13)]
@@ -68,9 +68,9 @@
                             (hf/hidden-field "cost_center_id_center" center)
                             (hf/hidden-field "onYear" year)
                             (hf/hidden-field "onMonth" month)
-                            (hf/text-field {:placeholder "0" :required ""} "value")
+                            (hf/text-field {:placeholder "0" :required "" :class "value"} "value")
                             (hf/hidden-field "verssion" version)])
-                         [:td [:b ]]
+                         [:td {:class "sum"}]
                          [:td "a"]
                          [:td "b"]
                          [:td "c"]

@@ -29515,56 +29515,6 @@ if (cljs.core.truth_(typeof HTMLCollection != "undefined")) {
 goog.require("cljs.core");
 goog.require("domina");
 goog.require("domina");
-modern_cljs.login.calc = function calc() {
-  var iter__4160__auto__ = function iter__4962(s__4963) {
-    return new cljs.core.LazySeq(null, function() {
-      var s__4963__$1 = s__4963;
-      while (true) {
-        var temp__4126__auto__ = cljs.core.seq.call(null, s__4963__$1);
-        if (temp__4126__auto__) {
-          var s__4963__$2 = temp__4126__auto__;
-          if (cljs.core.chunked_seq_QMARK_.call(null, s__4963__$2)) {
-            var c__4158__auto__ = cljs.core.chunk_first.call(null, s__4963__$2);
-            var size__4159__auto__ = cljs.core.count.call(null, c__4158__auto__);
-            var b__4965 = cljs.core.chunk_buffer.call(null, size__4159__auto__);
-            if (function() {
-              var i__4964 = 0;
-              while (true) {
-                if (i__4964 < size__4159__auto__) {
-                  var tr = cljs.core._nth.call(null, c__4158__auto__, i__4964);
-                  cljs.core.chunk_append.call(null, b__4965, function() {
-                    var v = domina.by_id.call(null, "value");
-                    return v;
-                  }());
-                  var G__4966 = i__4964 + 1;
-                  i__4964 = G__4966;
-                  continue;
-                } else {
-                  return true;
-                }
-                break;
-              }
-            }()) {
-              return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__4965), iter__4962.call(null, cljs.core.chunk_rest.call(null, s__4963__$2)));
-            } else {
-              return cljs.core.chunk_cons.call(null, cljs.core.chunk.call(null, b__4965), null);
-            }
-          } else {
-            var tr = cljs.core.first.call(null, s__4963__$2);
-            return cljs.core.cons.call(null, function() {
-              var v = domina.by_id.call(null, "value");
-              return v;
-            }(), iter__4962.call(null, cljs.core.rest.call(null, s__4963__$2)));
-          }
-        } else {
-          return null;
-        }
-        break;
-      }
-    }, null, null);
-  };
-  return iter__4160__auto__.call(null, domina.sel.call(null, "tr"));
-};
 modern_cljs.login.validate_form = function validate_form() {
   var username = domina.by_id.call(null, "username");
   var password = domina.by_id.call(null, "password");
@@ -29590,4 +29540,4 @@ modern_cljs.login.init = function init() {
     return null;
   }
 };
-window.onload = modern_cljs.login.init;
+window.onchange = modern_cljs.login.init;
