@@ -21,4 +21,4 @@
                (hf/text-field {:required ""} "username")[:br]
                (hf/label "pass" "Password: ")
                (hf/password-field {:required ""} "password")
-               (hf/submit-button {:id "submit"} "Login"))))
+               (hf/submit-button {:id "submit" :class "btn leftMargin"} "Login"))))
