@@ -28,14 +28,6 @@
 
 ;END OF PLAN HANDLER
 
-#_(defn timer-component []
-  (let [seconds-elapsed (atom 0)]
-    (fn []
-      (js/setTimeout #(swap! seconds-elapsed inc) 1000)
-      [:div
-       "Seconds Elapsed: " @seconds-elapsed])))
-
-
 ; PAGE ELEMENT
 
 (defn center-selection []
@@ -67,7 +59,7 @@
                   [:th "Rok"] [:th "Kw. I"] [:th "Kw. II"] [:th "Kw. III"] [:th "Kw. IV"]]]
                 (into [:tbody]
                       (for [cost (for [costs (dbquery/cost-on-center-grid (get-user) center)] (:id_cost costs))]
-                        [:tr
+                        [:tr {:class "calc"}
                          [:td cost]
                          [:td (dbquery/get-cost-name cost)]
                          (for [month (range 1 13)]
@@ -76,9 +68,9 @@
                             (hf/hidden-field "cost_center_id_center" center)
                             (hf/hidden-field "onYear" year)
                             (hf/hidden-field "onMonth" month)
-                            (hf/text-field {:placeholder "value"} "value")
+                            (hf/text-field {:placeholder "0" :required "" :class "value"} "value")
                             (hf/hidden-field "verssion" version)])
-                         [:td [:b "timer-component"]]
+                         [:td {:class "sum"}]
                          [:td "a"]
                          [:td "b"]
                          [:td "c"]
@@ -120,7 +112,7 @@
                     (list
                      [:tr
                       [:td {:rowspan "4"} month]]
-                     [:tr
+                     [:tr {:class "sale"}
                       [:td "Sprzedaż"]
                       (for [market (dbquery/get-market-id-all)]
                         [:td
@@ -129,16 +121,16 @@
                          (hf/hidden-field "r_year" year)
                          (hf/hidden-field "r_month" month)
                          (hf/hidden-field "version" version)
-                         (hf/text-field {:placeholder "value"} "value")])]
-                     [:tr
+                         (hf/text-field {:placeholder "0" :required ""} "value")])]
+                     [:tr {:class "margin"}
                       [:td "Marża"]
                       (for [market (dbquery/get-market-id-all)]
                         [:td
-                         (hf/text-field {:placeholder "margin"} "profit_margin")])]
-                     [:tr
+                         (hf/text-field {:placeholder "0" :required ""} "profit_margin")])]
+                     [:tr {:class "marginP"}
                       [:td "Marża %"]
                       (for [market (dbquery/get-market-id-all)]
-                        [:td "suma"])]))]]))))
+                        [:td {:class "myMargin"} "suma"])]))]]))))
 
 ; END OF PAGE ELEMENT
 
