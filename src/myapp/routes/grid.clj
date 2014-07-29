@@ -68,9 +68,9 @@
                             (hf/hidden-field "cost_center_id_center" center)
                             (hf/hidden-field "onYear" year)
                             (hf/hidden-field "onMonth" month)
-                            (hf/text-field {:placeholder "value" :required ""} "value")
+                            (hf/text-field {:placeholder "0" :required ""} "value")
                             (hf/hidden-field "verssion" version)])
-                         [:td [:b "timer-component"]]
+                         [:td [:b ]]
                          [:td "a"]
                          [:td "b"]
                          [:td "c"]
@@ -121,12 +121,12 @@
                          (hf/hidden-field "r_year" year)
                          (hf/hidden-field "r_month" month)
                          (hf/hidden-field "version" version)
-                         (hf/text-field {:placeholder "value" :required ""} "value")])]
+                         (hf/text-field {:placeholder "0" :required ""} "value")])]
                      [:tr
                       [:td "Marża"]
                       (for [market (dbquery/get-market-id-all)]
                         [:td
-                         (hf/text-field {:placeholder "margin" :required ""} "profit_margin")])]
+                         (hf/text-field {:placeholder "0" :required ""} "profit_margin")])]
                      [:tr
                       [:td "Marża %"]
                       (for [market (dbquery/get-market-id-all)]

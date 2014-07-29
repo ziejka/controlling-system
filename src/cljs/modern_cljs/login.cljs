@@ -1,5 +1,10 @@
 (ns modern-cljs.login
-  (:require [domina :as d :refer [by-id value]]))
+  (:require [domina :as d]))
+
+(defn calc []
+  (for [tr (d/sel "tr")]
+    (let [v (d/by-id "value")]
+      (+ v))))
 
 ;; define the function to be attached to form submission event
 (defn validate-form []
