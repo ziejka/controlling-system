@@ -24,7 +24,7 @@ $(document).ready(
 
         function GetIntOrEmpty(value) {
           var myresult = parseInt(value, 10);
-          return isNaN(myresult) ? "" : result + "";
+          return isNaN(myresult) ? "0" : result.toFixed(2) + "";
         }
 
         sale.each(function(){
@@ -36,3 +36,4 @@ $(document).ready(
         });
       });}
   });
+parseFloat($(this).temp1()).toFixed(2);

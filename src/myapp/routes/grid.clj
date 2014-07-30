@@ -136,7 +136,7 @@
                      [:tr {:class "marginP"}
                       [:td "Marża %"]
                       (for [market (dbquery/get-market-id-all)]
-                        [:td {:class "myMargin"} "suma"])]))]]))))
+                        [:td {:class "myMargin"} "0 %"])]))]]))))
 
 ; END OF PAGE ELEMENT
 
