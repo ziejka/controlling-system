@@ -74,10 +74,10 @@
                             (hf/text-field {:placeholder "0" :required "" :class "value"} "value")
                             (hf/hidden-field "verssion" version)])
                          [:td {:class "sum"} "0"]
-                         [:td "a"]
-                         [:td "b"]
-                         [:td "c"]
-                         [:td "d"]]))
+                         [:td {:class "qu1"} "0"]
+                         [:td {:class "qu2"} "0"]
+                         [:td {:class "qu3"} "0"]
+                         [:td {:class "qu4"} "0"]]))
                 (hf/submit-button {:class "btn leftMargin"} "send")])))
 
 (defn revenue-select []
