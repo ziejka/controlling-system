@@ -36,13 +36,16 @@
    (hf/form-to [:post "/grid"]
                [:div.float-left [:h4 "Centrum"] [:div.radioWrapper
                                                  (for [center (for [centers (dbquery/plan-on-center (get-user))] (:plannedoncenter centers))]
-                                                   [:div  [:input {:type "radio" :name "center" :value center :class "radio"} [:span.radio-name center]]])]]
+                                                   [:div  [:input {:type "radio" :name "center" :value center :class "radio" :required ""}
+                                                           [:span.radio-name center]]])]]
                [:div.float-left [:h4 "Rok"] [:div.radioWrapper
                                              (for [years (range 2013 2016)]
-                                               [:div [:input {:type "radio" :name "year" :value years :class "radio"} [:span.radio-name years]]])]]
+                                               [:div [:input {:type "radio" :name "year" :value years :class "radio" :required ""}
+                                                      [:span.radio-name years]]])]]
                [:div.float-left [:h4 "Wersja"] [:div.radioWrapper
                                                 (for [version [1 2 3]]
-                                                  [:div [:input {:type "radio" :name "version" :value version :class "radio"} [:span.radio-name (dbquery/get-version-name version)]]])]]
+                                                  [:div [:input {:type "radio" :name "version" :value version :class "radio" :required ""}
+                                                         [:span.radio-name (dbquery/get-version-name version)]]])]]
                (hf/submit-button {:class "btn"} "select"))))
 
 (defn sendForm
@@ -82,13 +85,16 @@
    (hf/form-to [:post "/plan-revenue"]
                [:div.float-left [:h4 "Marka"] [:div.radioWrapper
                                                (for [brand  (dbquery/get-brand-id)]
-                                                 [:div [:input {:type "radio" :name "brand-name" :value brand :class "radio"} [:span.radio-name (dbquery/get-brand-name brand)]]])]]
+                                                 [:div [:input {:type "radio" :name "brand-name" :value brand :class "radio" :required ""}
+                                                        [:span.radio-name (dbquery/get-brand-name brand)]]])]]
                [:div.float-left [:h4 "Rok"] [:div.radioWrapper
                                              (for [years (range 2013 2016)]
-                                               [:div [:input {:type "radio" :name "year" :value years :class "radio"} [:span.radio-name years]]])]]
+                                               [:div [:input {:type "radio" :name "year" :value years :class "radio" :required ""}
+                                                      [:span.radio-name years]]])]]
                [:div.float-left [:h4 "Wersja"] [:div.radioWrapper
                                                 (for [version [1 2 3]]
-                                                  [:div [:input {:type "radio" :name "version" :value version :class "radio"} [:span.radio-name (dbquery/get-version-name version)]]])]]
+                                                  [:div [:input {:type "radio" :name "version" :value version :class "radio" :required ""}
+                                                         [:span.radio-name (dbquery/get-version-name version)]]])]]
                (hf/submit-button {:class "btn"} "select"))))
 
 (defn revenueSendForm
@@ -121,12 +127,12 @@
                          (hf/hidden-field "r_year" year)
                          (hf/hidden-field "r_month" month)
                          (hf/hidden-field "version" version)
-                         (hf/text-field {:placeholder "0" :required ""} "value")])]
+                         (hf/text-field {:placeholder "0" :required "" :class "focusOn"} "value")])]
                      [:tr {:class "margin"}
                       [:td "Marża"]
                       (for [market (dbquery/get-market-id-all)]
                         [:td
-                         (hf/text-field {:placeholder "0" :required ""} "profit_margin")])]
+                         (hf/text-field {:placeholder "0" :required "" :class "focusOn"} "profit_margin")])]
                      [:tr {:class "marginP"}
                       [:td "Marża %"]
                       (for [market (dbquery/get-market-id-all)]
