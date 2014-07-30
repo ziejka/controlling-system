@@ -116,11 +116,11 @@
            (s/select * :brands)))
 
 (defn get-brand-name [brand-id]
- (:brand_name
-  (first
-  (j/query mysql-db
-          (s/select :brand_name :brands
-                    (s/where {:id_brands brand-id}))))))
+  (:brand_name
+   (first
+    (j/query mysql-db
+             (s/select :brand_name :brands
+                       (s/where {:id_brands brand-id}))))))
 
 (defn get-brand-id []
   (for [brand (get-brand-all)]
@@ -129,7 +129,7 @@
 (defn get-market-id-all []
   (for
     [m (j/query mysql-db
-           (s/select :id_type :market_type))]
+                (s/select :id_type :market_type))]
     (:id_type m)))
 
 (defn get-market-11 []
@@ -152,8 +152,8 @@
    (first
     (j/query mysql-db
              (s/select :type_name :market_type
-              (s/where
-              {:id_type m}))))))
+                       (s/where
+                        {:id_type m}))))))
 
 (defn get-market-id [m]
   (for [mr (m)]
@@ -162,10 +162,23 @@
 (defn get-revenue-value [brand-name market year month version]
   (first
    (j/query mysql-db
-           (s/select [:value :profit_margin]
-                     :planned_revenues
-                     (s/where {:id_brands brand-name
-                               :id_market_type market
-                               :r_year year
-                               :r_month month
-                               :version version})))))
+            (s/select [:value :profit_margin]
+                      :planned_revenues
+                      (s/where {:id_brands brand-name
+                                :id_market_type market
+                                :r_year year
+                                :r_month month
+                                :version version})))))
+
+(defn get-revenue-marginP [brand-name market year month version]
+  (:marginp
+   (first
+   (j/query mysql-db
+            ["select ROUND((p.profit_margin / p.value * 100), 2) marginP from planned_revenues p
+             where p.id_brands = ?
+             and p.id_market_type = ?
+             and p.r_year = ?
+             and p.r_month = ?
+             and p.version = ?"
+             brand-name market year month version]))))
+

@@ -36,4 +36,3 @@ $(document).ready(
         });
       });}
   });
-parseFloat($(this).temp1()).toFixed(2);

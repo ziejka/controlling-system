@@ -70,7 +70,8 @@
          [:tr
           [:td "Marża %"]
           (for [market (dbquery/get-market-id-all)]
-            [:td "suma"])]))]])))
+            [:td
+             (dbquery/get-revenue-marginP brand-id market year month version) " %"])]))]])))
 
 
 (defn guide-select
