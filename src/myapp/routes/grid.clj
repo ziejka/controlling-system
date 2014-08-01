@@ -43,10 +43,12 @@
                                              (for [years (range 2013 2016)]
                                                [:div [:input {:type "radio" :name "year" :value years :class "radio" :required ""}
                                                       [:span.radio-name years]]])]]
-               [:div.float-left [:h4 "Wersja"] [:div.radioWrapper
-                                                (for [version [1 2 3]]
-                                                  [:div [:input {:type "radio" :name "version" :value version :class "radio" :required ""}
-                                                         [:span.radio-name (dbquery/get-version-name version)]]])]]
+               (if (= where "/exec")
+                 [:input {:type "hidden" :name "version" :value "1"}]
+                 [:div.float-left [:h4 "Wersja"] [:div.radioWrapper
+                                                  (for [version [1 2 3]]
+                                                    [:div [:input {:type "radio" :name "version" :value version :class "radio" :required ""}
+                                                           [:span.radio-name (dbquery/get-version-name version)]]])]])
                (hf/submit-button {:class "btn"} "select"))))
 
 (defn sendForm
@@ -173,7 +175,7 @@
 (defroutes grid-routes
   (GET "/plan" [] (plan-handler))
   (POST "/grid" [center year version]
-         (grid-page center year version "/create"))
+        (grid-page center year version "/create"))
   (POST "/create" [& params]
         (do (dbquery/add-value params)
           (resp/redirect "/plan")))
