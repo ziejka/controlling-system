@@ -33,7 +33,7 @@
 
 (defn center-selection [user where]
   (hc/html
-   [:h3 "Wybierz nr centrum rok oraz wersję na jaką chcesz zaplanować"][:br]
+   [:h3 "Wybierz nr centrum rok oraz wersję"][:br]
    (hf/form-to [:post where]
                [:div.float-left [:h4 "Centrum"] [:div.radioWrapper
                                                  (for [center (for [centers (dbquery/plan-on-center user)] (:plannedoncenter centers))]
@@ -54,7 +54,11 @@
 (defn sendForm
   [my-center center year version where]
   (hc/html
-   [:h3.padding "Planujesz na cetrum: " [:B center]" " [:b (dbquery/get-center-name center)]  ", na rok " [:b year] ", wersja: "[:b (dbquery/get-version-name version)]]
+   [:h3.padding "Wybrałeś cetrum: " [:B center]" " [:b (dbquery/get-center-name center)]  ", rok " [:b year]
+    (if (= where "/add-exec")
+      [:span ]
+      [:span ", wersja: "[:b (dbquery/get-version-name version)]])
+    ]
    (hf/form-to [:post where]
                [:table.table.table-striped
                 [:thead
