@@ -10,7 +10,7 @@ body {
 
 .float-left {
   float: left;
-  width: 150px;
+  /*width: 150px;*/
   border: 1px solid #DDDDDD;
   margin-right: 10px;
 }
@@ -24,6 +24,7 @@ body {
 
 .radioWrapper{
   margin-left: 20px;
+  padding-right: 20px;
 }
 
 .radio {

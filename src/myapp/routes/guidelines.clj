@@ -23,7 +23,7 @@
         (guide-revenue-page user)
         (guide-page user)))))
 
-;PAGE ELEMENT
+; PAGE ELEMENT
 
 (defn guide-revenue-select []
   (hc/html

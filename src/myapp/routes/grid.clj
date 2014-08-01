@@ -12,7 +12,7 @@
 (defn get-user []
   (session/get :user))
 
-;PLAN HANDLER
+; PAGE HANDLER
 
 (declare plan-page)
 (declare plan-revenue)
@@ -25,17 +25,18 @@
         (plan-revenue)
         (plan-page)))))
 
-
-;END OF PLAN HANDLER
+; END OF PAGE HANDLER
 
 ; PAGE ELEMENT
 
-(defn center-selection []
+; COSTS
+
+(defn center-selection [user where]
   (hc/html
    [:h3 "Wybierz nr centrum rok oraz wersję na jaką chcesz zaplanować"][:br]
-   (hf/form-to [:post "/grid"]
+   (hf/form-to [:post where]
                [:div.float-left [:h4 "Centrum"] [:div.radioWrapper
-                                                 (for [center (for [centers (dbquery/plan-on-center (get-user))] (:plannedoncenter centers))]
+                                                 (for [center (for [centers (dbquery/plan-on-center user)] (:plannedoncenter centers))]
                                                    [:div  [:input {:type "radio" :name "center" :value center :class "radio" :required ""}
                                                            [:span.radio-name center]]])]]
                [:div.float-left [:h4 "Rok"] [:div.radioWrapper
@@ -49,10 +50,10 @@
                (hf/submit-button {:class "btn"} "select"))))
 
 (defn sendForm
-  [center year version]
+  [my-center center year version where]
   (hc/html
    [:h3.padding "Planujesz na cetrum: " [:B center]" " [:b (dbquery/get-center-name center)]  ", na rok " [:b year] ", wersja: "[:b (dbquery/get-version-name version)]]
-   (hf/form-to [:post "/create"]
+   (hf/form-to [:post where]
                [:table.table.table-striped
                 [:thead
                  [:tr
@@ -61,7 +62,7 @@
                   [:th "Nr kosztu"] [:th "Nazwa"] [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]
                   [:th "Rok"] [:th "Kw. I"] [:th "Kw. II"] [:th "Kw. III"] [:th "Kw. IV"]]]
                 (into [:tbody]
-                      (for [cost (for [costs (dbquery/cost-on-center-grid (get-user) center)] (:id_cost costs))]
+                      (for [cost (for [costs (dbquery/cost-on-center-grid my-center center)] (:id_cost costs))]
                         [:tr {:class "calc"}
                          [:td cost]
                          [:td (dbquery/get-cost-name cost)]
@@ -79,6 +80,10 @@
                          [:td {:class "qu3"} "0"]
                          [:td {:class "qu4"} "0"]]))
                 (hf/submit-button {:class "btn leftMargin"} "send")])))
+
+; END OF COSTS
+
+; REVENUE
 
 (defn revenue-select []
   (hc/html
@@ -138,6 +143,8 @@
                       (for [market (dbquery/get-market-id-all)]
                         [:td {:class "myMargin"} "0 %"])]))]]))))
 
+; END OF REVENUE
+
 ; END OF PAGE ELEMENT
 
 
@@ -154,20 +161,19 @@
 
 (defn plan-page []
   (layout/render "plan.html" {:user-id (get-user)
-                              :select (center-selection)}))
+                              :select (center-selection (get-user) "/grid")}))
 
-(defn grid-page [center year version]
+(defn grid-page [center year version where]
   (layout/render "grid.html"
                  {:user-id center
-                  :forms (sendForm center year version)}))
+                  :forms (sendForm (get-user) center year version where)}))
 
 ;END OF PAGE RENDER
 
 (defroutes grid-routes
   (GET "/plan" [] (plan-handler))
   (POST "/grid" [center year version]
-        (do (sendForm center year version)
-          (grid-page center year version)))
+         (grid-page center year version "/create"))
   (POST "/create" [& params]
         (do (dbquery/add-value params)
           (resp/redirect "/plan")))

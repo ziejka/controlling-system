@@ -22,6 +22,10 @@
   (apply j/insert! mysql-db :planned_revenues
          (for [v (range (count (:value params)))] (apply conj (for [k (keys params)] {k (nth (k params) v)})))))
 
+(defn add-realized-cost [params]
+  (apply j/insert! mysql-db :realized_costs
+         (for [v (range (count (:value params)))] (apply conj (for [k (keys params)] {k (nth (k params) v)})))))
+
 (defn cost-on-center-grid [user center]
   (j/query mysql-db
            (s/select :id_cost :cost_on_center
@@ -182,3 +186,9 @@
              and p.version = ?"
              brand-name market year month version]))))
 
+(defn get-list-center []
+  (for
+    [c
+     (j/query mysql-db
+           (s/select :id_center :cost_center))]
+    (:id_center c)))
