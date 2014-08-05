@@ -90,9 +90,9 @@
 
 ; REVENUE
 
-(defn revenue-select []
+(defn revenue-select [where]
   (hc/html
-   (hf/form-to [:post "/plan-revenue"]
+   (hf/form-to [:post where]
                [:div.float-left [:h4 "Marka"] [:div.radioWrapper
                                                (for [brand  (dbquery/get-brand-id)]
                                                  [:div [:input {:type "radio" :name "brand-name" :value brand :class "radio" :required ""}
@@ -101,20 +101,25 @@
                                              (for [years (range 2013 2016)]
                                                [:div [:input {:type "radio" :name "year" :value years :class "radio" :required ""}
                                                       [:span.radio-name years]]])]]
-               [:div.float-left [:h4 "Wersja"] [:div.radioWrapper
+               (if (= where "/add-exec-revenue")
+                 [:input {:type "hidden" :name "version" :value "1"}]
+                 [:div.float-left [:h4 "Wersja"] [:div.radioWrapper
                                                 (for [version [1 2 3]]
                                                   [:div [:input {:type "radio" :name "version" :value version :class "radio" :required ""}
-                                                         [:span.radio-name (dbquery/get-version-name version)]]])]]
+                                                         [:span.radio-name (dbquery/get-version-name version)]]])]])
                (hf/submit-button {:class "btn"} "select"))))
 
 (defn revenueSendForm
   ([] (hc/html
        [:h4.padding "Wybeirz rok i wersję" ]))
-  ([year version brand-id]
+  ([year version brand-id where]
    (hc/html
-    [:h3.padding "Planujesz dla marki: "[:b (dbquery/get-brand-name brand-id)]  ", na rok " [:b year] ", wersja: "[:b (dbquery/get-version-name version)]]
+    [:h3.padding "Wybrałeś markę: "[:b (dbquery/get-brand-name brand-id)]  ", rok " [:b year]
+     (if (= where "/exec-rev")
+       [:span ]
+       [:span ", wersja: "[:b (dbquery/get-version-name version)]])]
     [:br]
-    (hf/form-to [:post "revenue-create"]
+    (hf/form-to [:post where]
                 (hf/submit-button {:class "btn leftMargin"} "send")
                 [:br]
                 [:table.table.revenue.table-bordered
@@ -158,11 +163,11 @@
 (defn plan-revenue []
   (layout/render "grid.html" {:user-id (get-user)
                               :forms (revenueSendForm)
-                              :select (revenue-select)}))
+                              :select (revenue-select "/plan-revenue")}))
 
-(defn plan-revenue-grid [year version brand-name]
+(defn plan-revenue-grid [year version brand-name where]
   (layout/render "grid.html" {:user-id (get-user)
-                              :forms (revenueSendForm year version brand-name)}))
+                              :forms (revenueSendForm year version brand-name where)}))
 
 (defn plan-page []
   (layout/render "plan.html" {:user-id (get-user)
@@ -182,8 +187,8 @@
   (POST "/create" [& params]
         (do (dbquery/add-value params)
           (resp/redirect "/plan")))
-  (POST "/plan-revenue" [year version brand-name]
-        (plan-revenue-grid year version brand-name))
+  (POST "/plan-revenue" [year version brand-name where]
+        (plan-revenue-grid year version brand-name "/revenue-create"))
   (POST "/revenue-create" [& params]
         (do (dbquery/add-revenue-plan params)
           (resp/redirect "/plan"))))

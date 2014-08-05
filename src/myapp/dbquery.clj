@@ -26,6 +26,10 @@
   (apply j/insert! mysql-db :realized_costs
          (for [v (range (count (:value params)))] (apply conj (for [k (keys params)] {k (nth (k params) v)})))))
 
+(defn add-revenue-exec [params]
+  (apply j/insert! mysql-db :realized_revenues
+         (for [v (range (count (:value params)))] (apply conj (for [k (keys params)] {k (nth (k params) v)})))))
+
 (defn cost-on-center-grid
   ([user center]
   (j/query mysql-db

@@ -85,8 +85,8 @@
 
 (defn exec-revenue []
   (layout/render "grid.html" {:user-id (get-user)
-                              ;  :forms (revenueSendForm)
-                              ;  :select (revenue-select)
+                              :forms (grid/revenueSendForm)
+                              :select (grid/revenue-select "/add-exec-revenue")
                               }))
 
 (defn exec-page []
@@ -116,4 +116,9 @@
   (POST "/select-center" [center] (exec-admin-select center))
   (POST "/add-exec" [& params]
         (do (dbquery/add-realized-cost params)
+          (resp/redirect "/exec")))
+  (POST "/add-exec-revenue" [year version brand-name]
+        (grid/plan-revenue-grid year version brand-name "/exec-rev"))
+  (POST "/exec-rev" [& params]
+        (do (dbquery/add-revenue-exec params)
           (resp/redirect "/exec"))))
