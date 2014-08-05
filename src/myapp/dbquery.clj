@@ -32,13 +32,13 @@
 
 (defn cost-on-center-grid
   ([user center]
-  (j/query mysql-db
-           (s/select :id_cost :cost_on_center
-                     (s/where {:planned_by user :plannedOnCenter center}))))
+   (j/query mysql-db
+            (s/select :id_cost :cost_on_center
+                      (s/where {:planned_by user :plannedOnCenter center}))))
   ([center]
    (j/query mysql-db
-           (s/select :id_cost :cost_on_center
-                     (s/where {:plannedOnCenter center})))))
+            (s/select :id_cost :cost_on_center
+                      (s/where {:plannedOnCenter center})))))
 
 (defn plan-on-center [user]
   (j/query mysql-db
@@ -186,18 +186,37 @@
 (defn get-revenue-marginP [brand-name market year month version]
   (:marginp
    (first
-   (j/query mysql-db
-            ["select ROUND((p.profit_margin / p.value * 100), 2) marginP from planned_revenues p
-             where p.id_brands = ?
-             and p.id_market_type = ?
-             and p.r_year = ?
-             and p.r_month = ?
-             and p.version = ?"
-             brand-name market year month version]))))
+    (j/query mysql-db
+             ["select ROUND((p.profit_margin / p.value * 100), 2) marginP from planned_revenues p
+              where p.id_brands = ?
+              and p.id_market_type = ?
+              and p.r_year = ?
+              and p.r_month = ?
+              and p.version = ?"
+              brand-name market year month version]))))
 
 (defn get-list-center []
   (for
     [c
      (j/query mysql-db
-           (s/select :id_center :cost_center))]
+              (s/select :id_center :cost_center))]
     (:id_center c)))
+
+(defn deviation [cost center year month]
+  (:deviation
+   (first
+   (j/query mysql-db
+           ["select (p.value - r.value) deviation from planned_costs p
+            join realized_costs r on
+            p.cost_type_id_cost = r.cost_type_id_cost and
+            p.cost_center_id_center = r.cost_center_id_center and
+            p.onYear = r.onYear and
+            p.onMonth = r.onMonth
+
+            where p.cost_type_id_cost = ?
+            and p.cost_center_id_center = ?
+            and p.onYear = ?
+            and p.onMonth = ?"
+            cost center year month]))))
+
+(deviation 4070503 50211 2013 1)
