@@ -26,10 +26,15 @@
   (apply j/insert! mysql-db :realized_costs
          (for [v (range (count (:value params)))] (apply conj (for [k (keys params)] {k (nth (k params) v)})))))
 
-(defn cost-on-center-grid [user center]
+(defn cost-on-center-grid
+  ([user center]
   (j/query mysql-db
            (s/select :id_cost :cost_on_center
                      (s/where {:planned_by user :plannedOnCenter center}))))
+  ([center]
+   (j/query mysql-db
+           (s/select :id_cost :cost_on_center
+                     (s/where {:plannedOnCenter center})))))
 
 (defn plan-on-center [user]
   (j/query mysql-db

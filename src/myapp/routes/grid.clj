@@ -35,10 +35,12 @@
   (hc/html
    [:h3 "Wybierz nr centrum rok oraz wersję"][:br]
    (hf/form-to [:post where]
-               [:div.float-left [:h4 "Centrum"] [:div.radioWrapper
-                                                 (for [center (for [centers (dbquery/plan-on-center user)] (:plannedoncenter centers))]
-                                                   [:div  [:input {:type "radio" :name "center" :value center :class "radio" :required ""}
-                                                           [:span.radio-name center]]])]]
+               (if (= where "/exec")
+                 [:input {:type "hidden" :name "center" :value user}]
+                 [:div.float-left [:h4 "Centrum"] [:div.radioWrapper
+                                                   (for [center (for [centers (dbquery/plan-on-center user)] (:plannedoncenter centers))]
+                                                     [:div  [:input {:type "radio" :name "center" :value center :class "radio" :required ""}
+                                                             [:span.radio-name center]]])]])
                [:div.float-left [:h4 "Rok"] [:div.radioWrapper
                                              (for [years (range 2013 2016)]
                                                [:div [:input {:type "radio" :name "year" :value years :class "radio" :required ""}
@@ -55,10 +57,7 @@
   [my-center center year version where]
   (hc/html
    [:h3.padding "Wybrałeś cetrum: " [:B center]" " [:b (dbquery/get-center-name center)]  ", rok " [:b year]
-    (if (= where "/add-exec")
-      [:span ]
-      [:span ", wersja: "[:b (dbquery/get-version-name version)]])
-    ]
+    [:span ", wersja: "[:b (dbquery/get-version-name version)]]]
    (hf/form-to [:post where]
                [:table.table.table-striped
                 [:thead

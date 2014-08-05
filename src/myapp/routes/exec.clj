@@ -48,6 +48,38 @@
   ([]  (grid/center-selection (get-user) "/exec"))
   ([id-center] (grid/center-selection id-center "/exec")))
 
+(defn execForm
+  [center year version where]
+  (hc/html
+   [:h3.padding "Wykonanie: Cetrum: " [:B center]" " [:b (dbquery/get-center-name center)]  ", rok " [:b year]]
+   (hf/form-to [:post where]
+               [:table.table.table-striped
+                [:thead
+                 [:tr
+                  [:th {:colspan 2 :style "border-bottom: none;"}] [:th.middle {:colspan 12 :style "text-align: center; border-bottom: none;"} "Miesiąc"]]
+                 [:tr
+                  [:th "Nr kosztu"] [:th "Nazwa"] [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]
+                  [:th "Rok"] [:th "Kw. I"] [:th "Kw. II"] [:th "Kw. III"] [:th "Kw. IV"]]]
+                (into [:tbody]
+                      (for [cost (for [costs (dbquery/cost-on-center-grid center)] (:id_cost costs))]
+                        [:tr {:class "calc"}
+                         [:td cost]
+                         [:td (dbquery/get-cost-name cost)]
+                         (for [month (range 1 13)]
+                           [:td
+                            (hf/hidden-field "cost_type_id_cost" cost)
+                            (hf/hidden-field "cost_center_id_center" center)
+                            (hf/hidden-field "onYear" year)
+                            (hf/hidden-field "onMonth" month)
+                            (hf/text-field {:placeholder "0" :required "" :class "value"} "value")
+                            (hf/hidden-field "verssion" version)])
+                         [:td {:class "sum"} "0"]
+                         [:td {:class "qu1"} "0"]
+                         [:td {:class "qu2"} "0"]
+                         [:td {:class "qu3"} "0"]
+                         [:td {:class "qu4"} "0"]]))
+                (hf/submit-button {:class "btn leftMargin"} "send")])))
+
 
 ; PAGE RENDER
 
@@ -69,6 +101,10 @@
   (layout/render "plan.html" {:user-id my-center
                               :select (exec-select my-center)}))
 
+(defn exec-grid-page [center year version where]
+  (layout/render "grid.html" {:user-id (get-user)
+                              :forms (execForm center year version where)}))
+
 
 
 ;END OF PAGE RENDER
@@ -76,7 +112,7 @@
 (defroutes exec-routes
   (GET "/exec" [] (exec-handler))
   (POST "/exec" [center year version]
-        (grid/grid-page center year version "/add-exec"))
+        (exec-grid-page center year version "/add-exec"))
   (POST "/select-center" [center] (exec-admin-select center))
   (POST "/add-exec" [& params]
         (do (dbquery/add-realized-cost params)
