@@ -22,7 +22,7 @@
         (dev-revenue)
         (if (= "55052" user)
           (dev-admin)
-          (dev-page))))))
+          (dev-page user))))))
 
 ;PAGE ELEMENTS
 
@@ -31,8 +31,12 @@
 
 
 ;REDER PAGE
+(defn dev-page [id-center]
+  (layout/render "guidelines.html" {:guide-grid (grid/guide-grid)
+                                    :guide-select (grid/guide-select id-center)
+                                    :user-id id-center}))
 
-(defn dev-page [id-center year version brand-name]
+(defn dev-gird-page [id-center year version brand-name]
   (layout/render "guidelines.html" {;:guide-grid (guide-dev year version brand-name)
                                     :user-id id-center}))
 

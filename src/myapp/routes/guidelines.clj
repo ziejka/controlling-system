@@ -75,10 +75,10 @@
 
 
 (defn guide-select
-  [id-user]
+  [id-user where]
   (hc/html
    (hf/form-to {:class "leftMargin"}
-               [:post "/guidelines"]
+               [:post where]
                [:div.float-left
                 [:div.radioWrapper
                  (let [y (dbquery/get-plan-year id-user)]
@@ -95,7 +95,7 @@
                      (for [version v]
                        [:input {:type "radio" :name "version" :value version :class "radio"}
                         [:span.radio-name (dbquery/get-version-name version)]])))]]
-               (hf/submit-button {:class "btn"} "select")   )))
+               (hf/submit-button {:class "btn"} "select"))))
 
 
 (defn guide-grid
@@ -138,14 +138,14 @@
 ;PAGE RENDERS
 
 (defn guide-gird-page [id-center year version]
-  (layout/render "guidelines.html" {:guide-select (guide-select id-center)
+  (layout/render "guidelines.html" {:guide-select (guide-select id-center "/guidelines")
                                     :guide-grid (guide-grid id-center year version)
                                     :user-id id-center}))
 
 
 (defn guide-page [id-center]
   (layout/render "guidelines.html" {:guide-grid (guide-grid)
-                                    :guide-select (guide-select id-center)
+                                    :guide-select (guide-select id-center "/guidelines")
                                     :user-id id-center}))
 
 (defn guide-revenue-page [id-center]
