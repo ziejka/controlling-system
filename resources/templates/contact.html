@@ -1,6 +1,7 @@
 {% extends "templates/base.html" %}
 {% block content %}
 <table class="table table-striped">
+
     <tr>
         <th>nr kosztu</th>
         <th>nazwa kosztu</th>
@@ -9,7 +10,9 @@
         <th>wartość</th>
     </tr>
     <tr>
-        <td>4001005</td>
+        <td>
+            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="left" title="Tooltip on left">Tooltip on left</button>
+        </td>
         <td>Pozostałe koszty operacyjne</td>
         <td>
             <select>
@@ -41,6 +44,13 @@
 </table>
 <button type="submit" class="btn">Submit</button>
 <ul>
+    <span data-toggle="tooltip" data-placement="left" title="Tooltip on left">Tooltip on left</span>
+
+<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Tooltip on top</button>
+
+<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">Tooltip on bottom</button>
+
+<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Tooltip on right">Tooltip on right</button>
 {% for item in items %}
 <li> {{item}} </li>
 {% endfor %}
