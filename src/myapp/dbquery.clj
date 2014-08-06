@@ -202,7 +202,7 @@
               (s/select :id_center :cost_center))]
     (:id_center c)))
 
-(defn deviation-val [cost center year month]
+(defn deviation-val [cost center year month version]
   (:deviation
    (first
    (j/query mysql-db
@@ -216,7 +216,8 @@
             where p.cost_type_id_cost = ?
             and p.cost_center_id_center = ?
             and p.onYear = ?
-            and p.onMonth = ?"
-            cost center year month]))))
+            and p.onMonth = ?
+            and p.verssion = ?"
+            cost center year month version]))))
 
 (deviation-val 4070503 50211 2013 2)

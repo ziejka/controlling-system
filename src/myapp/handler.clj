@@ -4,6 +4,7 @@
             [myapp.routes.grid :refer [grid-routes]]
             [myapp.routes.guidelines :refer [guide-routes]]
             [myapp.routes.exec :refer [exec-routes]]
+            [myapp.routes.deviation :refer [deviation-routes]]
             [myapp.middleware :as middleware]
             [noir.util.middleware :refer [app-handler]]
             [compojure.route :as route]
@@ -49,7 +50,7 @@
 
 (def app (session/wrap-noir-session (app-handler
            ;; add your application routes here
-           [home-routes grid-routes guide-routes exec-routes app-routes]
+           [home-routes grid-routes guide-routes exec-routes deviation-routes app-routes]
            :session-options {:timeout (* 30 60)
                       :timeout-response (resp/redirect "/")}
            ;; add custom middleware here

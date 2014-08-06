@@ -3,8 +3,9 @@ $(document).ready(
     $('.value').change(function() {
       $(calc);
       $(que)});
-    $('.focusOn').change(calcMargin)
+    $('.focusOn').change(calcMargin);
 
+    $('span').tooltip('hide');
 
     function calc() {
       $('tr.calc').each(function(){
