@@ -1,0 +1,500 @@
+  (GET "/grid" [] (grid-page))
+  (POST "/grid" [center year version]
+    (do (sendForm center year version)))
+  (GET "/contact" [] (contact-page))
+  (POST "/create" [& params]
+    (do (dbquery/add-value params)
+      (resp/redirect "/grid")))
+  (GET "/logout" []
+        (logout)))
+(center-selection)
+(defn center-selection []
+  (hc/html
+    (hf/form-to [:post "/grid"]
+      [:select "on-center-choice" (for [center (for [centers (dbquery/plann-on-center 50211 #_(get-user))] (vals centers))] [:option {:value center :name "center"} center])]
+      [:select "year-choice" (for [year (range 2013 2023)] [:option {:value year :name "year"} year])]
+      [:select "version-choice" (for [version ["Plan" "Korekta-1" "Korekta-2"]] [:option {:value version :name "version"} version])]
+      (hf/submit-button "selecet"))))
+(center-selection)
+(sendForm)
+(sendForm 50212 2013 "Plan")
+(defn sendForm ([] (hc/html [:p "Wybierz centrum kosztowe na jakie chcesz planowa†"]))
+  ([center year version]
+  (hc/html
+    (hf/form-to [:post "/create"]
+    [:table.table.table-striped
+    [:thead
+      [:tr
+        [:th center year version]
+        [:th "Nr kosztu"]
+        [:th "Nazwa"]
+        [:th "I"]
+        [:th "II"]
+        [:th "III"]
+        [:th "IV"]
+        [:th "V"]
+        [:th "VI"]
+        [:th "VII"]
+        [:th "VIII"]
+        [:th "IX"]
+        [:th "X"]
+        [:th "XI"]
+        [:th "XII"]]]
+     (into [:tbody]
+      (for [cost (for [costs (dbquery/cost-on-center-grid 50211 #_(get-user))] (vals costs))]
+        [:tr
+          [:td center year version]
+          [:td cost]
+          [:td "nazwa"]
+          [:td (hf/hidden-field "cost_type_id_cost" cost)
+               (hf/hidden-field "cost_center_id_center" center)
+               (hf/hidden-field "onYear" year)
+               (hf/hidden-field "onMonth" 01)
+               (hf/text-field {:placeholder "value"} "value")
+               (hf/hidden-field "verssion" version)]
+          [:td (hf/text-field {:placeholder "value"} "value")]
+          [:td (hf/text-field {:placeholder "value"} "value")]]))
+    (hf/submit-button {:class "btn"} "send")]))))
+(sendForm 50212 2013 "Plan")
+(hf/select-options [1 2 3 4 5])
+(+ 2 2)
+(ns myapp.routes.home
+  (:use compojure.core)
+  (:require
+    [myapp.layout :as layout]
+    [myapp.util :as util]
+    [myapp.dbquery :as dbquery]
+    [ring.util.response :as resp]
+    [hiccup.core :as hc]
+    [hiccup.form :as hf]
+    [noir.session :as session]))
+(hf/drop-down (select-options [1 2 3 4]))
+(hf/drop-down (hf/select-options [1 2 3 4]))
+(hf/drop-down "asd" (hf/select-options [1 2 3 4]))
+(hc/html (hf/drop-down "asd" (hf/select-options [1 2 3 4]))
+)
+ (hc/html [:select "on-center-choice" (hf/select-options [1 2 3 4]))
+ (hc/html [:select "on-center-choice" (hf/select-options [1 2 3 4])])
+(ns myapp.dbquery
+(:require 
+[clojure.java.jdbc :as j]
+[clojure.java.jdbc.sql :as s]))
+cost-on-center-grid
+(cost-on-center-grid 50211 50211)
+(j/query mysql-db 
+    (s/select :id_cost :cost_on_center
+      (s/where {:planned_by user :plannedOnCenter center}))))
+(j/query mysql-db 
+    (s/select :id_cost :cost_on_center
+      (s/where {:planned_by user :plannedOnCenter center})))
+(j/query mysql-db
+    (s/select :id_cost :cost_on_center
+(s/where {:planned_by 55055 :plannedOnCenter 50211  center})))
+(j/query mysql-db
+    (s/select :id_cost :cost_on_center
+(s/where {:planned_by 55055 :plannedOnCenter 50211})))
+ (s/select :id_cost :cost_on_center
+where {:planned_by 55055 :plannedOnCenter 50211})))
+(s/select :id_cost :cost_on_center
+here {:planned_by 55055 :plannedOnCenter 50211}))
+     (s/select :id_cost :cost_on_center
+ (s/where {:planned_by 55055 :plannedOnCenter 50211  center}))
+ (s/select :id_cost :cost_on_center (s/where {:planned_by 55055 :plannedOnCenter 50211}))
+(ns myapp.routes.grid
+  (:use compojure.core)
+  (:require
+    [myapp.layout :as layout]
+    [myapp.util :as util]
+    [myapp.dbquery :as dbquery]
+    [ring.util.response :as resp]
+    [hiccup.core :as hc]
+    [hiccup.form :as hf]
+    [noir.session :as session]))
+(for [center (for [centers (dbquery/plan-on-center 55055 )] (vals centers))] 
+                         [:div [:input {:type "radio" :name "center" :value center :class "radio"} center]])
+(dbquery/plan-on-center 55055)
+(vals (dbquery/plan-on-center 55055))
+(for [centers (dbquery/plan-on-center (get-user))] (vals centers))
+(for [centers (dbquery/plan-on-center 55055)] (vals centers))
+(dbquery/plan-on-center 55055)
+(:plannedoncenter (dbquery/plan-on-center 55055))
+(for [centers (dbquery/plan-on-center 55055)] (:plannedoncenter centers))
+(for [center (for [centers (dbquery/plan-on-center (get-user))] (:plannedoncenter centers))] 
+                         [:div [:input {:type "radio" :name "center" :value center :class "radio"} center]])
+(for [cost (for [costs (dbquery/cost-on-center-grid 55055 50211)] (vals costs))]
+)
+(dbquery/cost-on-center-grid 55055 50211)
+(for [costs (dbquery/cost-on-center-grid 55055 50211)] (vals costs))
+(for [costs (dbquery/cost-on-center-grid 55055 50211)] (:id_cost costs))
+(ns myapp.routes.grid
+  (:use compojure.core)
+  (:require
+    [myapp.layout :as layout]
+    [myapp.util :as util]
+    [myapp.dbquery :as dbquery]
+    [ring.util.response :as resp]
+    [hiccup.core :as hc]
+    [hiccup.form :as hf]
+    [noir.session :as session]))
+(dbquery/get-cost-name 4020800)
+(ns myapp.dbquery
+(:require 
+[clojure.java.jdbc :as j]
+[clojure.java.jdbc.sql :as s]))
+(get-cost-name 4020800)
+(defn get-cost-name [cost]
+(first (j/query mysql-db
+    (s/select :cost_name :cost_type
+              (s/where {:id_cost cost})))))
+(get-cost-name 4020800)
+(:cost_name (get-cost-name 4020800))
+(ns myapp.dbquery
+(:require
+[clojure.java.jdbc :as j]
+[clojure.java.jdbc.sql :as s]))
+(quit)
+(ns myapp.dbquery
+(:require
+[clojure.java.jdbc :as j]
+[clojure.java.jdbc.sql :as s]))
+(def params {verssion [Plan Plan Plan Plan Plan Plan Plan Plan Plan Plan Plan Plan],
+value [123 123 123 123 123 123 123 123 123 123 123 123],
+onMonth [1 2 3 4 5 6 7 8 9 10 11 12],
+onYear [2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 2013],
+cost_center_id_center [50333 50333 50333 50333 50333 50333 50333 50333 50333 50333 50333 50333],
+cost_type_id_cost [4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500]}
+)
+(def params {:verssion [Plan Plan Plan Plan Plan Plan Plan Plan Plan Plan Plan Plan],
+:value [123 123 123 123 123 123 123 123 123 123 123 123],
+:onMonth [1 2 3 4 5 6 7 8 9 10 11 12],
+:onYear [2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 2013],
+:cost_center_id_center [50333 50333 50333 50333 50333 50333 50333 50333 50333 50333 50333 50333],
+:cost_type_id_cost [4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500]}
+)
+(def params {:verssion ["Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan"],
+:value [123 123 123 123 123 123 123 123 123 123 123 123],
+:onMonth [1 2 3 4 5 6 7 8 9 10 11 12],
+:onYear [2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 2013],
+:cost_center_id_center [50333 50333 50333 50333 50333 50333 50333 50333 50333 50333 50333 50333],
+:cost_type_id_cost [4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500]})
+params
+(for params (first (keys [:value :cost_center_id_center :onYear :onMonth] params)))
+(meta params)
+(doc params
+)
+(for [params] (:value params))
+(first params)
+(rest params)
+(:onMonth params)
+(def params {:verssion ["Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan"],
+:value [1 2 3 4 5 6 7 8 9 10 11 12],
+:onMonth [1 2 3 4 5 6 7 8 9 10 11 12],
+:onYear [2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 2013],
+:cost_center_id_center [50333 50333 50333 50333 50333 50333 50333 50333 50333 50333 50333 50333],
+:cost_type_id_cost [4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500]}
+)
+(first params)
+(first (key params)
+)
+(first (keys params))
+(let [k (first (keys params))] (first (k params)))
+ (let [k (first (keys params))
+v (first (k params))] k v)
+ (let [k (first (keys params)) v (first (k params))] {k v})
+(for params (let [k (first (keys params)) v (first (k params))] {k v}))
+(for [params] (let [k (first (keys params)) v (first (k params))] {k v}))
+ (for [params (let [k (first (keys params)) v (first (k params))]] {k v}))
+(for [params (let [k (first (keys params)) v (first (k params))])]  {k v})
+ (for [params (let [k (first (keys params)) v (first (k params))] {k v})])
+params
+(for params)
+(for 'params)
+'params
+(for (params))
+(for (keys params))
+(for [k (keys params)] k)
+(for [params p] p)
+(for [p params] p)
+(for [p params] (let [k (keys p) v (k p)] {k v}))
+ (for [p params] (let [k (first (keys p)) v (k p)]) {k v})
+ (for [p params] (let [k (first (keys p)) v (first (k p))]))
+(for [p params] (let [k (first (keys p)) v (first (k p))]  {k v})
+)
+(let [p params] (let [k (first (keys p)) v (first (k p))]  {k v}))
+(let [p params] (let [k (first (keys p)) v (peek (k p))] {k v}))
+(let [p params] (let [k (first (keys p)) v (pop (k p))] {k v}))
+(let [p params] (let [k (peek  (keys p)) v (peek (k p))] {k v}))
+(for [p params] (let [k (first (keys p)) v (peek (k p))] {k v}))
+ (for [p params] (let [k (keys p) ) v (peek (k p))] {k v}))
+ (for [p params] (let [k (keys p)  v (peek (k p))] {k v}))
+(for [p params] (let [k (keys p) v (k p)]))
+(:value params)
+(let  [v (:value params)] {:value (peek v)} (pop v))
+(let  [v (:value params)] {:value (peek v)})
+(for [v (:value params) {:value v})
+ (for [v (:value params)] {:value v})
+(for [k (keys params)] {k})
+(for [k (keys params)] k)
+(for [k (keys params)] (for [v (k params)] {k v}))
+(list (for [k (keys params)] (for [v (k params)] {k v})))
+(peek (for [k (keys params)] (for [v (k params)] {k v})))
+(pop (for [k (keys params)] (for [v (k params)] {k v})))
+(first (for [k (keys params)] (for [v (k params)] {k v})))
+(for [k (keys params)] (for [v (k params)]) {k v})
+ (for [k (keys params)] (for [v (k params)]))
+(firs (first (for [k (keys params)] (for [v (k params)] {k v})))
+))
+(firs (first (for [k (keys params)] (for [v (k params)] {k v})))
+)
+(first (first (for [k (keys params)] (for [v (k params)] {k v}))))
+(for [k (keys params)] (for [v (k params)] {k v}))
+(let [k (keys params)] (let [[v & rest] (k params)]))
+(for [k (keys params)] (let [[v & rest] (k params)]))
+(for [k (keys params)] (let [[v & rest] (k params)] {k v}))
+(let [[k & rk] (keys params)] (let [[v & rest] (k params)] {k v}))
+ (let [[k & rk] (keys params)] (let [[v & rv] (k params)] {k v}))
+(let [[k & rk] (keys params)] (let [[v & rv] (k params)] {k v} rest)))
+(let [[k & rk] (keys params)] (let [[v & rv] (k params)] {k v} rest))
+ (let [[k & rk] (keys params)] (let [[v & rv] (k params)] {k v} rk))
+(let [[k & rk] (keys params)] (let [[v & rv] (k params)] {kv rk rv))
+(let [[k & rk] (keys params)] (let [[v & rv] (k params)] {kv rk rv}))
+ (let [[k & rk] (keys params)] (let [[v & rv] (k params)] {k v rk rv}))
+(let [[k & rk] (keys params)] (let [[v & rv] (k params)] {k v} (recur [v rv k rk])))
+(let [[k & rk] (keys params)] (let [[v & rv] (k params)] {k v} (recur v rv k rk)))
+ (let [[k & rk] (keys params)] (let [[v & rv] (k params)] {k v} (recur (rk rv))))
+(let [[k & rk] (keys params)] (let [[v & rv] (k params)] {k v} (recur)
+)
+(def params {:verssion ["Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan" "Plan"],
+:value [1 2 3 4 5 6 7 8 9 10 11 12],
+:onMonth [1 2 3 4 5 6 7 8 9 10 11 12],
+:onYear [2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 2013],
+:cost_center_id_center [50333 50333 50333 50333 50333 50333 50333 50333 50333 50333 50333 50333],
+:cost_type_id_cost [4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500 4020500]}
+)
+params
+(let [k (keys params) v (k params)] {(peek k) (peek v)})
+ (let [k (keys params) v (k params)] k)
+ (let [k (keys params) v (k params)])
+ (let [k (keys params)])
+(let [k (keys params)])
+(let [(keys params) k])
+(keys params)
+(let [k (keys params)] k)
+(let [k (keys params)] (peek k))
+(let [k (keys params)] (pop k))
+(let [k (keys params)] (list? k))
+(let [k (keys params)] (set? k))
+(let [k (keys params)] (map? k)
+)
+(let [k (keys params)] (seq? k))
+(let [k (keys params) v ((first k) params) {k v})
+(let [k (keys params) v ((first k) params)]  {k v})
+ (let [k (first (keys params) v (k params)] {k v}))
+(let [k (first (keys params)) v (k params)] {k v})
+ (let [k (first (keys params)) v (first (k params))]  {k v})
+(for [k (keys params)] {k (first (k params))})
+(for [k (keys params)] (k (first (k params))))
+(for [k (keys params)] [k (first (k params))])
+(for [k (keys params)] (conj  {k (first (k params))}))
+(conj  (for [k (keys params)] [k (first (k params))]))
+(conj '(for [k (keys params)] [k (first (k params))]))
+(seq? (for [k (keys params)] [k (first (k params))]))
+(doeq (for [k (keys params)] [k (first (k params))]))
+(doall (for [k (keys params)] [k (first (k params))]))
+(dorun (for [k (keys params)] [k (first (k params))]))
+(first (for [k (keys params)] [k (first (k params))]))
+(first (for [k (keys params)] {k (first (k params))})
+)
+(doseq (for [k (keys params)] {k (first (k params))}))
+(doall  (for [k (keys params)] {k (first (k params))}))
+ (for [k (keys params)] {k (first (k params))}))
+(conj  (for [k (keys params)] {k (first (k params))}))
+(cons  (for [k (keys params)] {k (first (k params))}))
+(for [k (keys params)] {(cons k (first (k params)))})
+(let [ks (keys params) 
+      vs (apply conj 
+               (let [k ks] {k (peek (k params))}))] (recur (pop (k params))))
+(apply conj (let [k (keys params)] (for [ks k] {ks (peek (k params))}))
+)
+(let [k (keys params) v (for [ks k] (ks params))]
+  (for [ks k] {ks (peek (ks v))})
+  (recur pop v))
+(let [k (keys params) v (for [ks k] (ks params))]
+  (for [ks k] {ks (peek (ks v))})
+  (recur (pop v)))
+(loop [k (keys params) v (for [ks k] (ks params))]
+  (for [ks k] {ks (peek (ks v))})
+  (recur (pop v)))
+(loop [k (keys params) v (for [ks k] (ks params))]
+  (for [ks k] {ks (peek (ks v))})
+  (recur (pop v) k))
+(loop [k (keys params) v (for [ks k] (ks params))]
+  (for [ks k] {ks (peek (ks v))})
+  (recur (pop (for [ks k] (ks v))) k)
+)
+(loop [k (keys params) v (for [ks k] (ks params))]
+  (for [ks k] {ks (peek (ks v))})
+  (recur (pop (for [ks k] (ks v))) k))
+(apply conj (for [k (keys params)] {k (peek (k params))} (pop (k params))))
+(apply conj (for [k (keys params)] ( do (pop (k params)) {k (peek (k params))} )))
+(for [v (:value params)] (apply conj (for [k (keys params)] {k (peek (k params))})))
+(for [v (range 12)] (apply conj (for [k (keys params)] {k (nth v (k params))})))
+(for [v (:value params)] (apply conj (for [k (keys params)] {k (nth 2 (k params))})))
+(for [v (range 12)] (apply conj (for [k (keys params)] {k (nth (k params) v)})))
+(ns myapp.routes.grid
+  (:use compojure.core)
+  (:require
+   [myapp.layout :as layout]
+   [myapp.util :as util]
+   [myapp.dbquery :as dbquery]
+   [ring.util.response :as resp]
+   [hiccup.core :as hc]
+   [hiccup.form :as hf]
+   [noir.session :as session]))
+(dbquery/get-version-name 1)
+(ns myapp.dbquery
+(:require
+[clojure.java.jdbc :as j]
+[clojure.java.jdbc.sql :as s]))
+( get-version-name 2)
+(get-version-name 1)
+(defn get-version-name [idVersion]
+  (j/query mysql-db
+           (s/select :nameVersion :version
+                     (s/where {:idVersion idVersion}))))
+(get-version-name 1)
+(:nameversion (get-version-name 1))
+(let [x (get-version-name 1)] (:nameversion x))
+(first (:nameversion (get-version-name 1))
+)
+(:nameversion  (get-version-name 1))
+(:nameversion (first (get-version-name 1)))
+(defn get-version-name [idVersion]
+  (first (j/query mysql-db
+                  (s/select :nameVersion :version
+                            (s/where {:idVersion idVersion})))))
+(:nameversion  (get-version-name 1))
+(quit)
+(ns myapp.dbquery
+  (:require
+   [clojure.java.jdbc :as j]
+   [clojure.java.jdbc.sql :as s]))
+(s/select :cost_type_id_cost :cost_name :onYear :onMonth :value :verssion :planned_costs)
+(j/query mysql-db
+           (s/select :cost_type_id_cost :cost_name :onYear :onMonth :value :verssion :planned_costs))
+(defn get-guidelines [id-center]
+  (j/query mysql-db
+           ["select p.cost_type_id_cost, c.cost_name, p.onYear, p.onMonth, p.value, p.verssion from planned_costs p
+            join cost_type c on c.id_cost = p.cost_type_id_cost
+            where p.cost_center_id_center = ?" id-center]))
+(get-guidelines 55055)
+(ns myapp.routes.guidelines
+  (:use compojure.core)
+  (:require
+   [myapp.layout :as layout]
+   [myapp.util :as util]
+   [myapp.dbquery :as dbquery]
+   [ring.util.response :as resp]
+   [hiccup.core :as hc]
+   [hiccup.form :as hf]
+   [noir.session :as session]))
+ (dbquery/get-guidelines 50211=
+ (dbquery/get-guidelines 50211)
+(dbquery/get-guidelines 55055)
+(first (dbquery/get-guidelines 55055))
+(hc/html (for [row (dbquery/get-guidelines user)] 
+           [:tr
+            [:td (:cost_type_id_cost row)]
+            [:td (:cost_name row)]
+            (for [v (:value row)] 
+              [:td v])]))
+ (hc/html (for [row (dbquery/get-guidelines 55055)]
+  [:tr
+   [:td (:cost_type_i
+   [:td (:cost_name r
+   (for [v (:value ro
+     [:td v])]))
+)
+(hc/html (for [row (dbquery/get-guidelines 55055)]
+  [:tr
+   [:td (:cost_type_id_cost row)]
+   [:td (:cost_name row)]
+   (for [v (:value row)]
+     [:td v])]))
+ (for [row (dbquery/get-guidelines 55055)] (:cost_type_id_cost row))
+ (for [row (dbquery/get-guidelines 55055)]  (for [v (:value row)] v))
+ (hc/html
+   [:table.table.table-striped
+    [:thead
+     [:tr
+      [:th "Nr Kosztu"] [:th "Nazwa"] [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]]
+   (into [:tbody]
+         (for [row (dbquery/get-guidelines user)] 
+           [:tr
+            [:td (:cost_type_id_cost row)]
+            [:td (:cost_name row)]
+            #_(for [v (:value row)] 
+              [:td v])])))
+  (hc/html
+   [:table.table.table-striped
+    [:thead
+     [:tr
+      [:th "Nr Kosztu"] [:th "Nazwa"] [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]]
+   (into [:tbody]
+         (for [row (dbquery/get-guidelines 50333)] 
+           [:tr
+            [:td (:cost_type_id_cost row)]
+            [:td (:cost_name row)]
+            #_(for [v (:value row)] 
+              [:td v])]))))
+(:value (dbquery/get-guidelines 50333))
+(dbquery/get-guidelines 50333)
+(:value (dbquery/get-guidelines 50333))
+(:verssion (dbquery/get-guidelines 50333))
+(:value (first (dbquery/get-guidelines 50333)))
+(for [row (for [all (dbquery/get-guidelines 50333)] (first all))] row)
+(for [row (dbquery/get-guidelines 50333)] row)
+(for [row (for [all (dbquery/get-guidelines 50333)] (first all))] (rist row))
+(for [row (for [all (dbquery/get-guidelines 50333)] (first all))] (first row))
+dbquery/get-guidelines 50333)
+(dbquery/get-guidelines 50333)
+(first (dbquery/get-guidelines 50333))
+(:cost_type_id_cost (dbquery/get-guidelines 50333)
+)
+(let [a (dbquery/get-guidelines 50333)] (:cost_type_id_cost a))
+ (for [a (:cost_type_id_cost (for [row (dbquery/get-guidelines 50333)]))] a)
+(for [row (dbquery/get-guidelines 50333)] (distinct (:cost_type_id_cost row)))
+(distinct (dbquery/get-guidelines 50333))
+(for [a (dbquery/get-guidelines 50333)] (:cost_type_id_cost a))
+(distinct (for [a (dbquery/get-guidelines 50333)] (:cost_type_id_cost a)))
+(dbquery/get-center-name 401010)
+(dbquery/get-center-name 4010200)
+(dbquery/get-cost-name 4010200)
+(ns myapp.dbquery
+  (:require
+   [clojure.java.jdbc :as j]
+   [clojure.java.jdbc.sql :as s]))
+(defn get-plan-year [id-center]
+  (first (j/query mysql
+           (s/select :onYear :planned_costs
+                     (s/where {:cost_center_id_center id-center}))))
+)
+(ns myapp.dbquery
+  (:require
+   [clojure.java.jdbc :as j]
+   [clojure.java.jdbc.sql :as s]))
+(defn get-plan-year [id-center]
+  (first (j/query mysql
+           (s/select :onYear :planned_costs
+                     (s/where {:cost_center_id_center id-center})))))
+(def mysql-db {
+               :subprotocol "mysql"
+               :subname "//localhost:3306/AXdb"
+               :user "root"
+               :password ""
+               :zeroDateTimeBehavior "convertToNull"})
+(defn get-plan-year [id-center]
+  (first (j/query mysql
+           (s/select :onYear :planned_costs
+                     (s/where {:cost_center_id_center id-center})))))
+(quit)
