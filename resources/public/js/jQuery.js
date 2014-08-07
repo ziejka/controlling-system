@@ -5,7 +5,7 @@ $(document).ready(
       $(que)});
     $('.focusOn').change(calcMargin);
 
-    $('span').tooltip('hide');
+    $('a').tooltip('hide');
 
     function calc() {
       $('tr.calc').each(function(){

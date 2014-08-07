@@ -42,7 +42,7 @@
      [:thead
       [:tr
        [:th "Nr Kosztu"] [:th "Nazwa"] [:th "Rocznie"] [:th "Kwartał I"] [:th "Kwartał II"] [:th "Kwartał IIII"] [:th "Kwartał IV"]
-       [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"] ]]
+       [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]
      (into
       [:tbody]
       (for
@@ -59,7 +59,8 @@
          (for [t (range 1 5)]
            [:td (dbquery/dev-quart-val cost-id user year version t)])
          (for [month (range 1 13)]
-           [:td (dbquery/deviation-val cost-id user year month version)])
+           [:td [:a {:data-toggle "tooltip" :title (dbquery/deviation-val cost-id user year month version)}
+            (dbquery/deviation-val cost-id user year month version)]])
          ]))])))
 
 
