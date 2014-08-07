@@ -40,6 +40,8 @@
             (s/select :id_cost :cost_on_center
                       (s/where {:plannedOnCenter center})))))
 
+(cost-on-center-grid 55055)
+
 (defn plan-on-center [user]
   (j/query mysql-db
            ["select distinct cc.plannedOnCenter from cost_on_center cc
@@ -202,22 +204,56 @@
               (s/select :id_center :cost_center))]
     (:id_center c)))
 
-(defn deviation-val [cost center year month version]
+(defn deviation-val
+  ([cost center year month version]
+   (:deviation
+    (first
+     (j/query mysql-db
+              ["select (p.value - r.value) deviation from planned_costs p
+               join realized_costs r on
+               p.cost_type_id_cost = r.cost_type_id_cost and
+               p.cost_center_id_center = r.cost_center_id_center and
+               p.onYear = r.onYear and
+               p.onMonth = r.onMonth
+
+               where p.cost_type_id_cost = ?
+               and p.cost_center_id_center = ?
+               and p.onYear = ?
+               and p.onMonth = ?
+               and p.verssion = ?"
+               cost center year month version]))))
+  ([cost center year version]
+   (:deviation
+    (first
+     (j/query mysql-db
+              ["select (p.value - r.value) deviation from planned_costs p
+               join realized_costs r on
+               p.cost_type_id_cost = r.cost_type_id_cost and
+               p.cost_center_id_center = r.cost_center_id_center and
+               p.onYear = r.onYear and
+               p.onMonth = r.onMonth
+
+               where p.cost_type_id_cost = ?
+               and p.cost_center_id_center = ?
+               and p.onYear = ?
+               and p.verssion = ?"
+               cost center year version])))))
+
+(defn dev-quart-val
+  [cost center year version term]
   (:deviation
    (first
-   (j/query mysql-db
-           ["select (p.value - r.value) deviation from planned_costs p
-            join realized_costs r on
-            p.cost_type_id_cost = r.cost_type_id_cost and
-            p.cost_center_id_center = r.cost_center_id_center and
-            p.onYear = r.onYear and
-            p.onMonth = r.onMonth
+    (j/query mysql-db
+             ["select (p.value - r.value) deviation from planned_costs p
+              join realized_costs r on
+              p.cost_type_id_cost = r.cost_type_id_cost and
+              p.cost_center_id_center = r.cost_center_id_center and
+              p.onYear = r.onYear and
+              p.onMonth = r.onMonth
 
-            where p.cost_type_id_cost = ?
-            and p.cost_center_id_center = ?
-            and p.onYear = ?
-            and p.onMonth = ?
-            and p.verssion = ?"
-            cost center year month version]))))
-
-(deviation-val 4070503 50211 2013 2)
+              where p.cost_type_id_cost = ?
+              and p.cost_center_id_center = ?
+              and p.onYear = ?
+              and p.verssion = ?
+              and p.term = ?"
+              cost center year version term]))))

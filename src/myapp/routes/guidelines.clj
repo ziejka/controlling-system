@@ -112,8 +112,8 @@
     [:table.table.table-striped
      [:thead
       [:tr
-       [:th "Nr Kosztu"] [:th "Nazwa"] [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"]
-       [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"] [:th "Rocznie"] [:th "Kwartał I"] [:th "Kwartał II"] [:th "Kwartał IIII"] [:th "Kwartał IV"]]]
+       [:th "Nr Kosztu"] [:th "Nazwa"] [:th "Rocznie"] [:th "Kwartał I"] [:th "Kwartał II"] [:th "Kwartał IIII"] [:th "Kwartał IV"]
+       [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]
      (into
       [:tbody]
       (for
@@ -121,16 +121,16 @@
          (distinct
           (for
             [row
-             (dbquery/get-plan-costs user year version)]
-            (:cost_type_id_cost row)))]
+             (dbquery/cost-on-center-grid user)]
+            (:id_cost row)))]
         [:tr
          [:td cost-id]
          [:td (dbquery/get-cost-name cost-id)]
-         (for [month (range 1 13)]
-           [:td (dbquery/get-plan-value user cost-id year month version)])
          [:td [:b (apply + (dbquery/get-plan-value user cost-id year version))]]
          (for [t (range 1 5)]
            [:td (dbquery/get-quarter-value user cost-id year version t)])
+         (for [month (range 1 13)]
+           [:td (dbquery/get-plan-value user cost-id year month version)])
          ]))])))
 
 ; END OF PAGE ELEMENT
