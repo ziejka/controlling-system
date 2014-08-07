@@ -63,6 +63,8 @@
             (dbquery/deviation-val cost-id user year month version)]])
          ]))])))
 
+(guide-dev-grid 50213 2013 1)
+
 
 ;REDER PAGE
 (defn dev-page [id-center]

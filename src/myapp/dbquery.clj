@@ -257,3 +257,16 @@
               and p.verssion = ?
               and p.term = ?"
               cost center year version term]))))
+
+(for [a (j/query mysql-db
+                 ["select * from planned_costs c
+                  where c.cost_center_id_center = 55055"])]
+  [:tr
+   [:td (:cost_type_id_cost a)
+    (for [m (:onMonth a)]
+      [:td (:value a)])]])
+
+(for [a (j/query mysql-db
+                 ["select * from planned_costs c
+                  where c.cost_center_id_center = 55055"])]
+ (let [b (:cost_type_id_cost a)]))
