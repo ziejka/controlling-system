@@ -258,15 +258,20 @@
               and p.term = ?"
               cost center year version term]))))
 
-(for [a (j/query mysql-db
-                 ["select * from planned_costs c
-                  where c.cost_center_id_center = 55055"])]
-  [:tr
-   [:td (:cost_type_id_cost a)
-    (for [m (:onMonth a)]
-      [:td (:value a)])]])
 
-(for [a (j/query mysql-db
+(def a (j/query mysql-db
                  ["select * from planned_costs c
-                  where c.cost_center_id_center = 55055"])]
- (let [b (:cost_type_id_cost a)]))
+                  where c.cost_center_id_center = 55055"]))
+
+ (let
+   [c (distinct (for [b a] (:cost_type_id_cost b)))]
+   (for [cost c]
+     [:tr
+      [:td cost]
+      (for [x a]
+   (if (= (:cost_type_id_cost x) cost)
+     [:td (:value x)]))]))
+
+ (for [x a]
+   (if (= (:cost_type_id_cost x) 4010100)
+     [:td (:value x)]))
