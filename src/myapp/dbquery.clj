@@ -259,19 +259,20 @@
               cost center year version term]))))
 
 
-(def a (j/query mysql-db
-                 ["select * from planned_costs c
-                  where c.cost_center_id_center = 55055"]))
+(defn dev-all [center] (j/query mysql-db
+                 (s/select * :deviationt
+                           (s/where {:plannedOnCenter center}))))
 
- (let
-   [c (distinct (for [b a] (:cost_type_id_cost b)))]
+
+ (let [all (dev-all 50211)]
+  (let
+   [c (distinct (for [b all] (:id_cost b)))]
    (for [cost c]
      [:tr
       [:td cost]
-      (for [x a]
-   (if (= (:cost_type_id_cost x) cost)
-     [:td (:value x)]))]))
+      (for [x all]
+   (if (= (:id_cost x) cost)
+     [:td (:cost_name x)]))])))
 
- (for [x a]
-   (if (= (:cost_type_id_cost x) 4010100)
-     [:td (:value x)]))
+
+
