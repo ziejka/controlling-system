@@ -78,8 +78,6 @@
                   (filter #(and (= (:id_cost %) c) (= (:onmonth %) month))
                           all)))])]))))])))
 
-(guide-dev-grid 50213 2013 1)
-
 
 ;REDER PAGE
 (defn dev-page [id-center]
