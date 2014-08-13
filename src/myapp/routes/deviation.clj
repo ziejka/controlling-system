@@ -38,7 +38,7 @@
      [:b (dbquery/get-center-name user)] " na rok "
      [:b year] " wersja: "[:b (dbquery/get-version-name version)]]
     [:br]
-    [:table.table.table-striped
+    [:table.table.table-striped.table-bordered
      [:thead
       [:tr
        [:th "Nr Kosztu"] [:th "Nazwa"] [:th "Rocznie"] [:th "Kwartał I"] [:th "Kwartał II"] [:th "Kwartał IIII"] [:th "Kwartał IV"]
@@ -56,31 +56,27 @@
                (first
                 (filter #(= (:id_cost %) c)
                         all)))]
+             [:td
+              (apply +
+                     (for
+                       [x
+                        (filter #(= (:id_cost %) c)
+                                all)]
+                       (:deviation x)))]
+             (for [t (range 1 5)]
+               [:td
+                (apply +
+                       (for
+                         [x
+                          (filter #(and (= (:id_cost %) c) (= (:term %) t))
+                                  all)]
+                         (:deviation x)))])
              (for [month (range 1 13)]
                [:td
                 (:deviation
                  (first
                   (filter #(and (= (:id_cost %) c) (= (:onmonth %) month))
-                          all)))])])))
-
-      #_(for
-          [cost-id
-           (distinct
-            (for
-              [row
-               (dbquery/cost-on-center-grid user)]
-              (:id_cost row)))]
-          [:tr
-           [:td cost-id]
-           [:td (dbquery/get-cost-name cost-id)]
-           [:td [:b (dbquery/deviation-val cost-id user year version)]]
-           (for [t (range 1 5)]
-             [:td (dbquery/dev-quart-val cost-id user year version t)])
-           (for [month (range 1 13)]
-             [:td [:a {:data-toggle "tooltip" :title (dbquery/deviation-val cost-id user year month version)}
-                   (dbquery/deviation-val cost-id user year month version)]])
-           ])
-      )])))
+                          all)))])]))))])))
 
 (guide-dev-grid 50213 2013 1)
 

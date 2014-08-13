@@ -273,17 +273,24 @@
        [:td
         (:cost_name
          (first
-          (filter #(= (:id_cost %) c)
+          (filter #(= (:id_cost %) 4070503)
                   all)))]
+       [:td
+        (apply +
+               (for
+                 [x
+                  (filter #(= (:id_cost %) 4070503)
+                          all)]
+                 (:deviation x)))]
        (for [month (range 1 13)]
          [:td
           (:deviation
            (first
-            (filter #(and (= (:id_cost %) c) (= (:onmonth %) month))
+            (filter #(and (= (:id_cost %) 4070503) (= (:onmonth %) month))
                     all)))])])))
 
 
 
 
 (filter #(= (:id_cost %) 4070503)
- (dev-all 50211))
+        (dev-all 50211))
