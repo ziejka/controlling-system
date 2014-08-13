@@ -45,23 +45,42 @@
        [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]
      (into
       [:tbody]
-      (for
-        [cost-id
-         (distinct
-          (for
-            [row
-             (dbquery/cost-on-center-grid user)]
-            (:id_cost row)))]
-        [:tr
-         [:td cost-id]
-         [:td (dbquery/get-cost-name cost-id)]
-         [:td [:b (dbquery/deviation-val cost-id user year version)]]
-         (for [t (range 1 5)]
-           [:td (dbquery/dev-quart-val cost-id user year version t)])
-         (for [month (range 1 13)]
-           [:td [:a {:data-toggle "tooltip" :title (dbquery/deviation-val cost-id user year month version)}
-            (dbquery/deviation-val cost-id user year month version)]])
-         ]))])))
+      (let [all (dbquery/dev-all user)]
+        (let
+          [cost (distinct (for [a all] (:id_cost a)))]
+          (for [c cost]
+            [:tr
+             [:td c]
+             [:td
+              (:cost_name
+               (first
+                (filter #(= (:id_cost %) c)
+                        all)))]
+             (for [month (range 1 13)]
+               [:td
+                (:deviation
+                 (first
+                  (filter #(and (= (:id_cost %) c) (= (:onmonth %) month))
+                          all)))])])))
+
+      #_(for
+          [cost-id
+           (distinct
+            (for
+              [row
+               (dbquery/cost-on-center-grid user)]
+              (:id_cost row)))]
+          [:tr
+           [:td cost-id]
+           [:td (dbquery/get-cost-name cost-id)]
+           [:td [:b (dbquery/deviation-val cost-id user year version)]]
+           (for [t (range 1 5)]
+             [:td (dbquery/dev-quart-val cost-id user year version t)])
+           (for [month (range 1 13)]
+             [:td [:a {:data-toggle "tooltip" :title (dbquery/deviation-val cost-id user year month version)}
+                   (dbquery/deviation-val cost-id user year month version)]])
+           ])
+      )])))
 
 (guide-dev-grid 50213 2013 1)
 

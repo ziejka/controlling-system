@@ -260,19 +260,30 @@
 
 
 (defn dev-all [center] (j/query mysql-db
-                 (s/select * :deviationt
-                           (s/where {:plannedOnCenter center}))))
+                                (s/select * :deviationt
+                                          (s/where {:plannedOnCenter center}))))
 
 
- (let [all (dev-all 50211)]
+(let [all (dev-all 50211)]
   (let
-   [c (distinct (for [b all] (:id_cost b)))]
-   (for [cost c]
-     [:tr
-      [:td cost]
-      (for [x all]
-   (if (= (:id_cost x) cost)
-     [:td (:cost_name x)]))])))
+    [cost (distinct (for [a all] (:id_cost a)))]
+    (for [c cost]
+      [:tr
+       [:td c]
+       [:td
+        (:cost_name
+         (first
+          (filter #(= (:id_cost %) c)
+                  all)))]
+       (for [month (range 1 13)]
+         [:td
+          (:deviation
+           (first
+            (filter #(and (= (:id_cost %) c) (= (:onmonth %) month))
+                    all)))])])))
 
 
 
+
+(filter #(= (:id_cost %) 4070503)
+ (dev-all 50211))
