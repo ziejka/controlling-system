@@ -112,6 +112,17 @@
                           :onMonth month
                           :verssion version})))))))
 
+(defn get-plan
+  [center year version]
+  (j/query mysql-db
+           (s/select * :guide
+                     (s/where
+                      {:plannedOnCenter center
+                       :onYear year
+                       :verssion version}))))
+
+(get-plan 50211 2013 1)
+
 
 (defn get-quarter-value
   [id-center id-cost year version term]
@@ -259,38 +270,8 @@
               cost center year version term]))))
 
 
-(defn dev-all [center] (j/query mysql-db
+(defn dev-all [center year version] (j/query mysql-db
                                 (s/select * :deviationt
-                                          (s/where {:plannedOnCenter center}))))
-
-
-(let [all (dev-all 50211)]
-  (let
-    [cost (distinct (for [a all] (:id_cost a)))]
-    (for [c cost]
-      [:tr
-       [:td c]
-       [:td
-        (:cost_name
-         (first
-          (filter #(= (:id_cost %) 4070503)
-                  all)))]
-       [:td
-        (apply +
-               (for
-                 [x
-                  (filter #(= (:id_cost %) 4070503)
-                          all)]
-                 (:deviation x)))]
-       (for [month (range 1 13)]
-         [:td
-          (:deviation
-           (first
-            (filter #(and (= (:id_cost %) 4070503) (= (:onmonth %) month))
-                    all)))])])))
-
-
-
-
-(filter #(= (:id_cost %) 4070503)
-        (dev-all 50211))
+                                          (s/where {:plannedOnCenter center
+                                                    :onYear year
+                                                    :verssion version}))))

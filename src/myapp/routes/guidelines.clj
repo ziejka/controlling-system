@@ -109,29 +109,46 @@
      [:b (dbquery/get-center-name user)] " na rok "
      [:b year] " wersja: "[:b (dbquery/get-version-name version)]]
     [:br]
-    [:table.table.table-striped
+
+    [:table.table.table-striped.table-bordered
      [:thead
       [:tr
        [:th "Nr Kosztu"] [:th "Nazwa"] [:th "Rocznie"] [:th "Kwartał I"] [:th "Kwartał II"] [:th "Kwartał IIII"] [:th "Kwartał IV"]
        [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]
      (into
       [:tbody]
-      (for
-        [cost-id
-         (distinct
-          (for
-            [row
-             (dbquery/cost-on-center-grid user)]
-            (:id_cost row)))]
-        [:tr
-         [:td cost-id]
-         [:td (dbquery/get-cost-name cost-id)]
-         [:td [:b (apply + (dbquery/get-plan-value user cost-id year version))]]
-         (for [t (range 1 5)]
-           [:td (dbquery/get-quarter-value user cost-id year version t)])
-         (for [month (range 1 13)]
-           [:td (dbquery/get-plan-value user cost-id year month version)])
-         ]))])))
+      (let [all (dbquery/get-plan user year version)]
+        (let
+          [cost (distinct (for [a all] (:id_cost a)))]
+          (for [c cost]
+            [:tr
+             [:td c]
+             [:td
+              (:cost_name
+               (first
+                (filter #(= (:id_cost %) c)
+                        all)))]
+             [:td
+              (apply +
+                     (for
+                       [x
+                        (filter #(= (:id_cost %) c)
+                                all)]
+                       (:value x)))]
+             (for [t (range 1 5)]
+               [:td
+                (apply +
+                       (for
+                         [x
+                          (filter #(and (= (:id_cost %) c) (= (:term %) t))
+                                  all)]
+                         (:value x)))])
+             (for [month (range 1 13)]
+               [:td
+                (:value
+                 (first
+                  (filter #(and (= (:id_cost %) c) (= (:onmonth %) month))
+                          all)))])]))))])))
 
 ; END OF PAGE ELEMENT
 

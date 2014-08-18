@@ -45,7 +45,7 @@
        [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]
      (into
       [:tbody]
-      (let [all (dbquery/dev-all user)]
+      (let [all (dbquery/dev-all user year version)]
         (let
           [cost (distinct (for [a all] (:id_cost a)))]
           (for [c cost]
