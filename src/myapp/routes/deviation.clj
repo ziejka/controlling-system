@@ -72,11 +72,14 @@
                                   all)]
                          (:deviation x)))])
              (for [month (range 1 13)]
-               [:td
-                (:deviation
-                 (first
+               (let [cell (first
                   (filter #(and (= (:id_cost %) c) (= (:onmonth %) month))
-                          all)))])]))))])))
+                          all))]
+                [:td [:a
+                {:data-toggle "tooltip"
+                 :data-placement "top"
+                 :title ['Planowano (:plan cell) 'Wykonano (:realized cell)]}
+                (:deviation cell)]]))]))))])))
 
 
 ;REDER PAGE
