@@ -6,6 +6,7 @@
    [myapp.dbquery :as dbquery]
    [myapp.routes.grid :as grid]
    [myapp.routes.guidelines :as guide]
+   [myapp.routes.exec :as exec]
    [ring.util.response :as resp]
    [hiccup.core :as hc]
    [hiccup.form :as hf]
@@ -26,6 +27,16 @@
           (dev-page user))))))
 
 ;PAGE ELEMENTS
+
+(defn select-center []
+  (hc/html
+   (hf/form-to [:post "/dev-center"]
+               [:div.float-left [:h4 "Centrum"] [:div.radioWrapper
+                                                 (for [center (dbquery/get-list-center)]
+                                                   [:div  [:input {:type "radio" :name "center" :value center :class "radio" :required ""}
+                                                           [:span.radio-name center " " (dbquery/get-center-name center)]]])]]
+               (hf/submit-button {:class "btn"} "select"))))
+
 
 (defn guide-dev-grid
   ([] (hc/html
@@ -84,20 +95,31 @@
 
 ;REDER PAGE
 (defn dev-page [id-center]
-  (layout/render "guidelines.html" {:guide-grid (guide-dev-grid)
-                                    :guide-select (guide/guide-select id-center "/dev")
-                                    :user-id id-center}))
+  (layout/render "deviation.html" {:guide-grid (guide-dev-grid)
+                                   :guide-select (guide/guide-select id-center "/dev")
+                                   :user-id id-center}))
 
 (defn dev-grid-page [id-center year version]
-  (layout/render "guidelines.html" {:guide-grid (guide-dev-grid id-center year version)
-                                    :guide-select (guide/guide-select id-center "/dev")
-                                    :user-id id-center}))
+  (layout/render "deviation.html" {:guide-grid (guide-dev-grid id-center year version)
+                                   :guide-select (guide/guide-select id-center "/dev")
+                                   :user-id id-center}))
 
-#_(defn dev-admin []
-    (layout/render "guidelines.html" {:guide-grid (guide-dev-grid)
-                                      :guide-select (guide/guide-select id-center "/dev")
-                                      :user-id id-center}))
+(defn dev-grid-admin  [id-center year version]
+  (layout/render "deviation.html" {:guide-grid (guide-dev-grid id-center year version)
+                                   :guide-select (grid/center-selection id-center "/dev-admin")
+                                   :user-id id-center}))
+
+(defn dev-admin [user]
+  (layout/render "deviation.html" {:user-id user
+                                   :guide-select (select-center)}))
+
+(defn dev-admin-select [center]
+  (layout/render "deviation.html" {:user-id (grid/get-user)
+                                   :guide-grid (guide-dev-grid)
+                                   :guide-select (grid/center-selection center "/dev-admin")}))
 
 (defroutes deviation-routes
   (GET "/deviation" [] (deviation-handler))
-  (POST "/dev" [year version] (dev-grid-page (grid/get-user) year version)))
+  (POST "/dev" [year version] (dev-grid-page (grid/get-user) year version))
+  (POST "/dev-admin" [center year version] (dev-grid-admin center year version))
+  (POST "/dev-center" [center] (dev-admin-select center)))

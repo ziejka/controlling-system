@@ -84,25 +84,25 @@
 ; PAGE RENDER
 
 (defn exec-revenue []
-  (layout/render "grid.html" {:user-id (get-user)
+  (layout/render "exec.html" {:user-id (get-user)
                               :forms (grid/revenueSendForm)
                               :select (grid/revenue-select "/add-exec-revenue")
                               }))
 
 (defn exec-page []
-  (layout/render "plan.html" {:user-id (get-user)
+  (layout/render "exec.html" {:user-id (get-user)
                               :select (exec-select)}))
 
 (defn exec-admin []
-  (layout/render "plan.html" {:user-id (get-user)
+  (layout/render "exec.html" {:user-id (get-user)
                               :select (select-my-center)}))
 
 (defn exec-admin-select [my-center]
-  (layout/render "plan.html" {:user-id my-center
+  (layout/render "exec.html" {:user-id my-center
                               :select (exec-select my-center)}))
 
 (defn exec-grid-page [center year version where]
-  (layout/render "grid.html" {:user-id (get-user)
+  (layout/render "exec.html" {:user-id (get-user)
                               :forms (execForm center year version where)}))
 
 

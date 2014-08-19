@@ -35,7 +35,7 @@
   (hc/html
    [:h3 "Wybierz nr centrum rok oraz wersję"][:br]
    (hf/form-to [:post where]
-               (if (= where "/exec")
+               (if (or (= where "/exec") (= where "/dev-admin"))
                  [:input {:type "hidden" :name "center" :value user}]
                  [:div.float-left [:h4 "Centrum"] [:div.radioWrapper
                                                    (for [center (for [centers (dbquery/plan-on-center user)] (:plannedoncenter centers))]
@@ -161,12 +161,12 @@
 ; PAGE RENDER
 
 (defn plan-revenue []
-  (layout/render "grid.html" {:user-id (get-user)
+  (layout/render "plan.html" {:user-id (get-user)
                               :forms (revenueSendForm)
                               :select (revenue-select "/plan-revenue")}))
 
 (defn plan-revenue-grid [year version brand-name where]
-  (layout/render "grid.html" {:user-id (get-user)
+  (layout/render "plan.html" {:user-id (get-user)
                               :forms (revenueSendForm year version brand-name where)}))
 
 (defn plan-page []
@@ -174,7 +174,7 @@
                               :select (center-selection (get-user) "/grid")}))
 
 (defn grid-page [center year version where]
-  (layout/render "grid.html"
+  (layout/render "plan.html"
                  {:user-id center
                   :forms (sendForm (get-user) center year version where)}))
 

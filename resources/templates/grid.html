@@ -1,27 +1,5 @@
 {% extends "templates/base.html" %}
 {% block content %}
-<!--<table class="table table-striped">
-	<tr>
-		<th>Marka</th>
-		<th>ID</th>
-		<th>Rok</th>
-	</tr>
-	{% for item in items %}
-	<tr>
-		<td> {{item.brand_name}} </th>
-		<td> {{item.id_brands}} </td>
-
-		<td>
-			<select>
-				{% for year in years %}
-					<option> {{year}} </option>
-				{% endfor %}
-			</select>
-		</td>
-		</tr>
-		{% endfor %}
-		{{year|safe}} {{version|safe}}
-	</table> -->
 	<div  class = "padding"> {{select|safe}}  </div>
 </br>
 </br>
