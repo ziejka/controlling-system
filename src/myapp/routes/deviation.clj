@@ -56,30 +56,30 @@
                (first
                 (filter #(= (:id_cost %) c)
                         all)))]
-             [:td
-              (apply +
-                     (for
-                       [x
-                        (filter #(= (:id_cost %) c)
-                                all)]
-                       (:deviation x)))]
-             (for [t (range 1 5)]
+             (let [year-cell (filter #(= (:id_cost %) c) all)]
                [:td
-                (apply +
-                       (for
-                         [x
-                          (filter #(and (= (:id_cost %) c) (= (:term %) t))
-                                  all)]
-                         (:deviation x)))])
+                [:a {:data-toggle "tooltip"
+                     :data-placement "top"
+                     :title ['Planowano (apply + (for [x year-cell] (:plan x))) 'Wykonano (apply + (for [x year-cell] (:realized x)))]}
+                 (apply + (for [x year-cell] (:deviation x)))]])
+             (for [t (range 1 5)]
+               (let [quarter-cell (filter #(and (= (:id_cost %) c) (= (:term %) t)) all)]
+                 [:td
+                  [:a {:data-toggle "tooltip"
+                       :data-placement "top"
+                       :title ['Planowano (apply + (for [x quarter-cell] (:plan x))) 'Wykonano (apply + (for [x quarter-cell] (:realized x)))]}
+                   (apply +
+                          (for [x quarter-cell]
+                            (:deviation x)))]]))
              (for [month (range 1 13)]
                (let [cell (first
-                  (filter #(and (= (:id_cost %) c) (= (:onmonth %) month))
-                          all))]
-                [:td [:a
-                {:data-toggle "tooltip"
-                 :data-placement "top"
-                 :title ['Planowano (:plan cell) 'Wykonano (:realized cell)]}
-                (:deviation cell)]]))]))))])))
+                           (filter #(and (= (:id_cost %) c) (= (:onmonth %) month))
+                                   all))]
+                 [:td [:a
+                       {:data-toggle "tooltip"
+                        :data-placement "top"
+                        :title ['Planowano (:plan cell) 'Wykonano (:realized cell)]}
+                       (:deviation cell)]]))]))))])))
 
 
 ;REDER PAGE
@@ -92,6 +92,11 @@
   (layout/render "guidelines.html" {:guide-grid (guide-dev-grid id-center year version)
                                     :guide-select (guide/guide-select id-center "/dev")
                                     :user-id id-center}))
+
+#_(defn dev-admin []
+    (layout/render "guidelines.html" {:guide-grid (guide-dev-grid)
+                                      :guide-select (guide/guide-select id-center "/dev")
+                                      :user-id id-center}))
 
 (defroutes deviation-routes
   (GET "/deviation" [] (deviation-handler))
