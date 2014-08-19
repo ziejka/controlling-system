@@ -270,8 +270,16 @@
               cost center year version term]))))
 
 
-(defn dev-all [center year version] (j/query mysql-db
-                                (s/select * :deviationt
-                                          (s/where {:plannedOnCenter center
-                                                    :onYear year
-                                                    :verssion version}))))
+(defn dev-all [center year version]
+  (j/query mysql-db
+           (s/select * :deviationt
+                     (s/where {:plannedOnCenter center
+                               :onYear year
+                               :verssion version}))))
+
+(defn dev-rev-all [brand year version]
+  (j/query mysql-db
+           (s/select * :dev_rev
+                     (s/where {:brand brand
+                               :year year
+                               :version version}))))

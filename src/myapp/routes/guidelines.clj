@@ -25,9 +25,9 @@
 
 ; PAGE ELEMENT
 
-(defn guide-revenue-select []
+(defn guide-revenue-select [where]
   (hc/html
-   (hf/form-to [:post "/guidelines-revenue"]
+   (hf/form-to [:post where]
                [:div.float-left [:h4 "Marka"] [:div.radioWrapper
                                                (for [brand  (dbquery/get-brand-id)]
                                                  [:div [:input {:type "radio" :name "brand-name" :value brand :class "radio"} [:span.radio-name (dbquery/get-brand-name brand)]]])]]
@@ -83,17 +83,17 @@
                 [:div.radioWrapper
                  (let [y (dbquery/get-plan-year id-user)]
                    (if (= 1 (count y))
-                     [:input {:type "radio" :name "year" :value (first y) :class "radio"} [:span.radio-name (first y)]]
+                     [:input {:type "radio" :name "year" :value (first y) :class "radio" :required ""} [:span.radio-name (first y)]]
                      (for [year y]
                        [:input {:type "radio" :name "year" :value year :class "radio"} [:span.radio-name year]])))]]
                [:div.float-left
                 [:div.radioWrapper
                  (let [v (dbquery/get-plan-version id-user)]
                    (if (= 1 (count v))
-                     [:input {:type "radio" :name "version" :value (first v) :class "radio"}
+                     [:input {:type "radio" :name "version" :value (first v) :class "radio" :required ""}
                       [:span.radio-name (dbquery/get-version-name (first v))]]
                      (for [version v]
-                       [:input {:type "radio" :name "version" :value version :class "radio"}
+                       [:input {:type "radio" :name "version" :value version :class "radio" :required ""}
                         [:span.radio-name (dbquery/get-version-name version)]])))]]
                (hf/submit-button {:class "btn"} "select"))))
 
@@ -167,7 +167,7 @@
 
 (defn guide-revenue-page [id-center]
   (layout/render "guidelines.html" {:guide-grid (guide-revenue)
-                                    :guide-select (guide-revenue-select)
+                                    :guide-select (guide-revenue-select "/guidelines-revenue")
                                     :user-id id-center}))
 
 (defn guide-gird-revenue [id-center year version brand-name]

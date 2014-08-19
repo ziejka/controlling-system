@@ -74,7 +74,7 @@
                      :title ['Planowano (apply + (for [x year-cell] (:plan x))) 'Wykonano (apply + (for [x year-cell] (:realized x)))]}
                  (apply + (for [x year-cell] (:deviation x)))]])
              (for [t (range 1 5)]
-               (let [quarter-cell (filter #(and (= (:id_cost %) c) (= (:term %) t)) all)]
+               (let [quarter-cell (filter #(= (:term %) t) (filter #(= (:id_cost %) c) all))]
                  [:td
                   [:a {:data-toggle "tooltip"
                        :data-placement "top"
@@ -84,13 +84,61 @@
                             (:deviation x)))]]))
              (for [month (range 1 13)]
                (let [cell (first
-                           (filter #(and (= (:id_cost %) c) (= (:onmonth %) month))
-                                   all))]
+                           (filter #(= (:onmonth %) month) (filter #(= (:id_cost %) c)  all)))]
                  [:td [:a
                        {:data-toggle "tooltip"
                         :data-placement "top"
                         :title ['Planowano (:plan cell) 'Wykonano (:realized cell)]}
                        (:deviation cell)]]))]))))])))
+
+
+(defn dev-grid-r
+  ([] (hc/html
+       [:h4.padding "Wybeirz rok i wersję" ]))
+  ([year version brand-id]
+   (hc/html
+    [:h3.padding "Wytyczne dla marki: "[:b (dbquery/get-brand-name brand-id)]  ", na rok " [:b year] ", wersja: "[:b (dbquery/get-version-name version)]]
+    [:br]
+    (let [all (dbquery/dev-rev-all brand-id year version)]
+      [:table.table.revenue.table-bordered
+       [:thead
+        [:tr
+         [:th "Ms"] [:th "Co?"]
+         (for [market (distinct (for [a all] (:m_name a)))]
+           [:th market])]]
+       [:tbody
+        (for [month (range 1 13)]
+          (list
+           [:tr
+            [:td {:rowspan "4"} month]]
+           [:tr
+            [:td "Sprzedaż"]
+            (for [market (distinct (for [a all] (:market a)))]
+              [:td (let [cell
+                         (first (filter #(= (:month %) month) (filter #(= (:market %) market) all)))]
+                     [:a
+                      {:data-toggle "tooltip"
+                       :data-placement "top"
+                       :title ['Planowano (:plan cell) 'Wykonano (:realized cell)]}
+                      (:dev_value cell)])])]
+           [:tr
+            [:td "Marża"]
+            (for [market (distinct (for [a all] (:market a)))]
+              [:td (let [cell
+                         (first (filter #(= (:month %) month) (filter #(= (:market %) market) all)))]
+                     [:a
+                      {:data-toggle "tooltip"
+                       :data-placement "top"
+                       :title ['Planowano (:plan_margin cell) 'Wykonano (:realized_margin cell)]}
+                      (:dev_margin cell)])])]
+           [:tr
+            [:td "Marża %"]
+            (for [market (distinct (for [a all] (:market a)))]
+              [:td
+               (let [marginp
+                     (:marginp (first (filter #(= (:month %) month) (filter #(= (:market %) market) all))))]
+                 (if (nil? marginp) 0 marginp)) " %"])]))]]))))
+
 
 
 ;REDER PAGE
@@ -118,8 +166,19 @@
                                    :guide-grid (guide-dev-grid)
                                    :guide-select (grid/center-selection center "/dev-admin")}))
 
+(defn dev-revenue [user]
+  (layout/render "deviation.html" {:user-id user
+                                   :guide-grid (dev-grid-r)
+                                   :guide-select (guide/guide-revenue-select "/dev-rev")}))
+
+(defn dev-grid-revenue [user year version brand-name]
+  (layout/render "deviation.html" {:user-id user
+                                   :guide-grid (dev-grid-r year version brand-name)}))
+
 (defroutes deviation-routes
   (GET "/deviation" [] (deviation-handler))
   (POST "/dev" [year version] (dev-grid-page (grid/get-user) year version))
   (POST "/dev-admin" [center year version] (dev-grid-admin center year version))
-  (POST "/dev-center" [center] (dev-admin-select center)))
+  (POST "/dev-center" [center] (dev-admin-select center))
+  (POST "/dev-rev" [year version brand-name]
+        (dev-grid-revenue (guide/get-user) year version brand-name)))
