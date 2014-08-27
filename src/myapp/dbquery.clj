@@ -283,3 +283,32 @@
                      (s/where {:brand brand
                                :year year
                                :version version}))))
+
+(defn real-cost [year]
+  (j/query mysql-db
+           (s/select * :realized_costs
+                     (s/where {:onYear year}))))
+
+
+(defn real-revenues [year]
+  (j/query mysql-db
+           (s/select * :realized_revenues
+                     (s/where {:r_year year}))))
+
+
+(defn plan-cost [year version]
+  (j/query mysql-db
+           (s/select * :planned_costs
+                     (s/where {:onYear year
+                               :verssion version}))))
+
+
+(defn plan-revenues [year version]
+  (j/query mysql-db
+           (s/select * :planned_revenues
+                     (s/where {:r_year year
+                               :version version}))))
+
+
+
+
