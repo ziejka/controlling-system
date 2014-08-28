@@ -52,20 +52,7 @@
 ; ---------------------------------------------------
 
 (def all (query-chose 2013 1))
-all
-(rest all)
-
-#_(market-selection "73011" (first all))
-
-(= (reverse (seq "73011")) (rest (reverse (seq "730112"))))
-
-#_(market-selection "73011" (first all))
-
-#_(distinct
- (for
-   [m (all-market (first all))]
-   (rest
-    (reverse (str m)))))
+(+ (count (first all)) (count (rest all)))
 
 ; ---------------------------------------------------
 
@@ -76,6 +63,12 @@ all
    +
    (for [x params]
      (:value x))))
+
+(defn sum-margin [params]
+  (apply
+   +
+   (for [x params]
+     (:profit_margin x))))
 
 (defn selection [what x params]
   (filter
@@ -116,8 +109,8 @@ all
       [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]
     (let [all (query-chose year version)]
       [:tbody
-       [:tr
-        [:td "Przychody ze sprzedaży"]
+       [:tr.success
+        [:td "1. Przychody ze sprzedaży"]
         [:td (sum (first all))]
         (for [t (range 1 5)]
           [:td (sum (selection :term t (first all)))])
@@ -125,38 +118,118 @@ all
           [:td (sum (selection :r_month month (first all)))])]
        (for [market (main-market all)]
          [:tr
-          [:td "73011 Rynek Tradycyjny "]
+          [:td (cond
+                (= market (seq "11037")) "73011 Rynek Tradycyjny"
+                (= market (seq "21037")) "73012 Rynek Nowoczesny"
+                (= market (seq "31037")) "73013 Sprzedaż Zagraniczna")]
           [:td (sum (market-selection market (first all)))]
           (for [t (range 1 5)]
             [:td (sum (selection :term t (market-selection market (first all))))])
           (for [month (range 1 13)]
             [:td (sum (selection :r_month month (market-selection market (first all))))])])
+       [:tr.active
+        [:td "2. Koszty sprzedanych produktów"]
+        [:td (-
+              (sum (first all))
+              (sum-margin (first all)))]
+        (for [t (range 1 5)]
+          [:td (-
+                (sum (selection :term t (first all)))
+                (sum-margin (selection :term t (first all))))])
+        (for [month (range 1 13)]
+          [:td (-
+                (sum (selection :r_month month (first all)))
+                (sum-margin (selection :r_month month (first all))))])]
+       (for [market (main-market all)]
+         [:tr
+          [:td (cond
+                (= market (seq "11037")) "73011 Rynek Tradycyjny"
+                (= market (seq "21037")) "73012 Rynek Nowoczesny"
+                (= market (seq "31037")) "73013 Sprzedaż Zagraniczna")]
+          [:td (-
+                (sum (market-selection market (first all)))
+                (sum-margin (market-selection market (first all))))]
+          (for [t (range 1 5)]
+            [:td (-
+                  (sum (selection :term t (market-selection market (first all))))
+                  (sum-margin (selection :term t (market-selection market (first all)))))])
+          (for [month (range 1 13)]
+            [:td (-
+                  (sum (selection :r_month month (market-selection market (first all))))
+                  (sum-margin (selection :r_month month (market-selection market (first all)))))])])
+       [:tr.info
+        [:td "3 (=) Marża I (1-2)"]
+        [:td (sum-margin (first all))]
+        (for [t (range 1 5)]
+          [:td (sum-margin (selection :term t (first all)))])
+        (for [month (range 1 13)]
+          [:td (sum-margin (selection :r_month month (first all)))])]
+       (for [market (main-market all)]
+         [:tr
+          [:td (cond
+                (= market (seq "11037")) "73011 Rynek Tradycyjny"
+                (= market (seq "21037")) "73012 Rynek Nowoczesny"
+                (= market (seq "31037")) "73013 Sprzedaż Zagraniczna")]
+          [:td (sum-margin (market-selection market (first all)))]
+          (for [t (range 1 5)]
+            [:td (sum-margin (selection :term t (market-selection market (first all))))])
+          (for [month (range 1 13)]
+            [:td (sum-margin (selection :r_month month (market-selection market (first all))))])])
+       [:tr.active
+        [:td "(=) Marża I (%)"]
+        [:td (format "%.2f"
+                     (* 100.0
+                        (/
+                         (sum-margin (first all))
+                         (sum (first all))))) " %"]
+        (for [t (range 1 5)]
+          [:td (format "%.2f"
+                       (* 100.0
+                          (/
+                           (sum-margin (selection :term t (first all)))
+                           (sum (selection :term t (first all)))))) " %"])
+        (for [month (range 1 13)]
+          [:td (format "%.2f"
+                       (* 100.0
+                          (/
+                           (sum-margin (selection :r_month month (first all)))
+                           (sum (selection :r_month month (first all)))))) " %"])]
+       (for [market (main-market all)]
+         [:tr
+          [:td (cond
+                (= market (seq "11037")) "73011 Rynek Tradycyjny"
+                (= market (seq "21037")) "73012 Rynek Nowoczesny"
+                (= market (seq "31037")) "73013 Sprzedaż Zagraniczna")]
+          [:td (format "%.2f"
+                       (* 100.0
+                          (/
+                           (sum-margin (market-selection market (first all)))
+                           (sum (market-selection market (first all)))))) " %"]
+          (for [t (range 1 5)]
+            [:td (format "%.2f"
+                         (* 100.0
+                            (/
+                             (sum-margin (selection :term t (market-selection market (first all))))
+                             (sum (selection :term t (market-selection market (first all))))))) " %"])
+          (for [month (range 1 13)]
+            [:td (format "%.2f"
+                         (* 100.0
+                            (/
+                             (sum-margin (selection :r_month month (market-selection market (first all))))
+                             (sum (selection :r_month month (market-selection market (first all))))))) " %"])])
+       (let [market-cost (selection :cost_center_id_center 50211 (rest all))]
+        [:tr.danger
+        [:td "4. (-) Koszty rynku"]
+        [:td (sum market-cost)]
+        (for [t (range 1 5)]
+          [:td (sum (selection :term t market-cost))])
+        (for [month (range 1 13)]
+          [:td (sum (selection :onmonth month market-cost))])]
+         )
 
 
-       #_(
-       [:tr
-        [:td "73011 Rynek Tradycyjny "]
-        [:td (sum (market-selection "73011" (first all)))]
-        (for [t (range 1 5)]
-          [:td (sum (selection :term t (market-selection "73011" (first all))))])
-        (for [month (range 1 13)]
-          [:td (sum (selection :r_month month (market-selection "73011" (first all))))])]
-       [:tr
-        [:td "73012 Rynek Nowoczesny "]
-        [:td (sum (market-selection "73012" (first all)))]
-        (for [t (range 1 5)]
-          [:td (sum (selection :term t (market-selection "73012" (first all))))])
-        (for [month (range 1 13)]
-          [:td (sum (selection :r_month month (market-selection "73012" (first all))))])]
-       [:tr
-        [:td "73013 Sprzedaż Zagraniczna "]
-        [:td (sum (market-selection "73013" (first all)))]
-        (for [t (range 1 5)]
-          [:td (sum (selection :term t (market-selection "73013" (first all))))])
-        (for [month (range 1 13)]
-          [:td (sum (selection :r_month month (market-selection "73013" (first all))))])] )
+
        ])]))
-
 
 ;; END GRID ;;
 (defn margins-page [user]
