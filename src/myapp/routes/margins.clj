@@ -49,34 +49,113 @@
      (dbquery/plan-cost year version)
      (dbquery/plan-revenues year version))))
 
+; ---------------------------------------------------
+
 (def all (query-chose 2013 1))
 all
 (rest all)
 
+#_(market-selection "73011" (first all))
 
-(defn sell-revenue [params]
- (apply
-  +
-  (for [rev (filter #(contains? % :id_brands) params)]
-    (:value rev))))
+(= (reverse (seq "73011")) (rest (reverse (seq "730112"))))
 
-(sell-revenue (first all))
+#_(market-selection "73011" (first all))
+
+#_(distinct
+ (for
+   [m (all-market (first all))]
+   (rest
+    (reverse (str m)))))
+
+; ---------------------------------------------------
 
 
+
+(defn sum [params]
+  (apply
+   +
+   (for [x params]
+     (:value x))))
+
+(defn selection [what x params]
+  (filter
+   #(= x (what %)) params))
+
+(defn value [params]
+  (:value (first params)))
+
+(defn market-selection [market params]
+  (filter
+   #(=
+     market
+     (rest
+      (reverse
+       (seq (str (:id_market_type %))))))
+   params))
+
+(defn all-market [params]
+  (distinct
+   (for [x params]
+     (:id_market_type x))))
+
+(defn main-market [params]
+  (distinct
+   (for
+     [m (all-market (first all))]
+     (rest
+      (reverse (str m))))))
+
+; ---------------------------------------------------
 
 (defn grid [year version]
   (hc/html
-   [:table.table.table-striped
-     [:thead
-      [:tr
-       [:th "Opis"] [:th "Rocznie"] [:th "Kwartał I"] [:th "Kwartał II"] [:th "Kwartał IIII"] [:th "Kwartał IV"] [:th "I"] [:th "II"]
-       [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]
-    (into
-     [:tbody]
-     (let [all (query-chose year version)]
+   [:table.table
+    [:thead
+     [:tr
+      [:th "Opis"] [:th "Rocznie"] [:th "Kwartał I"] [:th "Kwartał II"] [:th "Kwartał IIII"] [:th "Kwartał IV"] [:th "I"] [:th "II"]
+      [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]]]
+    (let [all (query-chose year version)]
+      [:tbody
        [:tr
         [:td "Przychody ze sprzedaży"]
-        [:td (sell-revenue (first all))]]))]))
+        [:td (sum (first all))]
+        (for [t (range 1 5)]
+          [:td (sum (selection :term t (first all)))])
+        (for [month (range 1 13)]
+          [:td (sum (selection :r_month month (first all)))])]
+       (for [market (main-market all)]
+         [:tr
+          [:td "73011 Rynek Tradycyjny "]
+          [:td (sum (market-selection market (first all)))]
+          (for [t (range 1 5)]
+            [:td (sum (selection :term t (market-selection market (first all))))])
+          (for [month (range 1 13)]
+            [:td (sum (selection :r_month month (market-selection market (first all))))])])
+
+
+       #_(
+       [:tr
+        [:td "73011 Rynek Tradycyjny "]
+        [:td (sum (market-selection "73011" (first all)))]
+        (for [t (range 1 5)]
+          [:td (sum (selection :term t (market-selection "73011" (first all))))])
+        (for [month (range 1 13)]
+          [:td (sum (selection :r_month month (market-selection "73011" (first all))))])]
+       [:tr
+        [:td "73012 Rynek Nowoczesny "]
+        [:td (sum (market-selection "73012" (first all)))]
+        (for [t (range 1 5)]
+          [:td (sum (selection :term t (market-selection "73012" (first all))))])
+        (for [month (range 1 13)]
+          [:td (sum (selection :r_month month (market-selection "73012" (first all))))])]
+       [:tr
+        [:td "73013 Sprzedaż Zagraniczna "]
+        [:td (sum (market-selection "73013" (first all)))]
+        (for [t (range 1 5)]
+          [:td (sum (selection :term t (market-selection "73013" (first all))))])
+        (for [month (range 1 13)]
+          [:td (sum (selection :r_month month (market-selection "73013" (first all))))])] )
+       ])]))
 
 
 ;; END GRID ;;
