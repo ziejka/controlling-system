@@ -53,6 +53,7 @@
 
 (def all (query-chose 2013 1))
 (+ (count (first all)) (count (rest all)))
+all
 
 ; ---------------------------------------------------
 
@@ -97,6 +98,12 @@
      [m (all-market (first all))]
      (rest
       (reverse (str m))))))
+
+(defn get-each-one [what params]
+  (distinct
+   (for [x params]
+     (what x))))
+
 
 ; ---------------------------------------------------
 
@@ -217,19 +224,44 @@
                             (/
                              (sum-margin (selection :r_month month (market-selection market (first all))))
                              (sum (selection :r_month month (market-selection market (first all))))))) " %"])])
-       (let [market-cost (selection :cost_center_id_center 50211 (rest all))]
-        [:tr.danger
-        [:td "4. (-) Koszty rynku"]
-        [:td (sum market-cost)]
-        (for [t (range 1 5)]
-          [:td (sum (selection :term t market-cost))])
-        (for [month (range 1 13)]
-          [:td (sum (selection :onmonth month market-cost))])]
-         )
+       (let [t-cost (selection :cost_center_id_center 50211 (rest all))
+             n-cost (selection :cost_center_id_center 50212 (rest all))
+             s-cost (selection :cost_center_id_center 50213 (rest all))
+             market-cost (concat t-cost n-cost s-cost)]
+         [:tbody
+          [:tr.danger
+           [:td "4. (-) Koszty rynku"]
+           [:td (sum market-cost)]
+           (for [t (range 1 5)]
+             [:td (sum (selection :term t market-cost))])
+           (for [month (range 1 13)]
+             [:td (sum (selection :onmonth month market-cost))])]
+          (for [center-id (get-each-one :cost_center_id_center market-cost)]
+            (let [one-center (selection :cost_center_id_center center-id market-cost)]
+              [:tbody
+               [:tr.active
+                [:td [:a {:data-toggle "collapse" :href (str "#" center-id)} center-id]]
+                [:td (sum one-center)]
+                (for [t (range 1 5)]
+                  [:td (sum (selection :term t one-center))])
+                (for [month (range 1 13)]
+                  [:td (sum (selection :onmonth month one-center))])]
+              [:tbody {:id center-id :class "collapse out"}
+                (for [cost-id (get-each-one :cost_type_id_cost one-center)]
+                 (let [one-cost (selection :cost_type_id_cost cost-id one-center)]
+                   [:tr
+                    [:td  cost-id]
+                    [:td  (sum one-cost)]
+                    (for [t (range 1 5)]
+                      [:td  (sum (selection :term t one-cost))])
+                    (for [month (range 1 13)]
+                      [:td (sum (selection :onmonth month one-cost))])]))]]))])
 
 
 
        ])]))
+
+
 
 ;; END GRID ;;
 (defn margins-page [user]

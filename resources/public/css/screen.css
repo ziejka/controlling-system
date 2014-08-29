@@ -73,3 +73,12 @@ body {
 .revenue > tbody > tr:nth-child(8n+4) > td {
     background-color: #F6F6F6;
 }
+
+.collapse.in {
+    display: table-row-group !important;
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 4px !important;
+
+}

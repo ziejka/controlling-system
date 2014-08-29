@@ -1,4 +1,14 @@
 $(document).ready(
+  $(".a").click(function() {
+    if($("#collapseme").hasClass("out")) {
+        $("#collapseme").addClass("in");
+        $("#collapseme").removeClass("out");
+    } else {
+        $("#collapseme").addClass("out");
+        $("#collapseme").removeClass("in");
+    }
+});
+
   function () {
     $('.value').change(function() {
       $(calc);
