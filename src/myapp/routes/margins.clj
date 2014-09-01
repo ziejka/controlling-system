@@ -165,7 +165,7 @@ all
                   (sum (selection :r_month month (market-selection market (first all))))
                   (sum-margin (selection :r_month month (market-selection market (first all)))))])])
        [:tr.info
-        [:td "3 (=) Marża I (1-2)"]
+        [:td "3. (=) Marża I (1-2)"]
         [:td (sum-margin (first all))]
         (for [t (range 1 5)]
           [:td (sum-margin (selection :term t (first all)))])
@@ -246,20 +246,117 @@ all
                   [:td (sum (selection :term t one-center))])
                 (for [month (range 1 13)]
                   [:td (sum (selection :onmonth month one-center))])]
-              [:tbody {:id center-id :class "collapse out"}
+               [:tbody {:id center-id :class "collapse out"}
                 (for [cost-id (get-each-one :cost_type_id_cost one-center)]
-                 (let [one-cost (selection :cost_type_id_cost cost-id one-center)]
-                   [:tr
-                    [:td  cost-id]
-                    [:td  (sum one-cost)]
-                    (for [t (range 1 5)]
-                      [:td  (sum (selection :term t one-cost))])
-                    (for [month (range 1 13)]
-                      [:td (sum (selection :onmonth month one-cost))])]))]]))])
+                  (let [one-cost (selection :cost_type_id_cost cost-id one-center)]
+                    [:tr
+                     [:td  cost-id]
+                     [:td  (sum one-cost)]
+                     (for [t (range 1 5)]
+                       [:td  (sum (selection :term t one-cost))])
+                     (for [month (range 1 13)]
+                       [:td (sum (selection :onmonth month one-cost))])]))]]))
+          (let [margin-2-year (-
+                               (sum-margin (first all))
+                               (sum market-cost))]
+            [:tbody
+             [:tr.info
+              [:td "5. (=) Marża II (3-4)"]
+              [:td margin-2-year]
+              (for [t (range 1 5)]
+                [:td (-
+                      (sum-margin (selection :term t (first all)))
+                      (sum (selection :term t market-cost)))])
+              (for [month (range 1 13)]
+                [:td (-
+                      (sum-margin (selection :r_month month (first all)))
+                      (sum (selection :onmonth month market-cost)))])]
+
+             (for [market (main-market all)]
+               (let [one-center (selection :cost_center_id_center
+                                           (cond
+                                            (= market (seq "11037")) 50211
+                                            (= market (seq "21037")) 50212
+                                            (= market (seq "31037")) 50213)
+                                           market-cost)]
+                 [:tr
+                  [:td (cond
+                        (= market (seq "11037")) "73011 Rynek Tradycyjny"
+                        (= market (seq "21037")) "73012 Rynek Nowoczesny"
+                        (= market (seq "31037")) "73013 Sprzedaż Zagraniczna")]
+                  [:td (-
+                        (sum-margin (market-selection market (first all)))
+                        (sum one-center))]
+                  (for [t (range 1 5)]
+                    [:td (-
+                          (sum-margin (selection :term t (market-selection market (first all))))
+                          (sum (selection :term t one-center)))])
+                  (for [month (range 1 13)]
+                    [:td (-
+                          (sum-margin (selection :r_month month (first all)))
+                          (sum (selection :onmonth month market-cost)))])]))
+             [:tr.info
+              [:td "(=) Marża II (%)"]
+              [:td (format "%.2f"
+                           (* 100.0
+                              (/
+                               margin-2-year
+                               (sum (first all))))) " %"]
+              (for [t (range 1 5)]
+                [:td (format "%.2f"
+                             (* 100.0
+                                (/
+                                 (-
+                                  (sum-margin (selection :term t (first all)))
+                                  (sum (selection :term t market-cost)))
+                                 (sum (selection :term t (first all)))))) " %"])
+              (for [month (range 1 13)]
+                [:td (format "%.2f"
+                             (* 100.0
+                                (/
+                                 (-
+                                  (sum-margin (selection :r_month month (first all)))
+                                  (sum (selection :onmonth month market-cost)))
+                                 (sum (selection :r_month month (first all)))))) " %"])]
+             (for [market (main-market all)]
+               (let [one-center (selection :cost_center_id_center
+                                           (cond
+                                            (= market (seq "11037")) 50211
+                                            (= market (seq "21037")) 50212
+                                            (= market (seq "31037")) 50213)
+                                           market-cost)]
+                 [:tr
+                  [:td (cond
+                        (= market (seq "11037")) "73011 Rynek Tradycyjny"
+                        (= market (seq "21037")) "73012 Rynek Nowoczesny"
+                        (= market (seq "31037")) "73013 Sprzedaż Zagraniczna")]
+                  [:td (format "%.2f"
+                               (* 100.0
+                                  (/
+                                   (-
+                                    (sum-margin (market-selection market (first all)))
+                                    (sum one-center))
+                                   (sum (market-selection market (first all)))))) " %"]
+                  (for [t (range 1 5)]
+                    [:td (format "%.2f"
+                                 (* 100.0
+                                    (/
+                                     (-
+                                      (sum-margin (selection :term t (market-selection market (first all))))
+                                      (sum (selection :term t one-center)))
+                                     (sum (selection :term t (market-selection market (first all))))))) " %"])
+                  (for [month (range 1 13)]
+                    [:td (format "%.2f"
+                                 (* 100.0
+                                    (/
+                                     (-
+                                      (sum-margin (selection :r_month month (first all)))
+                                      (sum (selection :onmonth month market-cost)))
+                                     (sum (selection :r_month month (market-selection market (first all))))))) " %"])]))])
 
 
 
-       ])]))
+          ])])]))
 
 
 
