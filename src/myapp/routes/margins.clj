@@ -352,13 +352,104 @@ all
                                      (-
                                       (sum-margin (selection :r_month month (first all)))
                                       (sum (selection :onmonth month market-cost)))
-                                     (sum (selection :r_month month (market-selection market (first all))))))) " %"])]))])
+                                     (sum (selection :r_month month (market-selection market (first all))))))) " %"])]))
+             (let [general-center (selection :cost_center_id_center 50214 (rest all))]
+               [:tbody
+                [:tr.danger
+                 [:td "6. (-) Koszty ogólne rynków"]
+                 [:td (sum general-center)]
+                 (for [t (range 1 5)]
+                   [:td (sum (selection :term t general-center))])
+                 (for [month (range 1 13)]
+                   [:td (sum (selection :onmonth month general-center))])]
+                (for [center-id (get-each-one :cost_center_id_center general-center)]
+                  (let [one-center (selection :cost_center_id_center center-id general-center)]
+                    [:tbody
+                     [:tr.active
+                      [:td [:a {:data-toggle "collapse" :href (str "#" center-id)} center-id]]
+                      [:td (sum one-center)]
+                      (for [t (range 1 5)]
+                        [:td (sum (selection :term t one-center))])
+                      (for [month (range 1 13)]
+                        [:td (sum (selection :onmonth month one-center))])]
+                     [:tbody {:id center-id :class "collapse out"}
+                      (for [cost-id (get-each-one :cost_type_id_cost one-center)]
+                        (let [one-cost (selection :cost_type_id_cost cost-id one-center)]
+                          [:tr
+                           [:td  cost-id]
+                           [:td  (sum one-cost)]
+                           (for [t (range 1 5)]
+                             [:td  (sum (selection :term t one-cost))])
+                           (for [month (range 1 13)]
+                             [:td (sum (selection :onmonth month one-cost))])]))]]))
+                (let [margin-3-year (-
+                                     margin-2-year
+                                     (sum general-center))]
+                  [:tbody
+                   [:tr.info
+                    [:td "7. (=) Marża III (5-6)"]
+                    [:td margin-3-year]
+                    (for [t (range 1 5)]
+                      [:td (-
+                            (-
+                             (sum-margin (selection :term t (first all)))
+                             (sum (selection :term t market-cost)))
+                            (sum (selection :term t general-center)))])
+                    (for [month (range 1 13)]
+                      [:td (-
+                            (-
+                             (sum-margin (selection :r_month month (first all)))
+                             (sum (selection :onmonth month market-cost)))
+                            (sum (selection :onmonth month general-center)))])]
+                   [:tr.info
+                    [:td "(=) Marża III (%)"]
+                    [:td (format "%.2f"
+                                 (* 100.0
+                                    (/
+                                     margin-3-year
+                                     (sum (first all))))) " %"]
+                    (for [t (range 1 5)]
+                      [:td (format "%.2f"
+                                   (* 100.0
+                                      (/
+                                       (-
+                                        (-
+                                         (sum-margin (selection :term t (first all)))
+                                         (sum (selection :term t market-cost)))
+                                        (sum (selection :term t general-center)))
+                                       (sum (selection :term t (first all)))))) " %"])
+                    (for [month (range 1 13)]
+                      [:td (format "%.2f"
+                                   (* 100.0
+                                      (/
+                                       (-
+                                        (-
+                                         (sum-margin (selection :r_month month (first all)))
+                                         (sum (selection :onmonth month market-cost)))
+                                        (sum (selection :onmonth month general-center)))
+                                       (sum (selection :r_month month (first all)))))) " %"])]
+                   (let [management-center (apply concat
+                                                  (for [x
+                                                        (range 55051 55058)]
+                                                    (selection :cost_center_id_center x (rest all))))]
+                     [:tr.danger
+                      [:td "10. (-) Koszty zarządu i administracji"]
+                      [:td (sum management-center)]
+                      (for [t (range 1 5)]
+                        [:td (sum (selection :term t management-center))])
+                      (for [month (range 1 13)]
+                        [:td (sum (selection :onmonth month management-center))])])])])])
 
 
 
           ])])]))
 
 
+(let [management-center (apply concat
+                               (for [x
+                                     (range 55051 55058)]
+                                 (selection :cost_center_id_center x (rest all))))]
+  (count  management-center))
 
 ;; END GRID ;;
 (defn margins-page [user]
