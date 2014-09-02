@@ -774,9 +774,6 @@ all
                                                       (sum (selection :r_month month (first all)))))) " %"])]
                                   ])
                                ])])])])])])
-
-
-
              ])])])]))
 
 
