@@ -310,5 +310,14 @@
                                :version version}))))
 
 
+(defn other-value [year]
+  (j/query mysql-db
+           (s/select
+            * :other_cost_and_revenue_value
+            (s/where {:onYear year}))))
 
+(defn get-other-name []
+  (j/query mysql-db
+           (s/select
+            * :other_cost_and_revenue)))
 

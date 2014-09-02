@@ -4,6 +4,15 @@ body {
   height: 100%;
   padding-top: 40px;
 }
+
+table a {
+  color: inherit !important;
+}
+
+table a:hover{
+  text-decoration: none !important;
+}
+
 #value {
   width: 80px;
 }
