@@ -115,3 +115,8 @@ width: 70%;
   margin-right: 11px;
 
 }
+
+
+a, body {
+  transition: all 0.3s ease 0s;
+}
