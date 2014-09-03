@@ -32,6 +32,9 @@
 
 ; END OF PAGE HANDLER
 
+(defn parse-int [s]
+   (Integer. (re-find  #"\d+" s )))
+
 ; EXEC COSTS
 
 (defn select-my-center []
@@ -49,43 +52,76 @@
   ([id-center] (grid/center-selection id-center "/exec")))
 
 (defn execForm
-  [center year version where]
+  [center year month version where]
   (hc/html
-   [:h3.padding "Wykonanie: Cetrum: " [:B center]" " [:b (dbquery/get-center-name center)]  ", rok " [:b year]]
+   [:div.center
+    [:h3.margins "Wykonanie: Cetrum: " [:B center]" " [:b (dbquery/get-center-name center)]  ", rok " [:b year]]
    (hf/form-to [:post where]
-               [:table.table.table-striped
+               [:table.table.table-striped.table-bordered
                 [:thead
                  [:tr
-                  [:th {:colspan 2 :style "border-bottom: none;"}] [:th.middle {:colspan 12 :style "text-align: center; border-bottom: none;"} "Miesiąc"]]
-                 [:tr
-                  [:th "Nr kosztu"] [:th "Nazwa"] [:th "I"] [:th "II"] [:th "III"] [:th "IV"] [:th "V"] [:th "VI"] [:th "VII"] [:th "VIII"] [:th "IX"] [:th "X"] [:th "XI"] [:th "XII"]
-                  [:th "Rok"] [:th "Kw. I"] [:th "Kw. II"] [:th "Kw. III"] [:th "Kw. IV"]]]
+                  [:th "Nr kosztu"] [:th "Nazwa"] [:th (nth grid/ms-name (parse-int month))]]]
                 (into [:tbody]
                       (for [cost (for [costs (dbquery/cost-on-center-grid center)] (:id_cost costs))]
-                        [:tr {:class "calc"}
+                        [:tr
                          [:td cost]
                          [:td (dbquery/get-cost-name cost)]
-                         (for [month (range 1 13)]
-                           [:td
+                       [:td
                             (hf/hidden-field "cost_type_id_cost" cost)
                             (hf/hidden-field "cost_center_id_center" center)
                             (hf/hidden-field "onYear" year)
                             (hf/hidden-field "onMonth" month)
                             (hf/text-field {:placeholder "0" :required "" :class "value"} "value")
-                            (hf/hidden-field "verssion" version)])
-                         [:td {:class "sum"} "0"]
-                         [:td {:class "qu1"} "0"]
-                         [:td {:class "qu2"} "0"]
-                         [:td {:class "qu3"} "0"]
-                         [:td {:class "qu4"} "0"]]))
-                (hf/submit-button {:class "btn leftMargin"} "send")])))
+                            (hf/hidden-field "verssion" version)]]))
+                (hf/submit-button {:class "btn margins"} "send")])]))
+
+
+(defn exec-rev-grid
+  ([] (hc/html
+       [:h4.padding "Wybeirz rok i wersję" ]))
+  ([year month version brand-id where]
+   (hc/html
+    [:h3.padding "Wybrałeś markę: "[:b (dbquery/get-brand-name brand-id)]  ", rok " [:b year]
+     (if (= where "/exec-rev")
+       [:span " miesiąc: " (nth grid/ms-name (parse-int month))]
+       [:span ", wersja: "[:b (dbquery/get-version-name version)]])]
+    [:br]
+    (hf/form-to [:post where]
+                (hf/submit-button {:class "btn leftMargin margins"} "send")
+                [:br]
+                [:table.table.revenue.table-bordered
+                 [:thead
+                  [:tr
+                   [:th "Opis"]
+                   (for [market (dbquery/get-market-id-all)]
+                     [:th (dbquery/get-market-name market)])]]
+                 [:tbody
+                  [:tr {:class "sale"}
+                      [:td "Sprzedaż"]
+                      (for [market (dbquery/get-market-id-all)]
+                        [:td
+                         (hf/hidden-field "id_market_type" market)
+                         (hf/hidden-field "id_brands" brand-id)
+                         (hf/hidden-field "r_year" year)
+                         (hf/hidden-field "r_month" month)
+                         (hf/hidden-field "version" version)
+                         (hf/text-field {:placeholder "0" :required "" :class "focusOn"} "value")])]
+                     [:tr {:class "margin"}
+                      [:td "Marża"]
+                      (for [market (dbquery/get-market-id-all)]
+                        [:td
+                         (hf/text-field {:placeholder "0" :required "" :class "focusOn"} "profit_margin")])]
+                     [:tr {:class "marginP"}
+                      [:td "Marża %"]
+                      (for [market (dbquery/get-market-id-all)]
+                        [:td {:class "myMargin"} "0 %"])]]]))))
 
 
 ; PAGE RENDER
 
 (defn exec-revenue []
   (layout/render "exec.html" {:user-id (get-user)
-                              :forms (grid/revenueSendForm)
+                              :forms (exec-rev-grid)
                               :select (grid/revenue-select "/add-exec-revenue")
                               }))
 
@@ -101,9 +137,13 @@
   (layout/render "exec.html" {:user-id my-center
                               :select (exec-select my-center)}))
 
-(defn exec-grid-page [center year version where]
+(defn exec-grid-page [center year month version where]
   (layout/render "exec.html" {:user-id (get-user)
-                              :forms (execForm center year version where)}))
+                              :forms (execForm center year month version where)}))
+
+(defn revenue-exec-grid [year month version brand-name where]
+  (layout/render "exec.html" {:user-id (get-user)
+                              :forms (exec-rev-grid year month version brand-name where)}))
 
 
 
@@ -111,14 +151,14 @@
 
 (defroutes exec-routes
   (GET "/exec" [] (exec-handler))
-  (POST "/exec" [center year version]
-        (exec-grid-page center year version "/add-exec"))
+  (POST "/exec" [center year version month]
+        (exec-grid-page center year month version "/add-exec"))
   (POST "/select-center" [center] (exec-admin-select center))
   (POST "/add-exec" [& params]
         (do (dbquery/add-realized-cost params)
           (resp/redirect "/exec")))
-  (POST "/add-exec-revenue" [year version brand-name]
-        (grid/plan-revenue-grid year version brand-name "/exec-rev"))
+  (POST "/add-exec-revenue" [year month version brand-name]
+        (revenue-exec-grid year month version brand-name "/exec-rev"))
   (POST "/exec-rev" [& params]
         (do (dbquery/add-revenue-exec params)
           (resp/redirect "/exec"))))

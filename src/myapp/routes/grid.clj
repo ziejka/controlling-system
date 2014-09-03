@@ -31,6 +31,9 @@
 
 ; COSTS
 
+(def ms-name
+  ["" "styczeń" "luty" "marzec" "kwiecień" "maj" "czerwiec" "lipiec" "sierpień" "wrzesień" "październik" "listopad" "grudzień"])
+
 (defn center-selection [user where]
   (hc/html
    [:h3 "Wybierz nr centrum rok oraz wersję"][:br]
@@ -51,12 +54,17 @@
                                                   (for [version [1 2 3]]
                                                     [:div [:input {:type "radio" :name "version" :value version :class "radio" :required ""}
                                                            [:span.radio-name (dbquery/get-version-name version)]]])]])
-               (hf/submit-button {:class "btn"} "select"))))
+               (if (= where "/exec")
+                 [:div.float-left [:h4 "Miesiąc"] [:div.radioWrapper
+                                                  (for [month (range 1 13)]
+                                                    [:div [:input {:type "radio" :name "month" :value month :class "radio" :required ""}
+                                                           [:span.radio-name (nth ms-name month)]]])]])
+               (hf/submit-button {:class "btn margins"} "select"))))
 
 (defn sendForm
   [my-center center year version where]
   (hc/html
-   [:h3.padding "Wybrałeś cetrum: " [:B center]" " [:b (dbquery/get-center-name center)]  ", rok " [:b year]
+   [:h3.padding.margins "Wybrałeś cetrum: " [:B center]" " [:b (dbquery/get-center-name center)]  ", rok " [:b year]
     [:span ", wersja: "[:b (dbquery/get-version-name version)]]]
    (hf/form-to [:post where]
                [:table.table.table-striped
@@ -84,7 +92,7 @@
                          [:td {:class "qu2"} "0"]
                          [:td {:class "qu3"} "0"]
                          [:td {:class "qu4"} "0"]]))
-                (hf/submit-button {:class "btn leftMargin"} "send")])))
+                (hf/submit-button {:class "btn leftMargin margins"} "send")])))
 
 ; END OF COSTS
 
@@ -107,6 +115,11 @@
                                                 (for [version [1 2 3]]
                                                   [:div [:input {:type "radio" :name "version" :value version :class "radio" :required ""}
                                                          [:span.radio-name (dbquery/get-version-name version)]]])]])
+               (if (= where "/add-exec-revenue")
+                 [:div.float-left [:h4 "Wersja"] [:div.radioWrapper
+                                                (for [month (range 1 13)]
+                                                  [:div [:input {:type "radio" :name "month" :value month :class "radio" :required ""}
+                                                         [:span.radio-name (nth ms-name month)]]])]])
                (hf/submit-button {:class "btn"} "select"))))
 
 (defn revenueSendForm
@@ -120,7 +133,7 @@
        [:span ", wersja: "[:b (dbquery/get-version-name version)]])]
     [:br]
     (hf/form-to [:post where]
-                (hf/submit-button {:class "btn leftMargin"} "send")
+                (hf/submit-button {:class "btn leftMargin margins"} "send")
                 [:br]
                 [:table.table.revenue.table-bordered
                  [:thead

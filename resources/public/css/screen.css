@@ -52,7 +52,7 @@ table a:hover{
 }
 
 .leftMargin {
-  margin: 0 30px;
+  margin-left: 30px;
 }
 .radio-name {
   margin: -25px 0px 7px 20px;
@@ -75,19 +75,43 @@ table a:hover{
 .longb {
   padding-right: 210px !important;
 }
-
+/*
 .revenue > tbody > tr:nth-child(8n+1) > td,
 .revenue > tbody > tr:nth-child(8n+2) > td,
 .revenue > tbody > tr:nth-child(8n+3) > td,
 .revenue > tbody > tr:nth-child(8n+4) > td {
     background-color: #F6F6F6;
 }
-
+*/
 .collapse.in {
     display: table-row-group !important;
 }
 
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
     padding: 4px !important;
+
+}
+
+
+.center {
+  margin: 0 auto;
+  margin: 0px auto;
+width: 70%;
+}
+
+.margins {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
+.log {
+  margin-right: 12px;
+  padding-left: 28px;
+
+}
+
+.pass {
+  margin-right: 11px;
 
 }

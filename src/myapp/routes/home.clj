@@ -52,9 +52,6 @@
    "home.html" {:content (util/md->html "/md/docs.md")
                 :user-id (session/get :user)}))
 
-(defn contact-page []
-  (layout/render "contact.html" {:items (range 10)
-                                 :user-id (session/get :user)}))
 
 ;END OF USERS PAGE ROUTS
 
@@ -66,6 +63,5 @@
         (handle-login username password))
   (GET "/" [] (site-hendler))
   (GET "/home" [] (home-page))
-  (GET "/contact" [] (contact-page))
   (GET "/logout" []
        (logout)))

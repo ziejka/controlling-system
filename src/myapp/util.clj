@@ -10,15 +10,15 @@
   "reads a markdown file from public/md and returns an HTML string"
   [filename]
   (->>
-    (io/slurp-resource filename)
-    (md/md-to-html-string)))
+   (io/slurp-resource filename)
+   (md/md-to-html-string)))
 
 (def login-form
   (hc/html
-    (hf/form-to {:id "loginForm"}
-     [:post "/login"]
-               (hf/label "login" "Login: ")
+   (hf/form-to {:id "loginForm"}
+               [:post "/login"]
+               (hf/label {:class "log"} "login" "Login: ")
                (hf/text-field {:required ""} "username")[:br]
-               (hf/label "pass" "Password: ")
+               (hf/label {:class "pass"} "pass" "Password: ")
                (hf/password-field {:required ""} "password")
                (hf/submit-button {:id "submit" :class "btn leftMargin"} "Login"))))
