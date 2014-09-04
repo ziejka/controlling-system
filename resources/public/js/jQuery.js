@@ -7,17 +7,17 @@ $(document).ready(
 
     $('a').tooltip('hide');
 
-    $(".a").click(function() {
-      if($("#collapseme").hasClass("out")) {
-        $("#collapseme").addClass("in");
-        $("#collapseme").removeClass("out");
-      } else {
-        $("#collapseme").addClass("out");
-        $("#collapseme").removeClass("in");
-      }
-    });
+//    $(".a").click(function() {
+//      if($("#collapseme").hasClass("out")) {
+//        $("#collapseme").addClass("in");
+//        $("#collapseme").removeClass("out");
+//      } else {
+//        $("#collapseme").addClass("out");
+//        $("#collapseme").removeClass("in");
+//      }
+//    });
 
-    function calc() {
+  function calc() {
       $('tr.calc').each(function(){
         var sum = 0;
         $(this).find("input[id^='value']").each(function(){
