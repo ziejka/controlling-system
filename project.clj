@@ -12,14 +12,12 @@
                  [org.clojure/java.jdbc "0.3.0-alpha5"]
                  [mysql/mysql-connector-java "5.1.25"]
                  [hiccup "1.0.4"]
-                 [org.clojure/clojurescript "0.0-2173"]
                  [domina "1.0.3-SNAPSHOT"]]
 
 
   :repl-options {:init-ns myapp.repl}
   :plugins [[lein-ring "0.8.10"]
-            [lein-environ "0.5.0"]
-            [lein-cljsbuild "1.0.0"]]
+            [lein-environ "0.5.0"]]
   :ring {:handler myapp.handler/app
          :init    myapp.handler/init
          :destroy myapp.handler/destroy}
@@ -31,18 +29,5 @@
    :dev {:dependencies [[ring-mock "0.1.5"]
                         [ring/ring-devel "1.2.2"]]
          :env {:dev true}}}
-  :min-lein-version "2.0.0"
-  :cljsbuild {:builds
-              [{;; CLJS source code path
-                :source-paths ["src/cljs"]
-
-                ;; Google Closure (CLS) options configuration
-                :compiler {;; CLS generated JS script filename
-                           :output-to "resources/public/js/modern.js"
-
-                           ;; minimal JS optimization directive
-                           :optimizations :whitespace
-
-                           ;; generated JS code prettyfication
-                           :pretty-print true}}]})
+  :min-lein-version "2.0.0")
 
